@@ -14,7 +14,7 @@ const methodOverride = require('method-override')
 const { Pool } = require('pg')
 var pool;
 pool = new Pool({
-  connectionString: 'process.env.DATABASE_URL'
+  connectionString: 'postgres://postgres:7221@localhost/project'
 })
 
 const initializePassport = require('./passport-config')
