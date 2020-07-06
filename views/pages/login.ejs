@@ -1,9 +1,9 @@
 
-<h1>Login</h1>
+<!-- <h1>Login</h1> -->
 <% if (messages.error) { %>
   <%= messages.error %>
 <% } %>
-<form action="/login" method="POST">
+<!-- <form action="/login" method="POST">
   <div>
     <label for="email">Email</label>
     <input type="email" id="email" name="email" required>
@@ -14,4 +14,29 @@
   </div>
   <button type="submit">Login</button>
 </form>
-<a href="/register">Register</a>
+<a href="/register">Register</a> -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="./stylesheets/style2.css">
+  </head>
+  <body style="background-color:#d3d3d3">
+    <div id="lgin" style="width:100%;text-align:center">Login</div>
+      <form action="/login" method="post" >
+        <div style="width:100%;text-align:center">
+          <div class="input1" placeholder="Account">
+            <label class="">Email: </label>
+            <input required class="in1" type="email" name="email" >
+          </div>
+          <div class="input1" placeholder="Password">
+            <label class="">Password: </label>
+            <input required class="in2" type="password" name="password">
+          </div>
+          <button class="submit" type="submit">Login</button>
+        </div>
+      </form>
+  </body>
+</html>
