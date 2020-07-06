@@ -1,5 +1,15 @@
-
 <h1>Hi <%= name %></h1>
 <form action="/logout?_method=DELETE" method="POST">
   <button type="submit">Log Out</button>
 </form>
+    <form action="/addTodo" method="post">
+      <input type="text" name="item" placeholder="Add a new event" required>
+      <input type="submit" placeholder="Add To List"></input>
+    </form>
+    <br>
+      <h2>Todo list </h2>
+      <br><br><br>
+      <ul id="todolist"></ul>
+      <h2>Completed list </h2>
+      <br><br><br>
+      <ul id="completedlist"></ul>
