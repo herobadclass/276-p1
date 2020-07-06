@@ -1,5 +1,5 @@
 
-<h1>Register</h1>
+<!-- <h1>Register</h1>
 <form action="/register" method="POST">
 <div>
   <label for="name">Name</label>
@@ -15,4 +15,32 @@
 </div>
 <button type="submit">Register</button>
 </form>
-<a href="/login">Login</a>
+<a href="/login">Login</a> -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="./stylesheets/style2.css">
+  </head>
+  <body style="background-color:#d3d3d3">
+    <div id="lgin" style="width:100%;text-align:center">Login</div>
+      <form action="/register" method="post" >
+        <div style="width:100%;text-align:center">
+          <div class="input1" placeholder="Account">
+            <label class="">Account Name: </label>
+            <input class="in1" type="text" name="account">
+          </div>
+          <div class="input1" placeholder="Email">
+            <label class="">Email: </label>
+            <input class="in1" type="email" name="email" value="">
+          </div>
+          <div class="input1" placeholder="Password">
+            <label class="">Password: </label>
+            <input class="in2" type="password" name="password" value="">
+          </div>
+          <input class="submit" type="submit" value="Registe">
+        </div>
+      </form>
+  </body>
+</html>
