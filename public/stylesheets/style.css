@@ -1,0 +1,122 @@
+.div0{
+  background-color: black;
+  width: 100%;
+  border-radius: 25px;
+
+}
+.option{
+  border: none;
+  border-radius: 25px;
+  color: white;
+  padding: 8px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: black;
+  margin: 20px;
+}
+.option:hover{
+  background-color: #808080;
+  color: white;
+}
+.register{
+  border: none;
+  border-radius: 25px;
+  color: white;
+  padding: 8px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: #0000FF;
+  float: right;
+  margin: 20px;
+}
+.register:hover {
+background-color: #7cfc00;
+color: white;
+}
+.register2{
+  border: none;
+  border-radius: 25px;
+  color: white;
+  padding: 8px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: #0000FF;
+  position: absolute;
+  right: 0;
+  margin: 20px;
+}
+.register2:hover {
+background-color: #7cfc00;
+color: white;
+}
+#img{
+  padding-top: 5%;
+  float: right;
+  margin:10px;
+}
+
+.in1{
+  border-color: #0000cd;
+  border-bottom: 2px solid;
+  border-bottom-color: #0000cd;
+  margin: 2rem 0;
+}
+.in2{
+  border-color: #0000cd;
+  border-bottom: 2px solid;
+  border-bottom-color: #0000cd;
+  margin: 2rem 0;
+}
+#lgin{
+  color:#0000cd;
+  font-size: 30px;
+  cursor: pointer;
+}
+form .input{
+  position: relative;
+}
+
+label{
+  font-size: 1.4rem;
+  color: #0000cd;
+}
+.submit{
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 8px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: #0000FF;
+  /* float: right; */
+  margin: 10px;
+}
+.submit:hover {
+background-color: #7cfc00;
+color: white;
+}
+span{
+  margin: 10px;
+  font-size: 16px;
+  font-family: cursive;
+}
