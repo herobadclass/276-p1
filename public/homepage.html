@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <script type="text/javascript" src="./jquery.js">
+
+    </script>
+    <script>
+
+    $(document).ready(function(){
+      $("#b2").click(function(){
+        $("#div1").fadeIn();
+        $("#div2").fadeIn(2000);
+      })
+    });
+    </script>
+  </head>
+
+  <div>
+    <div id="11" class="div0" style="margin:10px">
+      <form action="register" method="all">
+        <input class="register2" type="submit" name="register" value="Register">
+      </form>
+
+      <button class="option" id="b1" type="button" name="home">Home</button>
+      <button class="option" id="b2" type="button" name="introduction">Introduction</button>
+      <button class="option" id="b3" type="button" name="about">About</button>
+    </div>
+    <!-- <form  action="/display" method="post">
+      <button type="submit" name="display">display</button>
+    </form> -->
+
+    <img id="img" src="picture.jpg_fit=scale" alt="figure" width="800" height="500">
+    <div id="div1" style="font-size:20px;height:30px;display:none;">
+      <li>1.  This is a to-do-list app for you to trace your work/study.</li>
+    </div><br>
+    <div id="div2" style="font-size:20px;height:30px;display:none;">
+      <li>2.  We provide different template for different types of users.</li>
+        <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
+          <li>Are you a student?</li>
+          <li>Are you working now?</li>
+          <li>etc....</li>
+        </ol>
+    </div><br><br><br><br><br>
+  </div>
+  <body style="background-color:#d3d3d3">
+        <div id="lgin" style="width:50%;text-align:center;">Login</div>
+          <form action="/login" method="all" >
+            <div style="width:50%;text-align:center">
+              <div class="input1" placeholder="Account">
+                <label class="">Account: </label>
+                <input class="in1" type="text" name="account" value="">
+              </div>
+              <div class="input1" placeholder="Password">
+                <label class="">Password: </label>
+                <input class="in2" type="text" name="password" value="">
+              </div>
+
+              <span >Forget?</span><br>
+              <input class="submit" type="submit" value="LOGIN">
+            </div>
+          </form>
+
+    <script type="text/javascript">
+      var b1 = document.getElementById('b1');
+      var b3 = document.getElementById('b3');
+      b1.onclick = function(){
+        window.location.replace("https://cmpt276-it1.herokuapp.com/homepage.html");
+      }
+      b3.onclick = function(){
+        window.location.replace("https://cmpt276-it1.herokuapp.com/about.html");
+      }
+
+    </script>
+  </body>
+</html>
