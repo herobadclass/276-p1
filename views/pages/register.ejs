@@ -15,20 +15,20 @@
   			font-size: 24px;
   			padding: 20px 0 20px 0;
   		}
-  		.register-form input[type="password"],
-  		.register-form input[type="email"],
-      .register-form input[type="text"] {
+  		.register-form input {
   			width: 100%;
   			padding: 15px;
   			border: 1px solid #dddddd;
-        outline: none;
   			margin-bottom: 15px;
   			box-sizing:border-box;
-
+        font-size: 13px;
   		}
-  		.register-form button[type="submit"],
-      .register-form button[type="button"] {
-  			width: 47.5%;
+      .register-form input:focus {
+        outline: none;
+        border: 1px solid #9bc8ff;
+      }
+  		.register-form button {
+  			width: 100%;
   			padding: 15px;
   			background-color: #535b63;
   			border: 0;
@@ -36,22 +36,35 @@
   			box-sizing: border-box;
   			cursor: pointer;
   			font-weight: bold;
+        font-size: 13px;
   			color: #ffffff;
   		}
-      .register-form button[type="submit"] {
-        float: right;
+      .register-form p {
+        color: #4d4d4d;
+        font-size: 12px;
+      }
+      .register-form a:link,
+      .register-form a:visited,
+      .register-form a:link,
+      .register-form a:active {
+        color: #9bc8ff;
+        text-decoration: none;
+      }
+      .register-form a:hover {
+        color: #9bc8ff;
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
     <div class="register-form">
-      <h1>Register</h1>
+      <h1>Create an account</h1>
       <form action="/register" method="POST">
       <input type="text" id="name" name="name" placeholder="Username" required>
       <input type="email" id="email" name="email" placeholder="Email" required>
       <input type="password" id="password" name="password" placeholder="Password" required>
-      <button type="button" onclick= "location.href = '/login'">Login</button>
       <button type="submit">Register</button>
+      <p>Already have an account? <a href='/login'>Login</a></p>
       </form>
     </div>
   </body>
