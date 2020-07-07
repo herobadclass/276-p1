@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
     const userByEmail = await getUserByEmail(email)
-    if (userByEmail == null) {
+    if (userByEmail.rows[0] == null) {
       return done(null, false, { message: 'Email incorrect' })
     }
     try {
