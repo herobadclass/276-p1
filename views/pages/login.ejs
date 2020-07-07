@@ -1,42 +1,60 @@
 
-<!-- <h1>Login</h1> -->
-<% if (messages.error) { %>
-  <%= messages.error %>
-<% } %>
-<!-- <form action="/login" method="POST">
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-  <button type="submit">Login</button>
-</form>
-<a href="/register">Register</a> -->
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="./stylesheets/style2.css">
+    <title>login page</title>
+    <style>
+      .login-form {
+  			width: 300px;
+  			margin: 0 auto;
+  			font-family: Arial, sans-serif;
+  		}
+  		.login-form h1 {
+  			text-align: center;
+  			color: #4d4d4d;
+  			font-size: 24px;
+  			padding: 20px 0 20px 0;
+  		}
+  		.login-form input[type="password"],
+  		.login-form input[type="email"] {
+  			width: 100%;
+  			padding: 15px;
+  			border: 1px solid #dddddd;
+        outline: none;
+  			margin-bottom: 15px;
+  			box-sizing:border-box;
+
+  		}
+  		.login-form button[type="submit"],
+      .login-form button[type="button"] {
+  			width: 47.5%;
+  			padding: 15px;
+  			background-color: #535b63;
+  			border: 0;
+        outline: none;
+  			box-sizing: border-box;
+  			cursor: pointer;
+  			font-weight: bold;
+  			color: #ffffff;
+  		}
+      .login-form button[type="submit"] {
+        float: right;
+      }
+    </style>
   </head>
-  <body style="background-color:#d3d3d3">
-    <div id="lgin" style="width:100%;text-align:center">Login</div>
-      <form action="/login" method="post" >
-        <div style="width:100%;text-align:center">
-          <div class="input1" placeholder="Account">
-            <label class="">Email: </label>
-            <input required class="in1" type="email" name="email" >
-          </div>
-          <div class="input1" placeholder="Password">
-            <label class="">Password: </label>
-            <input required class="in2" type="password" name="password">
-          </div>
-          <button class="submit" type="submit">Login</button>
-        </div>
+  <body>
+    <div class="login-form">
+      <h1>Login</h1>
+      <% if (messages.error) { %>
+        <%= messages.error %>
+      <% } %>
+      <form action="/login" method="POST">
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <button type="button" onclick= "location.href = '/register'">Register</button>
+        <button type="submit">Login</button>
       </form>
+    </div>
   </body>
 </html>
