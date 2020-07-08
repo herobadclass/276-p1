@@ -1,0 +1,14 @@
+Resources used:
+
+Text editor:
+	https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content
+
+Font "Voga":
+	https://www.charlesdaoud.com/voga-typeface#:~:text=Voga%20is%20a%20condensed%20modern,thick%20stems%20–%20ball%20terminals%20vs.
+
+CSS: 
+	https://www.w3schools.com
+
+Save as text file:
+	https://stackoverflow.com/questions/21479107/saving-html5-textarea-contents-to-file
+
