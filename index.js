@@ -44,11 +44,11 @@ app.set('view engine', 'ejs')
 var http = require('http'),
     fs = require('fs');
 
-app.get('/', (req,res)=>{
+app.get('/about', (req,res)=>{
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-app.get('/After_login', checkAuthenticated, (req, res) => {
+app.get('/', checkAuthenticated, (req, res) => {
   res.render('pages/index', {name: req.user.name})
 })
 
@@ -57,7 +57,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/After_login',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }))
