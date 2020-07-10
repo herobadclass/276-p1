@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const express = require('express')
 const path = require('path')
 const bcrypt = require('bcrypt')
@@ -9,15 +13,14 @@ const methodOverride = require('method-override')
 const { Pool } = require('pg')
 var pool;
 pool = new Pool({
-  connectionString:
-  process.env.DATABASE_URL || 'postgres://postgres:andy1999@localhost/account'
+  connectionString: process.env.DATABASE_URL
 })
 
 const initializePassport = require('./passport-config')
 initializePassport(
   passport,
-  email => pool.query(`SELECT * FROM acc WHERE email = '${email}'`),
-  id => pool.query(`SELECT * FROM acc WHERE id = '${id}'`)
+  email => pool.query(`SELECT * FROM users WHERE email = '${email}'`),
+  id => pool.query(`SELECT * FROM users WHERE id = '${id}'`)
 )
 
 const PORT = process.env.PORT || 5000
@@ -66,11 +69,8 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 app.post('/register', checkNotAuthenticated, async (req,res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const addUserQuery =
-    {
-    // `'${Date.now().toString()}', '${req.body.name}',
-    //    '${req.body.email}', '${hashedPassword}'`
-      text:`INSERT INTO acc (id,name,email,password) VALUES ($1,$2,$3,$4)`,
+    const addUserQuery = {
+      text:`INSERT INTO users (id,name,email,password) VALUES ($1,$2,$3,$4)`,
       values: [Date.now().toString(), req.body.name, req.body.email, hashedPassword]
     }
     pool.query(addUserQuery, (error,result) => {
@@ -84,7 +84,7 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
   }
 })
 
-app.delete('/logout', (req, res) =>{
+app.delete('/logout', (req, res) => {
   req.logout()
   res.redirect('/login')
 })
@@ -102,12 +102,5 @@ function checkNotAuthenticated(req, res, next) {
   }
   next()
 }
-// app.all('/display',(req,res)=>{
-//   var queryString8 = `select * from acc`;
-//   pool.query(queryString8,(error,result)=>{
-//     if(error) res.send(error);
-//     var results = {'rows':result.rows};
-//     res.render('pages/db',results);
-//   });
-// });
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
