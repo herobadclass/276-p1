@@ -2,14 +2,13 @@
 <form action="/logout?_method=DELETE" method="POST">
   <button type="submit">Log Out</button>
 </form>
-    <form action="/addTodo" method="post">
-      <input type="text" name="item" placeholder="Add a new event" required>
-      <input type="submit" placeholder="Add To List"></input>
-    </form>
-    <br>
-      <h2>Todo list </h2>
-      <br><br><br>
-      <ul id="todolist"></ul>
-      <h2>Completed list </h2>
-      <br><br><br>
-      <ul id="completedlist"></ul>
+<form action="/post" method="post">
+  <input type="text" name="title" placeholder="Title" required>
+  <input type="text" name="description" placeholder="Description" required>
+  <button type="submit" name="button">Post</button>
+</form>
+
+<% rows.forEach(function(r) { %>
+  <%= r.title %>
+  <%= r.description %>
+<% }); %>

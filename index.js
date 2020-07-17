@@ -44,12 +44,33 @@ app.set('view engine', 'ejs')
 var http = require('http'),
     fs = require('fs');
 
-app.get('/about', (req,res)=>{
+app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
+app.post('/post', (req, res) => {
+  const postQuery = {
+    text:`INSERT INTO id_${req.user.id} (title, description) VALUES ($1,$2)`,
+    values: [req.body.title, req.body.description]
+  }
+  pool.query(postQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('added post')
+  })
+  res.redirect('/')
+})
+
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('pages/index', {name: req.user.name})
+  const getPostQuery = `SELECT * FROM id_${req.user.id}`
+  pool.query(getPostQuery , (error,result) => {
+      if (error) {
+        console.log(error);
+      }
+      var results = {'rows':result.rows, name: req.user.name}
+      res.render('pages/index',results)
+    })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -69,15 +90,26 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 app.post('/register', checkNotAuthenticated, async (req,res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const id = Date.now().toString()
     const addUserQuery = {
       text:`INSERT INTO users (id,name,email,password) VALUES ($1,$2,$3,$4)`,
-      values: [Date.now().toString(), req.body.name, req.body.email, hashedPassword]
+      values: [id, req.body.name, req.body.email, hashedPassword]
     }
     pool.query(addUserQuery, (error,result) => {
       if (error) {
         res.end(error)
       }
+      console.log('added user')
     })
+
+    const createUserTable = `CREATE TABLE id_${id} (title text, description text)`
+    pool.query(createUserTable, (error,result) => {
+      if (error) {
+        res.end(error)
+      }
+      console.log('created user table')
+    })
+
     res.redirect('/login')
   } catch {
     res.redirect('/register')
