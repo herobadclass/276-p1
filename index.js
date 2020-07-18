@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'))
 app.use(flash())
 app.use(session({
-  secret: "secret",
+  secret: "this should be in .env",
   resave: false,
   saveUninitialized: false
 }))
@@ -75,6 +75,20 @@ app.post('/edit', (req, res) => {
   })
   res.redirect('/')
 })
+
+app.post('/del', (req, res) => {
+    const delQuery = {
+      text: `DELETE FROM id_${req.user.id} WHERE id=$1`,
+      values: [req.body.id]
+    }
+    pool.query(delQuery, (error,result) => {
+      if (error) {
+        console.log(error);
+      }
+      console.log('deleted post')
+    })
+    res.redirect('/')
+  })
 
 app.get('/', checkAuthenticated, (req, res) => {
   const getPostQuery = `SELECT * FROM id_${req.user.id}`
