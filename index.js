@@ -62,6 +62,20 @@ app.post('/post', (req, res) => {
   res.redirect('/')
 })
 
+app.post('/edit', (req, res) => {
+  const editQuery = {
+    text:`UPDATE id_${req.user.id} SET title=$1, description=$2 WHERE id=$3`,
+    values: [req.body.title, req.body.description, req.body.id]
+  }
+  pool.query(editQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('edited post')
+  })
+  res.redirect('/')
+})
+
 app.get('/', checkAuthenticated, (req, res) => {
   const getPostQuery = `SELECT * FROM id_${req.user.id}`
   pool.query(getPostQuery , (error,result) => {
@@ -102,7 +116,7 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
       console.log('added user')
     })
 
-    const createUserTable = `CREATE TABLE id_${id} (title text, description text)`
+    const createUserTable = `CREATE TABLE id_${id} (id serial primary key, title text, description text)`
     pool.query(createUserTable, (error,result) => {
       if (error) {
         res.end(error)

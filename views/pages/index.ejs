@@ -1,14 +1,88 @@
-<h1>Hi <%= name %></h1>
-<form action="/logout?_method=DELETE" method="POST">
-  <button type="submit">Log Out</button>
-</form>
-<form action="/post" method="post">
-  <input type="text" name="title" placeholder="Title" required>
-  <input type="text" name="description" placeholder="Description" required>
-  <button type="submit" name="button">Post</button>
-</form>
 
-<% rows.forEach(function(r) { %>
-  <%= r.title %>
-  <%= r.description %>
-<% }); %>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .post {
+        width: 300px;
+  			/* margin: 0 auto; */
+  			/* font-family: Arial, sans-serif; */
+        padding: 15px;
+  			border: 1px solid #dddddd;
+  			margin-top: 15px;
+      }
+      #view {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Hi <%= name %></h1>
+
+    <form action="/logout?_method=DELETE" method="POST">
+      <button type="submit">Log Out</button>
+    </form>
+    <form action="/post" method="post">
+      <input type="text" name="title" placeholder="Title" required>
+      <input type="text" name="description" placeholder="Description" required>
+      <button type="submit" name="button">Post</button>
+    </form>
+
+    <% rows.forEach(function(r) { %>
+      <div class = 'post' id = <%= r.id %> onclick = edit(<%= r.id %>)>
+        <div id = <%= r.id %>_title>
+          <%= r.title %>
+        </div>
+        <div id = <%= r.id %>_description>
+          <%= r.description %>
+        </div>
+      </div>
+    <% }); %>
+
+    <div id="view">
+      <span class="close">&times;</span>
+      <div id="view_content">
+        <form action="/edit" method="post">
+          <input type="text" name="id" id="edit_id" hidden>
+          <input type="text" name="title" placeholder="Title" id="edit_title" required>
+          <input type="text" name="description" placeholder="Description" id="edit_description" required>
+          <button type="submit" name="button">Save</button>
+        </form>
+      </div>
+    </div>
+
+  </body>
+
+  <script>
+    function edit(id) {
+      document.getElementById('edit_id').value = id
+      document.getElementById('edit_title').value = document.getElementById(id+'_title').innerText
+      document.getElementById('edit_description').value = document.getElementById(id+'_description').innerText
+      document.getElementById('view').style.display = 'block';
+    }
+
+    document.getElementsByClassName('close')[0].onclick = function() {
+      document.getElementById('view').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('view')) {
+        document.getElementById('view').style.display = "none";
+      }
+    }
+
+  </script>
+</html>
