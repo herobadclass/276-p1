@@ -13,7 +13,9 @@ const methodOverride = require('method-override')
 const { Pool } = require('pg')
 var pool;
 pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString:
+  // process.env.DATABASE_URL ||
+   'postgres://postgres:andy1999@localhost/account'
 })
 
 const initializePassport = require('./passport-config')
@@ -43,15 +45,19 @@ app.set('view engine', 'ejs')
 
 var http = require('http'),
     fs = require('fs');
+//--------------------------------------------------------------------- Google API
+
+//----------------------------------------------------------------------
 
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
+// add an event
 app.post('/post', (req, res) => {
   const postQuery = {
-    text:`INSERT INTO id_${req.user.id} (title, description) VALUES ($1,$2)`,
-    values: [req.body.title, req.body.description]
+    text:`INSERT INTO id_${req.user.id} (title, description, day, start_time, end_time) VALUES ($1,$2,$3,$4,$5)`,
+    values: [req.body.title, req.body.description, req.body.day, req.body.start_time, req.body.end_time]
   }
   pool.query(postQuery, (error,result) => {
     if (error) {
@@ -64,8 +70,9 @@ app.post('/post', (req, res) => {
 
 app.post('/edit', (req, res) => {
   const editQuery = {
-    text:`UPDATE id_${req.user.id} SET title=$1, description=$2 WHERE id=$3`,
-    values: [req.body.title, req.body.description, req.body.id]
+    text:`UPDATE id_${req.user.id} SET title=$1, description=$2, day=$3, start_time=$4, end_time=$5 WHERE id=$6`,
+    values: [req.body.title, req.body.description, req.body.day,
+      req.body.start_time, req.body.end_time, req.body.id]
   }
   pool.query(editQuery, (error,result) => {
     if (error) {
@@ -90,6 +97,7 @@ app.post('/del', (req, res) => {
     res.redirect('/')
   })
 
+// display all contents
 app.get('/', checkAuthenticated, (req, res) => {
   const getPostQuery = `SELECT * FROM id_${req.user.id}`
   pool.query(getPostQuery , (error,result) => {
@@ -130,7 +138,10 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
       console.log('added user')
     })
 
-    const createUserTable = `CREATE TABLE id_${id} (id serial primary key, title text, description text)`
+    // date for data type: '2020-08-01'(insert like that)
+    // time data type: "5:03:51"
+    const createUserTable = `CREATE TABLE id_${id} (id serial primary key, title text, description text,
+      day date, start_time time, end_time time)`
     pool.query(createUserTable, (error,result) => {
       if (error) {
         res.end(error)
