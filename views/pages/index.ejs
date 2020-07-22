@@ -7,11 +7,16 @@
     <style>
       .post {
         width: 300px;
-  			/* margin: 0 auto; */
-  			/* font-family: Arial, sans-serif; */
+  			margin: 0 auto;
+  			font-family: Arial, sans-serif;
         padding: 15px;
   			border: 1px solid #dddddd;
   			margin-top: 15px;
+        float: left;
+        position: relative;
+        margin: 1em;
+        border-color: black;
+        border-width: medium;
       }
       #view {
         display: none;
@@ -26,53 +31,164 @@
         background-color: rgb(0,0,0); /* Fallback color */
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity*/
       }
+      .background-color {
+        /* background-color: #a9a9a9; */
+      }
+      .day, .date {
+        border-bottom: 1px solid var(--light-gray);
+        border-right: 1px solid var(--light-gray);
+        text-align: center;
+        padding-top: 3px;
+        font-size: 15px;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 5px 0;
+        height: 50px;
+        float: right;
+      }
+      .day_bef {
+        border-bottom: 1px solid var(--light-gray);
+        border-right: 1px solid var(--light-gray);
+        text-align: center;
+        padding-top: 3px;
+        font-size: 15px;
+        color: grey;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 5px 0;
+        height: 50px;
+        float: right;
+      }
 
+      #app-calendar {
+        display:grid;
+        background-color: #2196F3;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(7, 1fr);
+        height: 100%;
+        width: 100%;
+        padding: 5px;
+        grid-gap: 5px;
+      }
+      #month {
+        display: inline-block;
+        background-color: #2196F3;
+        text-align: center;
+        font-size: 40px;
+        width: 100%;
+      }
+      .cr_event {
+        height:100px;
+      }
+      .cr_event  input, label{
+        /* float: left; */
+        margin-bottom: 15px;
+        position: relative;
+        top: 10px;
+        left: 10px;
+      }
+      .cr_event button{
+        top: 10px;
+        left: 10px;
+        position: relative;
+      }
+      .container{
+        margin-top: 50px;
+      }
     </style>
   </head>
-  <body>
+  <body class="background-color">
     <h1>Hi <%= name %></h1>
 
     <form action="/logout?_method=DELETE" method="POST">
       <button type="submit">Log Out</button>
     </form>
-    <form action="/post" method="post">
-      <input type="text" name="title" placeholder="Title" required>
-      <input type="text" name="description" placeholder="Description" required>
-      <button type="submit" name="button">Post</button>
-    </form>
+    <li style="font-size: 30px;">Add Your Events:</li>
+    <!-- <div class="cr_event"> -->
+      <form action="/post" method="post" class="cr_event">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="description" placeholder="Description" required>
+        <br>
+        <label for="date">Select your date:</label>
+        <input type="date" name="day" value="" min="2020-07-26" max="2020-09-05" required>
+        <br>
+        <label for="start_time">Start time:</label>
+        <input type="time" name="start_time" value="" min="00:00:00" max="23:59:59" required>
+        <label for="end_time">End time:</label>
+        <input type="time" name="end_time" value="" min="00:00:00" max="23:59:59" required>
+        <br>
+        <button type="submit" name="button">Add</button>
+      </form>
+    <!-- </div> -->
 
-    <% rows.forEach(function(r) { %>
-      <div class = 'post' id = <%= r.id %> onclick = toggle_view(<%= r.id %>)>
-        <div id = <%= r.id %>_title>
-          <%= r.title %>
-        </div>
-        <div id = <%= r.id %>_description>
-          <%= r.description %>
+    <div class="container">
+      <div style=" float: left;">
+        <% rows.forEach(function(r) { %>
+          <div class = 'post' id = <%= r.id %> onclick = toggle_view(<%= r.id %>)>
+            <div id = <%= r.id %>_title>
+              <%= r.title %>
+            </div>
+            <div id = <%= r.id %>_description>
+              <%= r.description %>
+            </div>
+            <div id = <%= r.id %>_day>
+              <%= r.day %>
+            </div>
+            <div id = <%= r.id %>_start_time>
+              <%= r.start_time %>
+            </div>
+            <div id = <%= r.id %>_end_time>
+              <%= r.end_time %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+
+      <div id="view">
+        <span class="close">&times;</span>
+        <div id="view_content">
+          <form name="view_form" action="" method="post">
+            <input type="text" name="id" id="edit_id" hidden>
+            <input type="text" name="title" placeholder="Title" id="edit_title" required>
+            <input type="text" name="description" placeholder="Description" id="edit_description" required>
+            <input type="date" name="day" value="" id="edit_day" min="2020-07-26" max="2020-09-05" required>
+            <input type="time" name="start_time" value="" id="edit_start_time" min="00:00:00" max="23:59:59" required>
+            <input type="time" name="end_time" value="" id="edit_end_time" min="00:00:00" max="23:59:59" required>
+
+          </form>
+          <button type="button" name="edit" onclick="edit()">Save</button>
+          <button type="button" name="del" onclick="del()">Delete</button>
         </div>
       </div>
-    <% }); %>
+    </div>
 
-    <div id="view">
-      <span class="close">&times;</span>
-      <div id="view_content">
-        <form name="view_form" action="" method="post">
-          <input type="text" name="id" id="edit_id" hidden>
-          <input type="text" name="title" placeholder="Title" id="edit_title" required>
-          <input type="text" name="description" placeholder="Description" id="edit_description" required>
+    <span id="month">
+      2020 Aug
+    </span>
+    <div id="app-calendar" style="display: grid;">
 
-        </form>
-        <button type="button" name="edit" onclick="edit()">Save</button>
-        <button type="button" name="del" onclick="del()">Delete</button>
-      </div>
+
     </div>
 
   </body>
 
+
   <script>
+    function convert(str) {
+      var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
     function toggle_view(id) {
-      document.getElementById('edit_id').value = id
-      document.getElementById('edit_title').value = document.getElementById(id+'_title').innerText
-      document.getElementById('edit_description').value = document.getElementById(id+'_description').innerText
+      document.getElementById('edit_id').value = id;
+      document.getElementById('edit_title').value = document.getElementById(id+'_title').innerText;
+      document.getElementById('edit_description').value = document.getElementById(id+'_description').innerText;
+      // Some issue here
+      document.getElementById('edit_day').value = convert(document.getElementById(id+'_day').innerText);
+      document.getElementById('edit_start_time').value = document.getElementById(id+'_start_time').innerText;
+      document.getElementById('edit_end_time').value = document.getElementById(id+'_end_time').innerText;
       document.getElementById('view').style.display = 'block';
     }
 
@@ -94,6 +210,25 @@
     function del() {
       document.view_form.action = "/del"
       document.view_form.submit()
+    }
+    //------------------------------------ Calendar creation
+    const calendar = document.getElementById("app-calendar")
+
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Sun </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Mon </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Tue </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Wed </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Thur </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Fri </div>`)
+    calendar.insertAdjacentHTML("beforeend",`<div class="date" style="font-size: 24px"> Sat </div>`)
+    for(let day = 26; day <= 31; day++){
+      calendar.insertAdjacentHTML("beforeend",`<div class="day_bef"> ${day} </div>`)
+    }
+    for(let day = 1; day <= 31; day++){
+      calendar.insertAdjacentHTML("beforeend",`<div class="day"> ${day} </div>`)
+    }
+    for(let day = 1; day <= 5; day++){
+      calendar.insertAdjacentHTML("beforeend",`<div class="day_bef"> ${day} </div>`)
     }
 
   </script>
