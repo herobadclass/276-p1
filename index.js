@@ -23,6 +23,9 @@ initializePassport(
   id => pool.query(`SELECT * FROM users WHERE id = '${id}'`)
 )
 
+var http = require('http'),
+    fs = require('fs');
+
 const PORT = process.env.PORT || 5000
 
 const app = express()
@@ -41,64 +44,18 @@ app.use(passport.session())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-var http = require('http'),
-    fs = require('fs');
-
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-app.post('/post', (req, res) => {
-  const postQuery = {
-    text:`INSERT INTO id_${req.user.id} (title, description) VALUES ($1,$2)`,
-    values: [req.body.title, req.body.description]
-  }
-  pool.query(postQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
-    console.log('added post')
-  })
-  res.redirect('/')
-})
-
-app.post('/edit', (req, res) => {
-  const editQuery = {
-    text:`UPDATE id_${req.user.id} SET title=$1, description=$2 WHERE id=$3`,
-    values: [req.body.title, req.body.description, req.body.id]
-  }
-  pool.query(editQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
-    console.log('edited post')
-  })
-  res.redirect('/')
-})
-
-app.post('/del', (req, res) => {
-    const delQuery = {
-      text: `DELETE FROM id_${req.user.id} WHERE id=$1`,
-      values: [req.body.id]
-    }
-    pool.query(delQuery, (error,result) => {
-      if (error) {
-        console.log(error);
-      }
-      console.log('deleted post')
-    })
-    res.redirect('/')
-  })
-
 app.get('/', checkAuthenticated, (req, res) => {
-  const getPostQuery = `SELECT * FROM id_${req.user.id}`
-  pool.query(getPostQuery , (error,result) => {
-      if (error) {
-        console.log(error);
-      }
-      var results = {'rows':result.rows, name: req.user.name}
-      res.render('pages/index',results)
-    })
+  const getListQuery = `SELECT * FROM list_${req.user.id}`
+  pool.query(getListQuery , (error,result) => {
+    if (error) {
+      console.log(error);
+    }
+    res.render('pages/index', {'list':JSON.stringify(result.rows)})
+  })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -121,7 +78,7 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
     const id = Date.now().toString()
     const addUserQuery = {
       text:`INSERT INTO users (id,name,email,password) VALUES ($1,$2,$3,$4)`,
-      values: [id, req.body.name, req.body.email, hashedPassword]
+      values: [id , req.body.name, req.body.email, hashedPassword]
     }
     pool.query(addUserQuery, (error,result) => {
       if (error) {
@@ -130,18 +87,103 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
       console.log('added user')
     })
 
-    const createUserTable = `CREATE TABLE id_${id} (id serial primary key, title text, description text)`
-    pool.query(createUserTable, (error,result) => {
+    const createUserListTable = `CREATE TABLE list_${id} (id text, name text, tasks JSONB)`
+    pool.query(createUserListTable, (error,result) => {
       if (error) {
         res.end(error)
       }
-      console.log('created user table')
+      console.log('created user list table')
     })
 
     res.redirect('/login')
   } catch {
     res.redirect('/register')
   }
+})
+
+app.post('/add_list', (req, res) => {
+  const addListQuery = {
+    text:`INSERT INTO list_${req.user.id} (id,name,tasks) VALUES ($1,$2,$3)`,
+    values: [Date.now().toString(), req.body.list, '[]']
+  }
+  pool.query(addListQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('added list')
+  })
+  res.redirect('/')
+})
+
+app.post('/del_list', (req, res) => {
+  const delListQuery = {
+    text:`DELETE FROM list_${req.user.id} WHERE id = $1`,
+    values: [req.body.id]
+  }
+  pool.query(delListQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('deleted list')
+  })
+  res.redirect('/')
+})
+
+app.post('/save_complete', (req, res) => {
+  var saveCompleteQuery =
+    `WITH task_complete AS (
+      SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
+      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+      WHERE task ->> 'id' = '${req.body.task_id}'
+      AND id = '${req.body.list_id}'
+    )
+    UPDATE list_${req.user.id}
+    SET tasks = JSONB_SET(tasks, task_complete.PATH, '${req.body.complete}', false)
+    FROM task_complete
+    WHERE id = '${req.body.list_id}';`
+  pool.query(saveCompleteQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('saved complete')
+  })
+  res.redirect('/')
+})
+
+app.post('/add_task', (req, res) => {
+  var addTaskQuery = {
+    text: `UPDATE list_${req.user.id} SET tasks = tasks || $1::JSONB WHERE id = $2`,
+    values: [{id: Date.now().toString(), name: req.body.task, complete: false}, req.body.id]
+  }
+  pool.query(addTaskQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('added task')
+  })
+  res.redirect('/')
+})
+
+app.post('/del_task', (req, res) => {
+  var delTaskQuery =
+    `WITH task_index AS (
+      SELECT INDEX-1 AS INDEX
+      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+      WHERE task ->> 'id' = '${req.body.task_id}'
+      AND id = '${req.body.list_id}'
+    )
+    UPDATE list_${req.user.id}
+    SET tasks = tasks - CAST(task_index.index AS INTEGER)
+    FROM task_index
+    WHERE id = '${req.body.list_id}'`
+
+  pool.query(delTaskQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('deleted task')
+  })
+  res.redirect('/')
 })
 
 app.delete('/logout', (req, res) => {
