@@ -14,20 +14,53 @@ COMPETITIVE ANALYSIS
 
 USER STORIES
   Actors:
-    regular user
-    regular user in a group
-    administrator
+    user
+    user in a group
 
   STORIES:
     Sign up:
-      regular user opens application and greeted with login page
-      regular user creates an account and account is logged into the database
-      regular user logs in and greeted by their landing page
+      user opens the application and redirected to the login page
+      user clicks the register button and is redirected to the register page
+      user creates an account, account is logged into the database, user is redirected to the login page
 
     Log in:
-      regular user creates task and task appears on landing page
-      regular user edits task and task on landing page updated
-      regular user deletes task and task is removed from landing page
+      user opens the application or successfully created an account is directed to the login page
+      user inputs email and password and clicks the log in button
+      upon successful login user will be redirected to their landing page
+      if email or password is wrong the login page will be reloaded with error message informing user of the issue
 
+    Create list:
+      after a user is logged in
+      they enters a list name and presses the enter key or the + button next to the input field
+      upon submitting the list name a new row is created in the accounts database table
+      page is reloaded with the new list displayed in the list container
+
+    Select list:
+      after a user is logged in and there is a list in the list container
+      they select a list by clicking on the name of the list
+      upon selecting a list, the list title, lists tasks, and number of remaining tasks in the list will be displayed along with a form to create new tasks and button to delete the list
+
+    Delete list:
+      after a user is logged in, there is a list in the list container and a list is selected
+      they click the delete list button and the current list will be removed from the user database table
+      page is reloaded without the deleted list in the list container
+
+    Create task:
+      after a user is logged in, there is a list in the list container and a list is selected
+      they enter a task name and press the enter key or the + button next to the input field
+      upon submitting the task will be appended to the jsonb array in the tasks column of the list's row in the users database table
+      page will be reloaded with the new task displayed in the task container
+
+    Toggle task:
+      after a user is logged in, there is a list in the list container, a list is selected and there is a task in the task container
+      they click the check box or the task and the task will be checked and crossed off or unchecked and not crosses off
+      change is saved to the jsonb array in the tasks column of the list's row in the users database table
+      page is reloaded with the task toggled/untoggled in the task container
+
+    Delete task:
+      after a user is logged in, there is a list in the list container, a list is selected and there is a task in the task container
+      they click the x button next to the task
+      upon clicking the button the task will be removed from the jsonb array in the tasks column of the list's row in the user database table
+      page will be reloaded without the deleted task in the task container
 #DATABASES
 login/register: create table users(id text, name text, email text, password text)
