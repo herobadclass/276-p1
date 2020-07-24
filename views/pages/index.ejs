@@ -12,34 +12,37 @@
       }
     </style>
   </head>
+
   <script type="text/javascript">
-  function Time()
-  {
-  var today=new Date()
-  var h=today.getHours()
-  var m=today.getMinutes()
-  var s=today.getSeconds()
-  if(document.getElementById('hour').value==h && document.getElementById('min').value==m )
-  {
-    if(document.getElementById('sec').value==s)
-      window.alert("Timeing!!!");
-  }
-
-  document.getElementById('txt').innerHTML=h+":"+m+":"+s
-  t=setTimeout('Time()',500)
-
-  }
+    function Time() {
+      var today=new Date()
+      var h=today.getHours()
+      var m=today.getMinutes()
+      var s=today.getSeconds()
+      if(document.getElementById('hour').value==h && document.getElementById('min').value==m ) {
+        if(document.getElementById('sec').value==s) window.alert("Timeing!!!")
+      }
+      document.getElementById('txt').innerHTML=h+":"+m+":"+s
+      t=setTimeout('Time()',500)
+    }
   </script>
+
   <body onload="Time()">
-    <form class="logout-form" action="/logout?_method=DELETE" method="POST" logout-form>
+    <form class="logout-form" action="/logout?_method=DELETE" method="post" logout-form>
       <button type="submit">Log Out</button>
     </form>
+
+    <form class="del-user-form" action="/del_user" method="post" del-user-form>
+      <button type="submit">Delete Account</button>
+    </form>
+
     Current time is:<div id="txt"></div>
     Alram clock at:<div class="">
       <input type="text" id="hour" value="" placeholder="hour">
       <input type="text" id="min" value="" placeholder="min">
       <input type="text" id="sec" value="" placeholder="sec">
     </div>
+
     <div class="all-lists">
       <h2 class="task-list-title">My lists</h2>
 
@@ -93,7 +96,6 @@
   </body>
   <script>
     const logoutForm = document.querySelector('[logout-form]')
-    const updateListForm = document.querySelector('[update-list-from]')
 
     const listContainer = document.querySelector('[data-lists]')
     const newListForm = document.querySelector('[new-list-form]')
@@ -105,6 +107,7 @@
     const listCountElement = document.querySelector('[list-count]')
     const taskContainer = document.querySelector('[data-tasks]')
     const newTaskForm = document.querySelector('[new-task-form]')
+    const updateListForm = document.querySelector('[update-list-from]')
     const taskTemplate = document.getElementById('task-template')
 
     const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId'

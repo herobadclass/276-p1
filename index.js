@@ -9,6 +9,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const cors = require('cors')
 
 const { Pool } = require('pg')
 var pool;
@@ -41,6 +42,7 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use('/', cors())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
@@ -61,7 +63,6 @@ app.get('/', checkAuthenticated, (req, res) => {
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
 })
-
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login',
@@ -71,7 +72,6 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('pages/register')
 })
-
 app.post('/register', checkNotAuthenticated, async (req,res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -101,6 +101,28 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
   }
 })
 
+app.post('/del_user', (req,res) => {
+  const id = req.user.id
+  req.logout()
+  const delUserQuery = `DELETE FROM users WHERE id='${id}'`
+  pool.query(delUserQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log(delUserQuery)
+  })
+
+  const dropUserTableQuery = `DROP TABLE list_${id}`
+  pool.query(dropUserTableQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log(dropUserTableQuery)
+  })
+
+  res.redirect('/login')
+})
+
 app.post('/add_list', (req, res) => {
   const addListQuery = {
     text:`INSERT INTO list_${req.user.id} (id,name,tasks) VALUES ($1,$2,$3)`,
@@ -114,7 +136,6 @@ app.post('/add_list', (req, res) => {
   })
   res.redirect('/')
 })
-
 app.post('/del_list', (req, res) => {
   const delListQuery = {
     text:`DELETE FROM list_${req.user.id} WHERE id = $1`,
@@ -163,7 +184,6 @@ app.post('/add_task', (req, res) => {
   })
   res.redirect('/')
 })
-
 app.post('/del_task', (req, res) => {
   var delTaskQuery =
     `WITH task_index AS (
@@ -176,7 +196,6 @@ app.post('/del_task', (req, res) => {
     SET tasks = tasks - CAST(task_index.index AS INTEGER)
     FROM task_index
     WHERE id = '${req.body.list_id}'`
-
   pool.query(delTaskQuery, (error,result) => {
     if (error) {
       res.end(error)
@@ -197,7 +216,6 @@ function checkAuthenticated(req, res, next) {
   }
   res.redirect('/login')
 }
-
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/')
@@ -205,4 +223,17 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
+app.get('/user_count', (req, res) => {
+  const getUserCountQuery = 'SELECT * FROM users'
+  pool.query(getUserCountQuery, (error,result) => {
+    if (error) {
+      console.log(error);
+    }
+    var results = result.rows.length
+    res.send(`${results}`)
+  })
+})
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+module.exports = app
