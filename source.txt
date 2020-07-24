@@ -6,9 +6,27 @@ Text editor:
 Font "Voga":
 	https://www.charlesdaoud.com/voga-typeface#:~:text=Voga%20is%20a%20condensed%20modern,thick%20stems%20–%20ball%20terminals%20vs.
 
-CSS: 
+CSS styles: 
 	https://www.w3schools.com
 
 Save as text file:
 	https://stackoverflow.com/questions/21479107/saving-html5-textarea-contents-to-file
+
+Redirect to a new CSS files:
+	https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page
+
+
+
+Images used:
+
+forest.gif:
+
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F491244271837130061%2F&psig=AOvVaw1iYdM-_lwNMmSrbw5aDazb&ust=1595628310734000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCLj8-Oew5OoCFQAAAAAdAAAAABAU
+
+stream.gif: 
+
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.ca%2Fpin%2F313492824058065274%2F&psig=AOvVaw3NAKlpA62Gq6xqY8kKcCbE&ust=1595626448300000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJDOwcqx5OoCFQAAAAAdAAAAABAD
+
+nightsky.gif: royalty free
+
 
