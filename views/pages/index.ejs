@@ -133,7 +133,7 @@
 
 
     </div>
-    <div class="texteditor">
+    <div class="texteditor" onload="initDoc();">
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
         <div id="toolBar1">
@@ -212,6 +212,7 @@
         </form>
       </div>
   </body>
+  <script type="text/javascript" src="/stylesheets/script.js"></script>
   <script>
     const logoutForm = document.querySelector('[logout-form]')
 
