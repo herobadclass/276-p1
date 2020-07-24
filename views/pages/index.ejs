@@ -47,7 +47,7 @@
     }
   </script>
 
-  <body onload="Time()">
+  <body onload="Time();" onload="initDoc();">
     <div class="bg">
 
         <div class="template">
@@ -129,7 +129,7 @@
           <button type="button" name="button">X</button>
         </div>
       </template>
-      <div class="texteditor" onload="initDoc();">
+      <div class="texteditor">
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
         <div id="toolBar1">
