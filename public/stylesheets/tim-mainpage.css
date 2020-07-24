@@ -1,22 +1,9 @@
-.bg{
-	position: fixed;
-	top:0;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background: linear-gradient(90deg, 	rgba(247, 232, 81, 0.8) 10%, 
-										rgba(255, 210, 59, 0.7) 50%, 
-										rgba(255, 226, 0, 0.7) 70%, 
-										rgba(255, 226, 0, 0.4) 100%);
-	overflow-y: scroll;
-}
+
 
 header{
  	padding-left: 15px;
  	padding top: 15px;
 }
-
-body{  margin:0; padding: 0;}
 
 @font-face {
     font-family: "Voga";
@@ -33,7 +20,7 @@ h1{
 	color: black;
 	
 }
-.username{	color: red; }
+.username{	color: red; } 
 
 .greet{
 	top:0;
@@ -43,10 +30,33 @@ h1{
 	border: 1px solid black;
 }
 
+.template{
+	position: absolute;
+	top: 3vh;
+	right: 20%;
+}
+.template-field{
+	padding: 10px;
+	position: absolute;
+	top: 6vh;
+	right: 20%;
+	display: none;
+	background-color: red;
+
+}
+.template-field:hover{
+	transition-duration: 1s;
+	display: inline;
+}
+.template:hover + .template-field{
+	transition-duration: 1s;
+	display: inline;
+}
+
 .buttonwrap{
 	position:absolute;
   	top: 3vh;
-  	right: 16px;
+  	right: 1%;
 }
 
 .logout{
@@ -62,15 +72,13 @@ h1{
 	background-color: #FFE4C4;
 	border: none;
 	box-shadow: 5px 9px 18px grey ;
-
 }
 
 .logout:hover {
 	transition-duration: 1s;
-  background-color: transparent; /* Green */
-  color: white;
+	background-color: transparent; /* Green */
+	color: white;
 }
-
 
 .layer{	
 	position: relative;
@@ -78,12 +86,6 @@ h1{
 	bottom: 5%;
 	left: 5%;
 	width: 90%;
-	background: linear-gradient(90deg, 	rgba(247, 232, 81, 0.7) 10%, 
-										rgba(255, 210, 59, 0.6) 50%, 
-										rgba(255, 226, 0, 0.5) 80%, 
-										rgba(255, 226, 0, 0.4) 90%,);
-	
-  	box-shadow: 0 0 30px 10px rgba(247, 232, 81, 0.9);
   	overflow-y: scroll;
   	margin-bottom: 3%;
 
@@ -103,12 +105,12 @@ img.intLink { border: 0; }
 #textBox {
 	position: relative;
 	max-width: 90%; 
-  width: 540px;
-  height: 200px;
-  border: 1px #000000 solid;
-  padding: 12px;
-  overflow: scroll;
-  background-color: transparent;
+	  width: 540px;
+	  height: 200px;
+	  border: 1px #000000 solid;
+	  padding: 12px;
+	  overflow: scroll;
+	  background-color: transparent;
 }
 #textBox #sourceText {
   padding: 0;

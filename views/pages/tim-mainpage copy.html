@@ -1,33 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="/stylesheet/template1.css"><!-- MUST STAY AT TOP !-->
-	<link rel="stylesheet" type="text/css" href="/stylesheet/tim-mainpage.css" > 
+	<link href="/stylesheets/tim-mainpage.css" rel="stylesheet" type="text/css">
 	<link rel="icon" href="icon.png">
-
 	<title>Dashboard</title>
 	
-	<script>
-		// Change the templates
-		function ChangeTemplate(num){
-			var oldlink = document.getElementsByTagName("link").item(0);
-			var newlink = document.createElement("link");
-			newlink.setAttribute("rel", "stylesheet");
-		    newlink.setAttribute("type", "text/css");
-			switch(num){
-				case 1: 
-					newlink.setAttribute("href", "/stylesheet/template1.css");
-					break;
-				case 2:
-					newlink.setAttribute("href", "/stylesheet/template2.css");
-					break;
-				case 3:
-					newlink.setAttribute("href", "/stylesheet/template3.css");
-					break;
-			}
-			document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
-		}
-	</script>
+	<style>
+	body{
+		background-image: url("nightsky.gif");
+	}
+	</style>
 
 </head>
 <body>
@@ -40,18 +22,6 @@
 			<form action="/logout?_method=DELETE" method="POST" >
 				<button type="submit" class="logout">Log Out</button>
 			</form>
-		</div >
-
-		<div class="template">
-			Template
-		</div>
-		<div class="template-field">
-			<button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
-			<button id="template2" class="template-button" onclick="ChangeTemplate(2)"></button>
-			<button id="template3" class="template-button" onclick="ChangeTemplate(3)"></button><br>
-			<button id="template4" class="template-button" onclick="ChangeTemplate(4)"></button>
-			<button id="template5" class="template-button" onclick="ChangeTemplate(5)"></button>
-			<button id="template6" class="template-button" onclick="ChangeTemplate(6)"></button>
 		</div>
 
 		<br>
@@ -137,7 +107,7 @@
 		</div>
 
 	</div>
-	<script type="text/javascript" src="/stylesheet/script.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
 
