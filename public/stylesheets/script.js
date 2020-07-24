@@ -11,7 +11,6 @@ function initDoc() {
 }
 
 function formatDoc(sCmd, sValue) {
-  console.log(sValue);
   if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
 }
 
