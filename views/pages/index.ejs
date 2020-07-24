@@ -53,6 +53,7 @@
         <div class="template">
         Template
         </div>
+
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
           <button id="template2" class="template-button" onclick="ChangeTemplate(2)"></button>
@@ -71,22 +72,23 @@
       </form>
 
       Current time is:<div id="txt"></div>
-      Alram clock at:<div class="">
+      Alram clock at:
+        <div class="">
         <input type="text" id="hour" value="" placeholder="hour">
         <input type="text" id="min" value="" placeholder="min">
         <input type="text" id="sec" value="" placeholder="sec">
-      </div>
+        </div>
 
-      <div class="all-lists">
-        <h2 class="task-list-title">My lists</h2>
+        <div class="all-lists">
+          <h2 class="task-list-title">My lists</h2>
 
-        <ul class="lists" data-lists></ul>
+          <ul class="lists" data-lists></ul>
 
-        <form class="new-list-form" action="/add_list" method="post" new-list-form>
-          <input type="text" name="list" class="new list" placeholder="new list name">
-          <button type="" class="btn create">+</button>
-        </form>
-      </div>
+          <form class="new-list-form" action="/add_list" method="post" new-list-form>
+            <input type="text" name="list" class="new list" placeholder="new list name">
+            <button type="" class="btn create">+</button>
+          </form>
+        </div>
 
       <div class="display-list" list-display-container>
         <div class="header">
@@ -127,13 +129,7 @@
           <button type="button" name="button">X</button>
         </div>
       </template>
-
-
-
-
-
-    </div>
-    <div class="texteditor" onload="initDoc();">
+      <div class="texteditor" onload="initDoc();">
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
         <div id="toolBar1">
@@ -211,8 +207,8 @@
 
         </form>
       </div>
+    </div>
   </body>
-  <script type="text/javascript" src="/stylesheets/script.js"></script>
   <script>
     const logoutForm = document.querySelector('[logout-form]')
 
@@ -359,4 +355,5 @@
 
     render()
   </script>
+  <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
