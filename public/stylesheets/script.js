@@ -1,6 +1,6 @@
 var oDoc, sDefTxt;
 document.getElementById("clearbutton").onclick = ClearField;
-document.getElementById('savebutton').onclick = SaveTxt;
+document.getElementById("savebutton").onclick = SaveTxt;
 
 console.log("check");
 
@@ -11,6 +11,7 @@ function initDoc() {
 }
 
 function formatDoc(sCmd, sValue) {
+  console.log(sValue);
   if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
 }
 
