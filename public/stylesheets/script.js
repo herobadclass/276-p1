@@ -12,6 +12,7 @@ function initDoc() {
 }
 
 function formatDoc(sCmd, sValue) {
+  console.log("why are you not working?");
   if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
 }
 
