@@ -1,8 +1,6 @@
 var oDoc, sDefTxt;
 document.getElementById("clearbutton").onclick = ClearField;
-document.getElementById("savebutton").onclick = SaveTxt;
-
-console.log("check");
+document.getElementById('savebutton').onclick = SaveTxt;
 
 function initDoc() {
   oDoc = document.getElementById("textBox");
