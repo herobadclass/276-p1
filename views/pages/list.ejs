@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <style >
+  .post {
+    width: 300px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    margin-top: 15px;
+    float: left;
+    position: relative;
+    margin: 1em;
+    border-color: black;
+    border-width: medium;
+  }
+  </style>
+  <body>
+    ！！！！我他妈终于把这个变量传过来了：
+    <span id="1"></span>
+    <div class="container">
+      <div style=" float: left;">
+        <% rows.forEach(function(r) { %>
+
+          <div class = 'post' id = <%= r.id %> onclick = toggle_view(<%= r.id %>)>
+            <div id = <%= r.id %>_title>
+              <%= r.title %>
+            </div>
+            <div id = <%= r.id %>_description>
+              <%= r.description %>
+            </div>
+            <div id = <%= r.id %>_day>
+              <span><%= r.day %></span>
+            </div>
+            <div id = <%= r.id %>_start_time>
+              <%= r.start_time %>
+            </div>
+            <div id = <%= r.id %>_end_time>
+              <%= r.end_time %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+  </body>
+  <script>
+    // var passedValue = localStorage.getItem("textvalue");
+    // document.getElementById(1).innerHTML = ids;
+    // localStorage.clear();
+    var num;
+    handle();
+    function handle(){
+      num = localStorage.getItem("num");
+      document.getElementById(1).innerText = num;
+
+      var dateListStor = [];
+      var dateList = document.querySelectorAll(".post div span")
+      dateList.forEach((item, i) => {
+        var date = dateList[i].innerText;
+        dateListStor[i] = convert(date);
+      });
+      var divList = document.querySelectorAll(".post");
+      dateListStor.forEach((item,i)=>{
+        if(dateListStor[i] != num){
+          divList[i].style.display = "none";
+        }
+      })
+
+      // localStorage.clear();
+    }
+    function convert(str) {
+      var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+  </script>
+</html>
