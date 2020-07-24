@@ -23,6 +23,12 @@ USER STORIES
       user clicks the register button and is redirected to the register page
       user creates an account, account is logged into the database, user is redirected to the login page
 
+    Delete account:
+      after a user is logged in
+      they click the delete account button
+      user account removed from list of users and user table dropped
+      user redirected to the login page
+
     Log in:
       user opens the application or successfully created an account is directed to the login page
       user inputs email and password and clicks the log in button
