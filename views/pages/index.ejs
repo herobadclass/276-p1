@@ -48,7 +48,7 @@
     }
   </script>
 
-  <body onload="Time();" onload="initDoc();">
+  <body onload="Time();">
     <div class="bg">
 
         <div class="template">
@@ -130,7 +130,8 @@
           <button type="button" name="button">X</button>
         </div>
       </template>
-      <div class="texteditor">
+
+      <div class="texteditor" onload="initDoc();">
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
         <div id="toolBar1">
@@ -202,12 +203,13 @@
         <p id="editMode"><input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);" /> 
         <label for="switchBox">Show HTML</label></p>
         <p>
-          <button type="button" id="savebutton">Save</button>
+          <button type="button" id="savebutton">Save as file</button>
           <button type="button" id="clearbutton">Clear</button>
         </p>
 
         </form>
-      </div>
+      </div> 
+
     </div>
   </body>
   <script>
