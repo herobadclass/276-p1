@@ -52,23 +52,16 @@ app.get('/about', (req,res) => {
 
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
-  const getUsersQuery = 'SELECT * FROM users'
-  var allUsers;
-
-  // pool.query(getUsersQuery , (error,result) => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   allUsers= {'USERS':result.rows}
-  //  }) 
   pool.query(getListQuery , (error,result) => {
-    if (error) {
-      console.log(error);
-    }
-    res.render('pages/index', {'list':JSON.stringify(result.rows), name : req.body.name})
+    if (error) 
+      console.log(error); 
+    res.render('pages/index', {'list':JSON.stringify(result.rows)}, {name: req.user.name} )
   })
 
-  // pool.query(getListQuery , (error,result) => {
+  
+})
+
+// pool.query(getListQuery , (error,result) => {
   //   if (error) {
   //     console.log(error);
   //   }
@@ -82,7 +75,6 @@ app.get('/', checkAuthenticated, (req, res) => {
   //   var allUsers = {'USERS':result.rows}
   //   res.render('pages/index',allUsers);
   // })
-})
 
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';
