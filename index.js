@@ -56,9 +56,24 @@ app.get('/', checkAuthenticated, (req, res) => {
     if (error) {
       console.log(error);
     }
-    res.render('pages/index', {'list':JSON.stringify(result.rows), name: req.body.name })
+    res.render('pages/index', {'list':JSON.stringify(result.rows)})
   })
+  pool.query(getListQuery , (error,result) => {
+    if (error) {
+      console.log(error);
+    }
+    res.render('pages/index', {name: req.user.name}  )
+  })
+
+  // pool.query(getUsersQuery, (error, result) => {
+  //   if(error)
+  //     res.end(error);
+  //   var allUsers = {'USERS':result.rows}
+  //   res.render('pages/index',allUsers);
+  // })
 })
+
+
 
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';
