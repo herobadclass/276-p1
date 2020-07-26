@@ -52,42 +52,23 @@ app.get('/about', (req,res) => {
 
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
-  // const getUsersQuery = 'SELECT * FROM users'
-
   pool.query(getListQuery , (error,result) => {
     if (error) {
       console.log(error);
     }
-
-    res.render('pages/index', {'list':JSON.stringify(result.rows)} )
+    res.render('pages/index', {'list':JSON.stringify(result.rows)})
   })
-
-  // pool.query(getListQuery , (error,result) => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-
-  //   res.render('pages/index', {name: req.user.name}  )
-  // })
-
-  // pool.query(getUsersQuery, (error, result) => {
-  //   if(error)
-  //     res.end(error);
-  //   var allUsers = {'USERS':result.rows}
-  //   res.render('pages/index',allUsers);
-  // })
-
 })
 
-// app.get('/database', (req,res) => {
-//   var getUsersQuery = 'SELECT * FROM users';
-//   pool.query(getUsersQuery, (error, result) => {
-//     if(error)
-//       res.end(error);
-//     var results = {'rows':result.rows}
-//     res.render('pages/db',results);
-//   })
-// });
+app.get('/database', (req,res) => {
+  var getUsersQuery = 'SELECT * FROM users';
+  pool.query(getUsersQuery, (error, result) => {
+    if(error)
+      res.end(error);
+    var results = {'rows':result.rows}
+    res.render('pages/db',results);
+  })
+});
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
