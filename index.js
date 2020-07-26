@@ -62,13 +62,13 @@ app.get('/', checkAuthenticated, (req, res) => {
     res.render('pages/index', {'list':JSON.stringify(result.rows)} )
   })
 
-  pool.query(getListQuery , (error,result) => {
-    if (error) {
-      console.log(error);
-    }
+  // pool.query(getListQuery , (error,result) => {
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    res.render('pages/index', {name: req.user.name}  )
-  })
+  //   res.render('pages/index', {name: req.user.name}  )
+  // })
 
   // pool.query(getUsersQuery, (error, result) => {
   //   if(error)
