@@ -53,7 +53,7 @@ app.get('/about', (req,res) => {
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
   const getUsersQuery = 'SELECT * FROM users'
-  var allUsers[];
+  var allUsers = [];
 
   pool.query(getUsersQuery , (error,result) => {
     if (error) {
