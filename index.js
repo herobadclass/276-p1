@@ -57,13 +57,16 @@ app.get('/', checkAuthenticated, (req, res) => {
       console.log(error);
     }
     res.render('pages/index', {'list':JSON.stringify(result.rows)})
+    res.render('pages/index', {name :req.body.name})
   })
-  pool.query(getListQuery , (error,result) => {
-    if (error) {
-      console.log(error);
-    }
-    res.render('pages/index', {name: req.user.name}  )
-  })
+
+  // pool.query(getListQuery , (error,result) => {
+  //   if (error) {
+  //     console.log(error);
+  //   }
+
+  //   res.render('pages/index', {name: req.user.name}  )
+  // })
 
   // pool.query(getUsersQuery, (error, result) => {
   //   if(error)
@@ -73,6 +76,15 @@ app.get('/', checkAuthenticated, (req, res) => {
   // })
 })
 
+// app.get('/', checkAuthenticated, (req, res) => {
+//   const getListQuery = `SELECT * FROM list_${req.user.id}`
+//   pool.query(getListQuery , (error,result) => {
+//     if (error) {
+//       console.log(error);
+//     }
+//     res.render('pages/index', {'list':JSON.stringify(result.rows)})
+//   })
+// })
 
 
 app.get('/database', (req,res) => {
