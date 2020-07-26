@@ -53,7 +53,7 @@
 
   <body onload="Time(),initDoc();" >
     <div class="bg">
-        <button>Click me</button>
+        <button id="clickme">Click me</button>
 
         <div class="template">
         Template
@@ -308,7 +308,7 @@
   </script>
   <script>
   $(document).ready(function(){
-    $("button").click(function(){
+    $("#clickme").click(function(){
       $("#test").hide();
     });
   });
