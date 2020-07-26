@@ -2,8 +2,6 @@ var oDoc, sDefTxt;
 document.getElementById("clearbutton").onclick = ClearField;
 document.getElementById('savebutton').onclick = SaveTxt;
 
-console.log("are you in?");
-
 function initDoc() {
   console.log("check");
   oDoc = document.getElementById("textBox");
@@ -15,7 +13,6 @@ function formatDoc(sCmd, sValue) {
   
   if (validateMode()) { 
     document.execCommand(sCmd, false, sValue); oDoc.focus(); 
-    console.log("why are you not working?");
   }
 }
 
