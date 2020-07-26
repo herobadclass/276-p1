@@ -55,17 +55,17 @@ app.get('/', checkAuthenticated, (req, res) => {
   const getUsersQuery = 'SELECT * FROM users'
   var allUsers;
 
-  pool.query(getUsersQuery , (error,result) => {
-    if (error) {
-      console.log(error);
-    }
-    allUsers= {'USERS':result.rows}
-   }) 
+  // pool.query(getUsersQuery , (error,result) => {
+  //   if (error) {
+  //     console.log(error);
+  //   }
+  //   allUsers= {'USERS':result.rows}
+  //  }) 
   pool.query(getListQuery , (error,result) => {
     if (error) {
       console.log(error);
     }
-    res.render('pages/index', {'list':JSON.stringify(result.rows), name : req.body.name}, allUsers)
+    res.render('pages/index', {'list':JSON.stringify(result.rows), name : req.body.name})
   })
 
   // pool.query(getListQuery , (error,result) => {
