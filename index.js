@@ -60,6 +60,16 @@ app.get('/', checkAuthenticated, (req, res) => {
   })
 })
 
+app.get('/database', (req,res) => {
+  var getUsersQuery = 'SELECT * FROM users';
+  pool.query(getUsersQuery, (error, result) => {
+    if(error)
+      res.end(error);
+    var results = {'rows':result.rows}
+    res.render('pages/db',results);
+  })
+});
+
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
 })
