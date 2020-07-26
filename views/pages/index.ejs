@@ -14,6 +14,8 @@
         text-decoration: line-through;
       }
     </style>
+
+
   </head>
 
   <script type="text/javascript">
@@ -55,6 +57,11 @@
         <div class="template">
         Template
         </div>
+
+        <div id="test">
+          Testing
+        </div>
+
 
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
@@ -297,6 +304,13 @@
     }
 
     render()
+  </script>
+  <script>
+  $(document).ready(function(){
+    $("button").click(function(){
+      $("#test").hide();
+    });
+  });
   </script>
   <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
