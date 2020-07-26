@@ -61,7 +61,7 @@ app.get('/', checkAuthenticated, (req, res) => {
   pool.query(getUsersQuery, (error, result) => {
     if(error)
       res.end(error);
-    allUsers = {'rows':result.rows}
+    allUsers = {'USERS':result.rows}
     })
     res.render('pages/index', {'list':JSON.stringify(result.rows), name: req.user.name, allUsers } )
   })
