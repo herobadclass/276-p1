@@ -53,6 +53,7 @@ app.get('/about', (req,res) => {
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
   const getUsersQuery = 'SELECT * FROM users';
+  var allUsers;
   pool.query(getListQuery , (error,result) => {
     if (error) {
       console.log(error);
@@ -60,7 +61,7 @@ app.get('/', checkAuthenticated, (req, res) => {
   pool.query(getUsersQuery, (error, result) => {
     if(error)
       res.end(error);
-    var allUsers = {'rows':result.rows}
+    allUsers = {'rows':result.rows}
     })
     res.render('pages/index', {'list':JSON.stringify(result.rows), name: req.user.name, allUsers } )
   })
