@@ -52,21 +52,17 @@
   <body onload="Time(),initDoc();" >
     <div class="bg">
 
-        <div class="greet">
+        <!-- <div class="greet">
           <h1> Greetings! &nbsp; <span class="username"><%= name %></span> </h1>
         </div>
 
         <div id="test">
           Testing, testing
-        </div>
+        </div> -->
 
         <div class="template">
         Template
         </div>
-        
-        <button color ="red">
-          
-        </button>
 
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
@@ -163,15 +159,14 @@
     </div>
   </body>
 
- <script>
-    $(document).ready(function(){
-      $("button").click(function(){
-        $("#test").hide();
-      });
-    });
-  </script>
-
   <script>
+
+    // $(document).ready(function(){
+    //   $("button").click(function(){
+    //     $("#test").hide();
+    //   });
+    // });
+
     const logoutForm = document.querySelector('[logout-form]')
 
     const listContainer = document.querySelector('[data-lists]')
