@@ -55,7 +55,7 @@ app.get('/', checkAuthenticated, (req, res) => {
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', {'list':JSON.stringify(result.rows)}, {name: req.user.name} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), name: req.user.name} )
   })
 
   
