@@ -47,7 +47,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io').listen(http);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
@@ -79,7 +79,6 @@ app.get('/', checkAuthenticated, (req, res) => {
     res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
     console.log(USERS);
   })
-  res.sendFile(__dirname + 'pages/index');
 })
 
 // app.post('/',checkAuthenticated, (req, res) =>{
