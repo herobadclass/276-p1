@@ -28,8 +28,8 @@
         return false;
       });
       socket.on('chat message', function(msg){
-      // $('#messages').append($('<li>').text(msg));
-      $('#textBox').innerHTML = "s";
+      $('#messages').append($('<li>').text(msg));
+      
       });
     });
   </script>
