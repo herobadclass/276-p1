@@ -71,6 +71,7 @@ app.get('/', checkAuthenticated, (req, res) => {
 //     console.log("1");
 //   })
 // })
+document.addEventListener("deviceready", blah, false);
 function blah(req, res){
   executeSql('SELECT * FROM users', [], qSuccess, qError)
 }
