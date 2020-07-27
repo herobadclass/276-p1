@@ -58,7 +58,7 @@ app.get('/', checkAuthenticated, (req, res) => {
     if (error) {
       console.log(error);
     }
-    USERS = {result.rows}
+    USERS = {result.rows};
     
   })
   pool.query(getListQuery , (error,result) => {
