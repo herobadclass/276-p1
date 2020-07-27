@@ -4,6 +4,10 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template1.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/texteditor.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+    </script>
     <meta charset="utf-8">
     <title>Dashboard</title>
     <style>
@@ -17,10 +21,7 @@
 
   </head>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
-  </script>
+
 
   <script type="text/javascript">
     function Time() {

@@ -46,8 +46,8 @@ app.use('/', cors())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
