@@ -163,7 +163,7 @@
   </body>
   <script type="text/javascript">
     let USERS = <%- USERS %>
-    console.log(USERS);
+    let You = USERS.find(user => USERS.name == "w")
   </script>
   <script>
 
