@@ -60,7 +60,7 @@ app.get('/', checkAuthenticated, (req, res) => {
     }
     console.log("1")
     allUsers = {'rows':result.rows}
-    console.log(allUsers);
+    console.log(allUsers.rows[0]);
   })
   pool.query(getListQuery , (error,result) => {
     if (error) 
