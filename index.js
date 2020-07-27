@@ -61,31 +61,31 @@ app.get('/', checkAuthenticated, (req, res) => {
   })
 })
 
-app.post('/',checkAuthenticated,(req, res) =>{
-  const getUsersQuery = `SELECT * FROM users`
-  var allUsers;
-  pool.query(getUsersQuery, (error, result) =>{
-    if (error) {
-      console.log(error);
-    }
-    console.log("1");
-  })
-})
+// app.post('/',checkAuthenticated, (req, res) =>{
+//   const getUsersQuery = `SELECT * FROM users`
+//   var allUsers;
+//   pool.query(getUsersQuery, (error, result) =>{
+//     if (error) {
+//       console.log(error);
+//     }
+//     console.log("1");
+//   })
+// })
+function blah(req, res){
+  executeSql('SELECT * FROM users', [], qSuccess, qError)
+}
 
-// pool.query(getListQuery , (error,result) => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
+function qSuccess(results){
+  var len = results.rows.length;
+  console.log("DEMO table: " + len + " rows found.");
+        for (var i=0; i<len; i++){
+            console.log("Row = " + i + " name = " + results.rows.item(i).name );
+        }
+}
 
-  //   res.render('pages/index', {name: req.user.name}  )
-  // })
-
-  // pool.query(getUsersQuery, (error, result) => {
-  //   if(error)
-  //     res.end(error);
-  //   var allUsers = {'USERS':result.rows}
-  //   res.render('pages/index',allUsers);
-  // })
+function qError(err){
+    console.log("error:"+err.code);
+}
 
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';
