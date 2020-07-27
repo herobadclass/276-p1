@@ -14,7 +14,24 @@
         text-decoration: line-through;
       }
     </style>
+    <script type="text/javascript" charset="utf-8">
+  
+    function blah(req, res){
+      executeSql('SELECT * FROM users', [], qSuccess, qError)
+    }
 
+    function qSuccess(results){
+      var len = results.rows.length;
+      console.log("DEMO table: " + len + " rows found.");
+            for (var i=0; i<len; i++){
+                console.log("Row = " + i + " name = " + results.rows.item(i).name );
+            }
+    }
+
+    function qError(err){
+        console.log("error:"+err.code);
+    }
+  </script>
 
   </head>
 
@@ -317,23 +334,6 @@
     });
   });
   </script>
-  <script >
   
-    function blah(req, res){
-      executeSql('SELECT * FROM users', [], qSuccess, qError)
-    }
-
-    function qSuccess(results){
-      var len = results.rows.length;
-      console.log("DEMO table: " + len + " rows found.");
-            for (var i=0; i<len; i++){
-                console.log("Row = " + i + " name = " + results.rows.item(i).name );
-            }
-    }
-
-    function qError(err){
-        console.log("error:"+err.code);
-    }
-  </script>
   <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
