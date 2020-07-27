@@ -50,15 +50,24 @@ app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
+
+
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
+  const getUsersQuery = `SELECT * FROM users`
+  var allUsers;
+  pool.query(getUsersQuery, (error, result) =>{
+    if (error) {
+      console.log(error);
+    }
+    allUsers = {'USERS':result.rows};
+  })
+
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), name: req.user.name} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), name: req.user.name, allUsers} )
   })
-
-  
 })
 
 // pool.query(getListQuery , (error,result) => {
