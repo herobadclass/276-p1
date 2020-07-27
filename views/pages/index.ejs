@@ -64,7 +64,9 @@
           Testing sdasadasx
         </div>
 
-        
+        <div>
+          <p id="USERS"></p>
+        </div>
 
 
         <div class="template-field">
@@ -162,17 +164,17 @@
     </div>
   </body>
   <script type="text/javascript">
-    
+    let USERS = <%- USERS %>;
+    var user_lists;
     function displayUsers()
     {
-        let USERS = <%- USERS %>;
+        user_lists = "<ul>";
         for (var i = 0; i < USERS.users.length; i++) {
-          console.log(USERS.users[i].name);
-          document.write(USERS.users[i].name);
-          document.write("asd");
+          user_lists += "<li>" + USERS.users[i].name + "</li>";
         }
-      }
-
+        user_lists += "</ul>";
+    }
+    document.getElementById("USERS").innerHTML = user_lists;
   </script>
   <script>
 
