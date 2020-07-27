@@ -23,7 +23,7 @@
       var socket = io();
       $('socketChat').submit(function(e) {
         e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#m').val());
+        socket.emit('chat message', "2");
         $('#m').val('');
         return false;
       });
