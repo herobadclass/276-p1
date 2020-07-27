@@ -3,7 +3,7 @@ document.getElementById("clearbutton").onclick = ClearField;
 document.getElementById('savebutton').onclick = SaveTxt;
 
 function initDoc() {
-  console.log("check");
+  console.log("script.js");
   oDoc = document.getElementById("textBox");
   sDefTxt = oDoc.innerHTML;
   if (document.compForm.switchMode.checked) { setDocMode(true); }
