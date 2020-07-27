@@ -166,12 +166,9 @@
   <script type="text/javascript">
     let USERS = <%- USERS %>;
     console.log(USERS.users[0].name);
-    var user_list = "<ul>";
-    USERS.users.forEach(displayUsers);
-    user_list += "</ul>";
-    function displayUsers(val){
-      // var user_list = USERS.users.name.toString();
-      user_list += "<li>" + val + "</li>";
+    
+    for (var i = 0; i < USERS.users.length; i++) {
+      console.log(USERS.users[i].name);
     }
 
   </script>
