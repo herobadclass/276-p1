@@ -51,6 +51,9 @@ var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
 // http.listen(3000, () => {
@@ -277,6 +280,6 @@ app.get('/user_count', (req, res) => {
   })
 })
 
+// app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
 module.exports = app
