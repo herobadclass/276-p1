@@ -14,24 +14,6 @@
         text-decoration: line-through;
       }
     </style>
-    <script type="text/javascript" charset="utf-8">
-  
-    function blah(req, res){
-      executeSql('SELECT * FROM users', [], qSuccess, qError)
-    }
-
-    function qSuccess(results){
-      var len = results.rows.length;
-      console.log("DEMO table: " + len + " rows found.");
-            for (var i=0; i<len; i++){
-                console.log("Row = " + i + " name = " + results.rows.item(i).name );
-            }
-    }
-
-    function qError(err){
-        console.log("error:"+err.code);
-    }
-  </script>
 
   </head>
 
@@ -68,11 +50,11 @@
     }
   </script>
 
-  <body onload="Time(),initDoc(), blah();" >
+  <body onload="Time(),initDoc();" >
     <div class="bg">
         <button id="clickme">Click me</button>
         <div class="greet">
-          <h1> Greetings! &nbsp; <span class="username"><%= name %></span> </h1>
+          <h1> Greetings! &nbsp; <span class="username"><%= username %></span> </h1>
         </div>
         <div class="template">
         Template

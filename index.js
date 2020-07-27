@@ -50,14 +50,13 @@ app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-
-
+var testing = "12312";
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), name: req.user.name} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, testing} )
   })
 })
 
