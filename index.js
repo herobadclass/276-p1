@@ -60,14 +60,12 @@ app.get('/', checkAuthenticated, (req, res) => {
     }
     console.log("1")
     allUsers = {'rows':result.rows}
-    for (var i = 0; i < allUsers.rows.length; i++) {
-      console.log(allUsers.rows[i]);
-    }
+    console.log(allUsers);
   })
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name})
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, allUsers})
   })
 })
 
