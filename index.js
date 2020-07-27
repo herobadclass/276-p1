@@ -52,19 +52,19 @@ app.get('/about', (req,res) => {
 
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
-  const getUsersQuery = `SELECT * FROM users`
-  var allUsers;
-  pool.query(getUsersQuery, (error, result) =>{
-    if (error) {
-      console.log(error);
-    }
-    console.log("1")
-    allUsers = {'rows':result.rows}
-  })
+  // const getUsersQuery = `SELECT * FROM users`
+  // var allUsers;
+  // pool.query(getUsersQuery, (error, result) =>{
+  //   if (error) {
+  //     console.log(error);
+  //   }
+  //   console.log("1")
+  //   allUsers = {'rows':result.rows}
+  // })
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, allUsers} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, allUsers: req.user.rows} )
   })
 })
 
