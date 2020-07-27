@@ -10,7 +10,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const io = require('socket.io')(12345)
+const io = require('socket.io')(process.env.PORT)
 
 io.on('connection', socket =>{
   socket.emit('chat-message', 'Hello World')
