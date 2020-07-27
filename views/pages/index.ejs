@@ -168,10 +168,10 @@
     function displayUsers()
     {
         let USERS = <%- USERS %>;
-        console.log(USERS.users[0].name);
         for (var i = 0; i < USERS.users.length; i++) {
           console.log(USERS.users[i].name);
           document.write(USERS.users[i].name);
+          document.write("asd");
         }
       }
 
