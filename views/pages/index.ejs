@@ -173,9 +173,11 @@
           
         }
     }
+    var user_arr = [];
     var user_list = "";
     for (var i = 0; i < USERS.users.length; i++) {
       user_list += USERS.users[i].name;
+      user_arr.push(USERS.users[i].name);
     }
     document.getElementById("USERS").innerHTML = user_list;
   </script>
