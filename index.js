@@ -68,9 +68,9 @@ app.get('/', checkAuthenticated, (req, res) => {
   })
 })
 
-var allUsers = poll.query("SELECT * FROM users");
+var allUsers = pool.query("SELECT * FROM users");
 
-query.on('row', function(row) {
+allUsers.on('row', function(row) {
     results.push(row);
 });
 
