@@ -58,7 +58,8 @@ app.get('/', checkAuthenticated, (req, res) => {
     if (error) {
       console.log(error);
     }
-    console.log("1");
+    console.log("1")
+    allUsers = {'rows':result.rows}
   })
   pool.query(getListQuery , (error,result) => {
     if (error) 
