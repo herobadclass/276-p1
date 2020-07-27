@@ -53,7 +53,7 @@ app.get('/about', (req,res) => {
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
   const getUsersQuery = `SELECT * FROM users`
-  var allUsers;
+  // var allUsers;
   // pool.query(getUsersQuery, (error, result) =>{
   //   if (error) {
   //     console.log(error);
@@ -64,15 +64,17 @@ app.get('/', checkAuthenticated, (req, res) => {
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    pool.query(getUsersQuery, (error2,result2) =>{
-      if (error2) {
-        console.log(error2);
-      }
-      allUsers = {'Yo':result.rows};
-    })
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, allUsers} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name})
   })
 })
+
+var allUsers = poll.query("SELECT * FROM users");
+
+query.on('row', function(row) {
+    results.push(row);
+});
+
+console.log(results);
 
 // app.post('/',checkAuthenticated, (req, res) =>{
 //   const getUsersQuery = `SELECT * FROM users`
