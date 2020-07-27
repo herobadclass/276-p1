@@ -10,16 +10,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-});
-
-http.listen(3000, () => {
-  console.log('listening on *:3000');
-});
 
 const { Pool } = require('pg')
 var pool;
@@ -54,6 +45,18 @@ app.use(passport.session())
 app.use('/', cors())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+http.listen(3000, () => {
+  console.log('listening on *:3000');
+});
+
 
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
