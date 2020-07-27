@@ -167,7 +167,7 @@
     let USERS = <%- USERS %>;
     console.log(USERS.users[0].name);
     function displayUsers(){
-      var user_list = USERS.users.toString();
+      var user_list = (USERS.users.name).toString();
       document.getElementById("USERS").innerHTML = user_list;
     }
 
