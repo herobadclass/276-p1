@@ -50,13 +50,22 @@ app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-var testing = "12312";
+
+
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
+  const getUsersQuery = `SELECT * FROM users`
+  var allUsers;
+  pool.query(getUsersQuery, (error, result) =>{
+    if (error) {
+      console.log(error);
+    }
+    console.log("1");
+  })
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, testing} )
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name} )
   })
 })
 
