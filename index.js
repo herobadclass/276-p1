@@ -47,7 +47,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 var http = require('http').createServer(app);
-var io = require('socket.io').listen(http);
+var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
@@ -277,6 +277,6 @@ app.get('/user_count', (req, res) => {
   })
 })
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 module.exports = app
