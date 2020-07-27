@@ -79,6 +79,7 @@ app.get('/', checkAuthenticated, (req, res) => {
     res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
     console.log(USERS);
   })
+  res.sendFile(__dirname + 'pages/index');
 })
 
 // app.post('/',checkAuthenticated, (req, res) =>{
