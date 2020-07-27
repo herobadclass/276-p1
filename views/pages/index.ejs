@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template1.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/texteditor.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+
     <meta charset="utf-8">
     <title>Dashboard</title>
     <style>
@@ -15,6 +15,17 @@
         text-decoration: line-through;
       }
     </style>
+    
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
 
   </head>
   <script src="/socket.io/socket.io.js"></script>
@@ -22,6 +33,17 @@
     var socket = io();
   </script>
 
+  <script>
+    $(function () {
+      var socket = io();
+      $('form').submit(function(e) {
+        e.preventDefault(); // prevents page reloading
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+    });
+  </script>
 
   <script type="text/javascript">
     function Time() {
@@ -76,6 +98,10 @@
           <p id="USERS"></p>
         </div>
 
+        <ul id="messages"></ul>
+        <form action="">
+          <input id="m" autocomplete="off" /><button>Send</button>
+        </form>
 
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
