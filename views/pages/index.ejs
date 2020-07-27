@@ -64,7 +64,9 @@
           Testing sdasadasx
         </div>
 
-
+        <div id="USERS">
+          
+        </div>
 
 
         <div class="template-field">
@@ -164,6 +166,9 @@
   <script type="text/javascript">
     let USERS = <%- USERS %>;
     console.log(USERS.users[0].name);
+    function displayUsers(){
+      document.getElementById("USERS").innerHTML = USERS;
+    }
 
   </script>
   <script>
