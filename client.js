@@ -1,5 +1,6 @@
-const socket = io('https://magnustar.herokuapp.com')
 
-socket.on('chat-message',data =>{
-	console.log(data)
+const io = require('socket.io')(process.env.PORT)
+
+io.on('connection', socket =>{
+  socket.emit('chat-message', 'Hello World')
 })
