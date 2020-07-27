@@ -65,7 +65,7 @@ app.get('/', checkAuthenticated, (req, res) => {
   pool.query(getListQuery , (error,result) => {
     if (error) 
       console.log(error); 
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, allUsers})
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, 'USERS':JSON.stringify(allUsers)})
     console.log(allUsers);
   })
 })
