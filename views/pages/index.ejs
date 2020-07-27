@@ -50,7 +50,7 @@
     }
   </script>
 
-  <body onload="Time(),initDoc(),displayUsers();" >
+  <body onload="Time(),initDoc();" >
     <div class="bg">
         <button id="clickme">Click me</button>
         <div class="greet">
@@ -64,7 +64,7 @@
           Testing sdasadasx
         </div>
 
-        <div id="USERS">
+        <div onload="displayUsers();">
           
         </div>
 
@@ -164,12 +164,16 @@
     </div>
   </body>
   <script type="text/javascript">
-    let USERS = <%- USERS %>;
-    console.log(USERS.users[0].name);
     
-    for (var i = 0; i < USERS.users.length; i++) {
-      console.log(USERS.users[i].name);
-    }
+    function displayUsers()
+    {
+        let USERS = <%- USERS %>;
+        console.log(USERS.users[0].name);
+        for (var i = 0; i < USERS.users.length; i++) {
+          console.log(USERS.users[i].name);
+          document.write(USERS.users[i].name);
+        }
+      }
 
   </script>
   <script>
