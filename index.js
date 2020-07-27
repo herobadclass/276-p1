@@ -50,8 +50,6 @@ app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-console.log("1");
-
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
   const getUsersQuery = `SELECT * FROM users`
@@ -60,6 +58,7 @@ app.get('/', checkAuthenticated, (req, res) => {
     if (error) {
       console.log(error);
     }
+    allUsers = {'users':result.rows};
   })
   pool.query(getListQuery , (error,result) => {
     if (error) 
