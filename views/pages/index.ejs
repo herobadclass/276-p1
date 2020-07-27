@@ -62,9 +62,15 @@
         </div>
 
         <div id="test">
-          Testing
+          Testing sda
         </div>
-        
+
+        <ul>
+            <% USERS.forEach(function(r) { %>
+                <li><%= r.id %>, <%= r.name %></li>
+            <% }); %>
+        </ul>
+
 
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
