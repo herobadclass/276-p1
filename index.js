@@ -10,7 +10,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const io = require('socket.io')(process.env.PORT)
+const io = require('socket.io')(12321)
 
 const { Pool } = require('pg')
 var pool;
