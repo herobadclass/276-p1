@@ -20,19 +20,17 @@
 
   <script>
     $(function () {
-      var socket = io();
-      $('#socketChat').submit(function(e) {
-        e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-      socket.on('chat message', function(msg){
-        $('#textBox').append($('<li>').text(msg));
-        document.getElementById("textBox").innerHTML = text(msg);
-        console.log("1");
-      });
+    var socket = io();
+    $('#socketChat').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
     });
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
+  });
   </script>
 
   <script>
