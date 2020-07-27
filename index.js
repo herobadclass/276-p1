@@ -2,8 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-const PORT = process.env.PORT || 5000
-
 const express = require('express')
 const path = require('path')
 const bcrypt = require('bcrypt')
@@ -12,7 +10,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const io = require('socket.io')(PORT)
+
 
 const { Pool } = require('pg')
 var pool;
@@ -30,7 +28,7 @@ initializePassport(
 var http = require('http'),
     fs = require('fs');
 
-
+const PORT = process.env.PORT || 5000
 
 const app = express()
 app.use(express.json())
