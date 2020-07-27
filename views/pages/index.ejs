@@ -28,8 +28,8 @@
         return false;
       });
       socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
-      
+        $('#messages').append($('<li>').text(msg));
+        document.getElementById("textBox").innerHTML = text(msg);
       });
     });
   </script>
@@ -95,7 +95,7 @@
           <p id="USERS"></p>
         </div>
 
-        <ul id="messages"></ul>
+        <ul id="messages">hbhhb</ul>
         <form id="socketChat" action="">
           <input id="m" autocomplete="off" /><button>Send</button>
         </form>
