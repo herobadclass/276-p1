@@ -65,7 +65,11 @@
         </div>
 
         <%= username %>
-        <%= allUsers %>
+        <ul>
+            <% Yo.forEach(function(r) { %>
+                <li><%= r.id %>, <%= r.name %></li>
+            <% }); %>
+        </ul>
         asdas
 
         <div class="template-field">
