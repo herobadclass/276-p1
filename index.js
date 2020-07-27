@@ -10,11 +10,16 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const io = require('socket.io')()
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
 
-io.on('connection', socket =>{
-  socket.emit('chat-message', 'Hello World')
-})
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+http.listen(3000, () => {
+  console.log('listening on *:3000');
+});
 
 const { Pool } = require('pg')
 var pool;

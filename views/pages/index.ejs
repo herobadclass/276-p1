@@ -17,6 +17,11 @@
 
   </head>
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
+
   <script type="text/javascript">
     function Time() {
       var today=new Date()
@@ -165,9 +170,7 @@
 
     </div>
   </body>
-  <script defer src="https://magnustar.herokuapp.com/socket.io/socket.io.js"></script>
-  <script defer src="client.js"></script>
-  
+
   <script type="text/javascript">
     let USERS = <%- USERS %>;
     function displayUsers()
