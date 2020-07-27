@@ -64,7 +64,7 @@
           Testing sdasadasx
         </div>
 
-        <%= allUsers.rows[0].name %>
+
 
 
         <div class="template-field">
@@ -161,7 +161,9 @@
 
     </div>
   </body>
-
+  <script type="text/javascript">
+    let USERS = <%- allUsers %>
+  </script>
   <script>
 
     const logoutForm = document.querySelector('[logout-form]')
