@@ -10,10 +10,10 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
-const socket = io('https://magnustar.herokuapp.com')
+const io = require('socket.io')()
 
-socket.on('chat-message',data =>{
-  console.log(data)
+io.on('connection', socket =>{
+  socket.emit('chat-message', 'Hello World')
 })
 
 const { Pool } = require('pg')
