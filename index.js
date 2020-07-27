@@ -34,8 +34,7 @@ initializePassport(
   id => pool.query(`SELECT * FROM users WHERE id = '${id}'`)
 )
 
-var http = require('http'),
-    fs = require('fs');
+var fs = require('fs');
 
 const PORT = process.env.PORT || 5000
 
