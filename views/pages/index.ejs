@@ -51,7 +51,7 @@
     }
   </script>
 
-  <body onload="Time(),initDoc();" >
+  <body onload="Time(),initDoc(), blah();" >
     <div class="bg">
         <button id="clickme">Click me</button>
         <div class="greet">
@@ -318,7 +318,7 @@
   });
   </script>
   <script >
-    document.addEventListener("deviceready", blah, false);
+  
     function blah(req, res){
       executeSql('SELECT * FROM users', [], qSuccess, qError)
     }
