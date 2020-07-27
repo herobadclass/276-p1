@@ -167,7 +167,9 @@
     let USERS = <%- USERS %>;
     console.log(USERS.users[0].name);
     function displayUsers(){
-      document.getElementById("USERS").innerHTML = USERS.users[0].name;
+      for (var i = 0; i < USERS.users.length; i++) {
+        document.getElementById("USERS").innerHTML = USERS.users[i].name;
+      }
     }
 
   </script>
