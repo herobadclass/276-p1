@@ -164,17 +164,16 @@
     </div>
   </body>
   <script type="text/javascript">
-    let USERS = <%- USERS %>;
-    var user_lists;
+    
     function displayUsers()
     {
-        user_lists = "<ul>";
+        let USERS = <%- USERS %>;
         for (var i = 0; i < USERS.users.length; i++) {
-          user_lists += "<li>" + USERS.users[i].name + "</li>";
+          console.log(USERS.users[i].name);
+          
         }
-        user_lists += "</ul>";
     }
-    document.getElementById("USERS").innerHTML = user_lists;
+    document.getElementById("USERS").innerHTML = USERS.users[0].name;
   </script>
   <script>
 
