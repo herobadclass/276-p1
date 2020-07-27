@@ -71,22 +71,7 @@ app.get('/', checkAuthenticated, (req, res) => {
 //     console.log("1");
 //   })
 // })
-document.addEventListener("deviceready", blah, false);
-function blah(req, res){
-  executeSql('SELECT * FROM users', [], qSuccess, qError)
-}
 
-function qSuccess(results){
-  var len = results.rows.length;
-  console.log("DEMO table: " + len + " rows found.");
-        for (var i=0; i<len; i++){
-            console.log("Row = " + i + " name = " + results.rows.item(i).name );
-        }
-}
-
-function qError(err){
-    console.log("error:"+err.code);
-}
 
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';
