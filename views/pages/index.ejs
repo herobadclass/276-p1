@@ -64,7 +64,11 @@
           Testing sdasadas
         </div>
 
-
+        <div>
+          <% users.forEach(function(r) { %>
+              <li><%= r.id %>, <%= r.name %></li>
+          <% }); %>
+        </div>
 
 
         <div class="template-field">
