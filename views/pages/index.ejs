@@ -33,9 +33,9 @@
     var userSessions = [];
     var currUsers = [];
     var sessionID;
-    $(function () {
     var socket = io();
 
+    $(function () {
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
@@ -51,19 +51,18 @@
     //   console.log(msg);
     // });
 
-    socket.on('refresh user list', function(id,user){
+    socket.on('get current users', function(id,user){
+      
       userSessions.push({id:id,name:user.name,mail:user.email});
-      console.log(id);
+      // socket.emit('get current users', userSessions); //for newly connected user
+      socket.emit('refresh user list', userSessions);
+      // console.log(id);
       console.log(user);
-      console.log(typeof user);
+      // console.log(typeof user);
       console.log("connected");
-      // var newuser = $('<li>');
-      // newuser.attr('id',id);
-      for (var i = 0; i < userSessions.length; i++) {
-        $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
-      }
-      
-      
+      // for (var i = 0; i < userSessions.length; i++) {
+      //   $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+      // }
     })
 
     socket.on('user disconnected', function(id) {
@@ -74,7 +73,12 @@
         userSessions.splice(userIndex,1);
       }
     })
-    
+    socket.on('refresh user list', (user)=>{
+      userSessions = user;
+       for (var i = 0; i < userSessions.length; i++) {
+        $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+      }
+    })
      // socket.on('session id', function(id){
     //   sessionID = id;
     //   console.log(id);
