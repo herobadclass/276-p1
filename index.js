@@ -51,13 +51,17 @@ var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   const sessionID = socket.id;
-  console.log("session id: " + sessionID);
+  console.log("session id:");
+  console.log(sessionID);
   socket.broadcast.emit('session id', sessionID);
-  socket.to(sessionID).emit('id specific', 'Hello');
+
   console.log('a user connected');
+
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
+
+  socket.to(sessionID).emit("HI!!");
 
 });
 // socket.on('disconnect', () => {
