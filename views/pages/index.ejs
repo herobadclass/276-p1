@@ -36,7 +36,6 @@
     var socket = io();
 
     $('#socketChat').submit(function(e){
-      console.log(socket.id);
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
       socket.emit('specified user', sessionID,'just for you');
@@ -47,17 +46,12 @@
       $('#messages').append($('<li>').text(msg));
     });
 
-    socket.on('new user', function(id){
-      userSessions.push(id);
-      socket.emit('current users', userSessions);
-    })
-
     // socket.on('a special someone', (msg) => {
     //   console.log(msg);
     // });
 
-    socket.on('refresh user list', function(list){
-      userSessions = list;
+    socket.on('refresh user list', function(id){
+      userSessions.push(id);
     })
 
     socket.on('user disconnected', function(id) {

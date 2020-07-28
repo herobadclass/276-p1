@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
   console.log("its session id:");
   sessionID = socket.id;
   console.log(sessionID);
-  io.emit('new user', sessionID);
+  io.emit('refresh user list', sessionID);
 
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
@@ -68,10 +68,6 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () =>{
     io.emit('user disconnected', sessionID);
-  })
-
-  socket.on('current users', (list) =>{
-    io.emit('refresh user list', list);
   })
 
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
