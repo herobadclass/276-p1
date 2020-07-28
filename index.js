@@ -66,7 +66,11 @@ io.on('connection', (socket) => {
     io.to(id).emit('a special someone', msg);
   })
 
-  io.to(sessionID).emit('bleh', 'HI!!!!!');
+  socket.on('disconnect', () =>{
+    io.emit('user disconnected', sessionID);
+  })
+
+  // io.to(sessionID).emit('bleh', 'HI!!!!!');
 
 });
 
