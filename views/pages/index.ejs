@@ -55,6 +55,18 @@
       console.log("connected");
       userSessions.push({id:id, name:user.name, mail:user.email});
       socket.emit('get user list', id, userSessions);
+      $('#currUsers').append($('<li>').text(user.name).attr("id", id));
+    })
+
+    
+    socket.on('refresh user list', (id,list)=>{
+      if(JSON.stringify(userSessions) != JSON.stringify(list))
+        userSessions = list;
+
+       for (var i = 0; i < userSessions.length; i++) {
+        if (userSessions[i].id != id)
+          $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+      }
     })
 
     socket.on('user disconnected', function(id) {
@@ -63,14 +75,6 @@
       var userIndex = userSessions.indexOf(id);
       if (userIndex > -1) {
         userSessions.splice(userIndex,1);
-      }
-    })
-    socket.on('refresh user list', (list)=>{
-      if(JSON.stringify(userSessions) != JSON.stringify(list))
-        userSessions = list;
-
-       for (var i = 0; i < userSessions.length; i++) {
-        $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
       }
     })
      // socket.on('session id', function(id){
