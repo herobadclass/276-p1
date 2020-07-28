@@ -45,6 +45,7 @@
     });
     socket.on('session id', (id) =>{
       console.log(id);
+      socket.to(id).emit("Hi there");
     })
   });
   </script>
