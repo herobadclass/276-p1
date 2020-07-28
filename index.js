@@ -61,9 +61,8 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
+  io.to(sessionID).emit('bleh', 'HI!!!!!');
 });
-
-io.to(sessionID).emit('bleh', 'HI!!!!!');
 // socket.on('disconnect', () => {
 //     console.log('user disconnected');
 //   });
