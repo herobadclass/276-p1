@@ -49,8 +49,8 @@
       userSessions.push(id);
     });
 
-    socket.on('connect', (newsocket) => {
-      console.log(newsocket.id);
+    socket.on('connection', (socket) => {
+      console.log(socket.id);
     })
 
     socket.on('bleh', (msg) => {
