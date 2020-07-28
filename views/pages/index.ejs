@@ -55,7 +55,7 @@
       console.log(user);
       console.log("connected");
       userSessions.push({id:id, name:user.name, mail:user.email});
-      socket.emit('get user list', id, userSessions); //tell server a new user joined 
+      socket.emit('get user list', id, userSessions);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
 
       var option = document.createElement("option");
@@ -71,7 +71,6 @@
         if (userSessions[i].id != id)
           $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
       }
-
     })
 
     socket.on('user disconnected', function(id,user) {
