@@ -54,6 +54,9 @@
     socket.on('refresh user list', function(id,email){
       userSessions.push({id,email});
       console.log(email);
+      var e = $('<li>test</li>');
+      $("#currUsers").append.(e);
+      e.attr('id',email);
     })
 
     socket.on('user disconnected', function(id) {
@@ -141,6 +144,8 @@
         <form id="socketChat" action="">
           <input id="m" autocomplete="off" /><button>Send</button>
         </form>
+
+        <ul id="currUsers"></ul>
         
 
         <div class="template-field">
