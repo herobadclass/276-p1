@@ -52,6 +52,7 @@ var io = require('socket.io')(http);
 io.on('connection', (socket) => {
   socket.broadcast.emit('hi');
   const sessionID = socket.id;
+  console.log(sessionID);
   console.log('a user connected');
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
