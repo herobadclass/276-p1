@@ -62,7 +62,7 @@
       chatUsers.add(option);
     })
 
-    socket.on('refresh user list', (id,list)=>{
+    socket.on('get current users', (id,list)=>{
       if(JSON.stringify(userSessions) != JSON.stringify(list))
         userSessions = list;
 
