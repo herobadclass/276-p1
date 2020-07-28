@@ -53,8 +53,8 @@
     socket.on('new user', function(id,user){
       console.log(user);
       console.log("connected");
-      userSessions.push({id:id,name:user.name,mail:user.email});
-      socket.broadcast.emit('get user list', id, userSessions);
+      userSessions.push({id:id, name:user.name, mail:user.email});
+      socket.emit('get user list', id, userSessions);
     })
 
     socket.on('user disconnected', function(id) {
