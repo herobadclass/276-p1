@@ -28,11 +28,17 @@
     </style>
 
   </head>
+  <script >
+    var incomingConnection = io();
+    incomingConnection.on('connect', function() {
+      const sessionID = incomingConnection.socket.sessionID;
+      console.log(sessionID);
+    });
+  </script>
 
   <script>
     $(function () {
     var socket = io();
-    console.log(socket.id);
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
