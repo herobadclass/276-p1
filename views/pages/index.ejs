@@ -40,13 +40,12 @@
       console.log($('#m').val());
       return false;
     });
-    // socket.on('chat message', function(msg){
-    //   console.log("ZZZ");
-    //   $('#messages').append($('<li>').text(msg));
-    // });
-    socket.on('chat message', data => {
-      console.log(data);
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
     });
+    // socket.on('chat message', data => {
+    //   console.log(data);
+    // });
   });
   </script>
 
