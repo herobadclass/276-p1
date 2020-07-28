@@ -36,6 +36,8 @@
     
     $(function () {
       var chatUsers = document.getElementById("chatUsers");
+      var option = document.createElement("option");
+      
       $('#socketChat').submit(function(e){
         e.preventDefault(); // prevents page reloading
         socket.emit('chat message', $('#m').val());
@@ -58,7 +60,7 @@
       socket.emit('get user list', id, userSessions);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
       // var chatUsers = document.getElementById("chatUsers");
-      var option = document.createElement("option");
+      // var option = document.createElement("option");
       option.text = user.name;
       chatUsers.add(option);
     })
@@ -68,7 +70,7 @@
         userSessions = list;
       }
       // var chatUsers = document.getElementById("chatUsers");
-      var option = document.createElement("option");
+      
 
        for (var i = 0; i < userSessions.length; i++) {
         if (userSessions[i].id != id){
