@@ -48,9 +48,10 @@ app.set('view engine', 'ejs')
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+const sessionID;
 
 io.on('connection', (socket) => {
-  const sessionID = socket.id;
+  sessionID = socket.id;
   console.log("session id:");
   console.log(sessionID);
   socket.broadcast.emit('session id', sessionID);
@@ -60,10 +61,9 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
-
-  socket.to(socket.id).emit('bleh', 'HI!!!!!');
-
 });
+
+io.to(sessionID).emit('bleh', 'HI!!!!!');
 // socket.on('disconnect', () => {
 //     console.log('user disconnected');
 //   });
