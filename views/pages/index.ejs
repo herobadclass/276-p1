@@ -32,6 +32,12 @@
   <script>
     $(function () {
     var socket = io();
+      socket.on('session id', function(id){
+      console.log(id);
+      var destination = id;
+      console.log(destination);
+      socket.to(id).emit('chat messages', 'Hello');
+    });
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
@@ -43,12 +49,7 @@
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-    socket.on('session id', function(id){
-      console.log(id);
-      var destination = id;
-      console.log(destination);
-      socket.to(id).emit('chat messages', 'Hello');
-    });
+    
   });
   </script>
 
