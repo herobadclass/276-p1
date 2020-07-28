@@ -50,7 +50,8 @@
     });
 
     socket.on('connection', (socket) => {
-      console.log(socket.id);
+      console.log("new connection !");
+      io.to(socket.id).emit('bleh', 'HI!!!!!');
     })
 
     socket.on('bleh', (msg) => {
@@ -103,7 +104,7 @@
 
 
 
-  <body onload="Time(),initDoc(),displayUsers();" >
+  <body onload="Time(),displayUsers();" >
     <div class="bg">
         <button id="clickme">Click me</button>
         <!-- <div class="greet">
