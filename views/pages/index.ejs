@@ -32,6 +32,7 @@
   <script>
     $(function () {
     var socket = io();
+    socket.broadcast.emit('hi');
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
