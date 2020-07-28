@@ -47,7 +47,7 @@
       console.log(id);
       var destination = id;
       console.log(destination);
-      socket.to(id).emit("Hi there");
+      socket.to(id).emit('chat messages', 'Hello');
     });
   });
   </script>
