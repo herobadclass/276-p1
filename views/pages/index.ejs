@@ -31,6 +31,8 @@
 
   <script>
     var userSessions = [];
+    let USERS = <%- USERS %>;
+    console.log(USERS);
     var sessionID;
     $(function () {
     var socket = io();
@@ -71,23 +73,6 @@
 
     ///////BOTTOM////////
   });
-  </script>
-
-  <script type="text/javascript">
-    let USERS = <%- USERS %>;
-    function displayUsers()
-    {
-        document.getElementById("textBox").innerHTML = "Text";   
-        // for (var i = 0; i < USERS.users.length; i++) {
-        //   console.log(USERS.users[i].name);}
-    }
-    var user_arr = [];
-    var user_list = "";
-    for (var i = 0; i < USERS.users.length; i++) {
-      user_list += USERS.users[i].name;
-      user_arr.push(USERS.users[i].name, " ");
-    }
-    document.getElementById("USERS").innerHTML = user_list;
   </script>
 
   <script>
@@ -251,7 +236,22 @@
     </div>
   </body>
 
-  
+  <script type="text/javascript">
+    
+    function displayUsers()
+    {
+        document.getElementById("textBox").innerHTML = "Text";   
+        // for (var i = 0; i < USERS.users.length; i++) {
+        //   console.log(USERS.users[i].name);}
+    }
+    var user_arr = [];
+    var user_list = "";
+    for (var i = 0; i < USERS.users.length; i++) {
+      user_list += USERS.users[i].name;
+      user_arr.push(USERS.users[i].name, " ");
+    }
+    document.getElementById("USERS").innerHTML = user_list;
+  </script>
   <script>
 
     const logoutForm = document.querySelector('[logout-form]')
