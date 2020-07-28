@@ -30,6 +30,7 @@
   </head>
 
   <script>
+    var userSessions = [];
     $(function () {
     var socket = io();
     $('#socketChat').submit(function(e){
@@ -44,14 +45,12 @@
       $('#messages').append($('<li>').text(msg));
     });
     socket.on('id specific', function(msg){
-      console.log(msg);
+      console.log("received" + msg);
     })
-    // socket.on('session id', function(id){
-    //   console.log(id);
-    //   var destination = id;
-    //   console.log(destination);
-    //   socket.to(id).emit('chat messages', 'Hello');
-    // });
+    socket.on('session id', function(id){
+      console.log(id);
+      userSessions.push(id);
+    });
   });
   </script>
 
