@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
   io.emit('session id', sessionID);
   console.log('a user connected');
   socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+    io.broadcast.emit('chat message', msg);
   });
 
 });
