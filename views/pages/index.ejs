@@ -52,7 +52,7 @@
     // });
 
     socket.on('refresh user list', function(id,user){
-      userSessions.push(id,user.name,user.email);
+      userSessions.push({id,user.name,user.email});
       console.log(id);
       console.log(user);
       console.log(typeof user);
