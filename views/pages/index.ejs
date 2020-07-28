@@ -31,12 +31,20 @@
 
   <script>
     var userSessions = [];
+    var sessionID;
     $(function () {
     var socket = io();
+
+    socket.on('session id', function(id){
+      sessionID = id;
+      console.log(id);
+      console.log('connected');
+    });
+
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
-      socket.emit('specified user', 'just for you');
+      socket.emit('specified user', sessionID, 'just for you');
       $('#m').val('');
       return false;
     });
@@ -46,10 +54,7 @@
     socket.on('a special someone', (msg) => {
       console.log(msg);
     })
-    socket.on('session id', function(id){
-      console.log(id);
-      console.log('connected');
-    });
+    
 
     ///////BOTTOM////////
   });
