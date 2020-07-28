@@ -59,7 +59,10 @@
       console.log("connected");
       // var newuser = $('<li>');
       // newuser.attr('id',id);
-      $('#currUsers').append($('<li>').text(user.name).attr("id", id));
+      for (var i = 0; i < userSessions.length; i++) {
+        $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+      }
+      
       
     })
 
