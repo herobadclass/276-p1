@@ -15,17 +15,7 @@
   </head>
 
   <script type="text/javascript">
-    function Time() {
-      var today=new Date()
-      var h=today.getHours()
-      var m=today.getMinutes()
-      var s=today.getSeconds()
-      if(document.getElementById('hour').value==h && document.getElementById('min').value==m ) {
-        if(document.getElementById('sec').value==s) window.alert("Timeing!!!")
-      }
-      document.getElementById('txt').innerHTML=h+":"+m+":"+s
-      t=setTimeout('Time()',500)
-    }
+
     // Change the templates
     function ChangeTemplate(num){
       var oldlink = document.getElementsByTagName("link").item(0);
@@ -33,7 +23,7 @@
       newlink.setAttribute("rel", "stylesheet");
         newlink.setAttribute("type", "text/css");
       switch(num){
-        case 1: 
+        case 1:
           newlink.setAttribute("href", "/stylesheets/template1.css");
           break;
         case 2:
@@ -70,13 +60,6 @@
         <button type="submit">Delete Account</button>
       </form>
 
-      Current time is:<div id="txt"></div>
-      Alram clock at:<div class="">
-        <input type="text" id="hour" value="" placeholder="hour">
-        <input type="text" id="min" value="" placeholder="min">
-        <input type="text" id="sec" value="" placeholder="sec">
-      </div>
-
       <div class="all-lists">
         <h2 class="task-list-title">My lists</h2>
 
@@ -100,6 +83,19 @@
           <form class="new-task-form" action="/add_task" method="post" new-task-form>
             <input type="text" name="id" hidden>
             <input type="text" name="task" class="new task" placeholder="new task name">
+
+            <div class="">
+              <input type="text" name="day" value="" hidden>
+              <input type="checkbox" name="sunday" value="0" id="sunday"><label for="sunday">sunday</label><br>
+              <input type="checkbox" name="monday" value="1" id="monday"><label for="monday">monday</label><br>
+              <input type="checkbox" name="tuesday" value="2" id="tuesday"><label for="tuesday">tuesday</label><br>
+              <input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday">wednesday</label><br>
+              <input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday">thursday</label><br>
+              <input type="checkbox" name="friday" value="5" id="friday"><label for="friday">friday</label><br>
+              <input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">saturday</label>
+            </div>
+
+            <input type="time" name="time" value="">
             <button class="btn create">+</button>
           </form>
 
@@ -124,6 +120,7 @@
         <div class="task-name">
           <input type="checkbox">
           <label></label>
+          <p></p>
           <button type="button" name="button">X</button>
         </div>
       </template>
@@ -163,8 +160,7 @@
       if (evt.target.tagName == 'INPUT') {
         let selectedList = list.find(list => list.id == selectedListId)
         selectedTask = selectedList.tasks.find(task => task.id == evt.target.id)
-        selectedTask.complete = evt.target.checked
-        updateListForm.complete.value = selectedTask.complete
+        updateListForm.complete.value = evt.target.checked
         updateListForm.task_id.value = selectedTask.id
         updateListForm.list_id.value = selectedListId
         updateListForm.action = '/save_complete'
@@ -207,8 +203,16 @@
       evt.preventDefault()
       const newTask = newTaskForm.task.value
       if (newTask == '') return
-      newTaskForm.task.value = newTask
       newTaskForm.id.value = selectedListId
+      var day = []
+      var selected = [newTaskForm.sunday.checked,newTaskForm.monday.checked,newTaskForm.tuesday.checked,newTaskForm.wednesday.checked,newTaskForm.thursday.checked,newTaskForm.friday.checked,newTaskForm.saturday.checked]
+      for (var i = 0; i < selected.length; i++) {
+        if (selected[i]) {
+          day.push(i)
+        }
+      }
+      newTaskForm.day.value = day
+      newTaskForm.time.value = newTaskForm.time.value + ':' + '00'
       newTaskForm.submit()
     })
 
@@ -231,6 +235,31 @@
       }
     }
 
+    function Time() {
+      const today = new Date()
+      const day = today.getDay()
+      const hour = today.getHours()
+      const minute = today.getMinutes()
+      const second = today.getSeconds()
+
+      list.forEach(list => {
+        task = list.tasks
+        task.forEach(task => {
+          if (task.complete) {
+            if (task.date.includes(day)) {
+              if (task.time.includes(hour + ':' + minute + ':' + second)) {
+                updateListForm.complete.value = false
+                updateListForm.task_id.value = task.id
+                updateListForm.list_id.value = list.id
+                updateListForm.action = '/save_complete'
+                updateListForm.submit()
+              }
+            }
+          }
+        })
+      })
+    }
+
     function renderTasks(selectedTasks) {
       selectedTasks.forEach(task => {
         const taskElement = document.importNode(taskTemplate.content, true)
@@ -240,6 +269,9 @@
         const label = taskElement.querySelector('label')
         label.htmlFor = task.id
         label.innerText = task.name
+        const paragraph = taskElement.querySelector('p')
+
+        paragraph.innerText = task.date + ' ' +task.time
         taskContainer.appendChild(taskElement)
       })
     }

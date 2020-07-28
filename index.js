@@ -174,7 +174,7 @@ app.post('/save_complete', (req, res) => {
 app.post('/add_task', (req, res) => {
   var addTaskQuery = {
     text: `UPDATE list_${req.user.id} SET tasks = tasks || $1::JSONB WHERE id = $2`,
-    values: [{id: Date.now().toString(), name: req.body.task, complete: false}, req.body.id]
+    values: [{id: Date.now().toString(), name: req.body.task, complete: false, date: req.body.day, time: req.body.time}, req.body.id]
   }
   pool.query(addTaskQuery, (error,result) => {
     if (error) {
