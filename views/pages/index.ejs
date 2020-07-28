@@ -55,9 +55,10 @@
       // userSessions.push();
 
       console.log(user.name);
-      // var e = $('<li>test</li>');
-      // $("#currUsers").append(e);
-      // e.attr('id',email);
+      console.log(id);
+      var newuser = $('<li>');
+      $("#currUsers").append(newuser + user.name + "</li>");
+      newuser.attr('id',id);
     })
 
     socket.on('user disconnected', function(id) {
