@@ -56,7 +56,7 @@
       userSessions.push({id:id, name:user.name, mail:user.email});
       socket.emit('get user list', id, userSessions);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
-
+      var chatUsers = document.getElementById("chatUsers");
       var option = document.createElement("option");
       option.text = user.name;
       chatUsers.add(option);
