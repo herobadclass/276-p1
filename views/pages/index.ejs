@@ -36,7 +36,7 @@
       console.log(id);
       var destination = id;
       console.log(destination);
-      socket.to(id).emit('chat messages', 'Hello');
+      io.to(id).emit('chat messages', 'Hello');
     });
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
