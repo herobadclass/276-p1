@@ -46,13 +46,8 @@
     });
     socket.on('session id', function(id){
       console.log(id);
-      userSessions.push(id);
+      console.log('connected');
     });
-
-    socket.on('connection', (socket) => {
-      console.log("new connection !");
-      io.to(socket.id).emit('bleh', 'HI!!!!!');
-    })
 
     socket.on('bleh', (msg) => {
       console.log(msg);

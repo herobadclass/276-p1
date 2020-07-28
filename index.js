@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
-  
+
   io.to(sessionID).emit('bleh', 'HI!!!!!');
 });
 
@@ -296,6 +296,8 @@ app.get('/user_count', (req, res) => {
   })
 })
 
-// app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
-http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+var sio = io.listen(app);
+
+// http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 module.exports = app
