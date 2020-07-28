@@ -50,8 +50,9 @@
     //   console.log(msg);
     // });
 
-    socket.on('refresh user list', function(id){
+    socket.on('refresh user list', function(id,email){
       userSessions.push(id);
+      console.log(email);
     })
 
     socket.on('user disconnected', function(id) {

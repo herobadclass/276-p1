@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+var thisUser;
+
 const express = require('express')
 const path = require('path')
 const bcrypt = require('bcrypt')
@@ -56,7 +58,7 @@ io.on('connection', (socket) => {
   console.log("its session id:");
   sessionID = socket.id;
   console.log(sessionID);
-  io.emit('refresh user list', sessionID);
+  io.emit('refresh user list', sessionID, thisUser);
 
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
@@ -102,7 +104,8 @@ app.get('/', checkAuthenticated, (req, res) => {
   })
   pool.query(getListQuery , (error,result) => {
     if (error) 
-      console.log(error); 
+      console.log(error);
+    thisUser = req.user.email;
     res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
     console.log(USERS);
   })
@@ -122,7 +125,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
 })
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/', 
   failureRedirect: '/login',
   failureFlash: true
 }))
