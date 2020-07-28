@@ -51,12 +51,12 @@
     //   console.log(msg);
     // });
 
-    socket.on('refresh user list', function(id,email){
+    socket.on('refresh user list', function(id,user){
       userSessions.push({id,email});
-      console.log(email);
-      var e = $('<li>test</li>');
-      $("#currUsers").append(e);
-      e.attr('id',email);
+      console.log(user);
+      // var e = $('<li>test</li>');
+      // $("#currUsers").append(e);
+      // e.attr('id',email);
     })
 
     socket.on('user disconnected', function(id) {
