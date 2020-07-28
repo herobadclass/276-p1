@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
   const sessionID = socket.id;
   console.log(sessionID);
   socket.broadcast.emit('session id', sessionID);
+  socket.to(sessionID).emit('chat message', "hey");
   console.log('a user connected');
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
