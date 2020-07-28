@@ -67,11 +67,14 @@
         userSessions = list;
       }
       var chatUsers = document.getElementById("chatUsers");
-
+      var option = document.createElement("option");
 
        for (var i = 0; i < userSessions.length; i++) {
-        if (userSessions[i].id != id)
+        if (userSessions[i].id != id){
+          option.text = userSessions[i].name;
+          console.log(option.text);
           $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+        }
       }
     })
 
