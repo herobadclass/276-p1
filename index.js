@@ -74,7 +74,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () =>{
-    io.emit('user disconnected', sessionID);
+    io.emit('user disconnected', sessionID, thisUser);
   })
 
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
