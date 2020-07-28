@@ -79,6 +79,12 @@
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
           console.log("this one");
           userSessions.splice(i,1);
+        } 
+      }
+      var ul = document.getElementById("currUsers");
+      for (var i = 0; i < ul.children.length; i++) {
+        if(ul.children[i].id == id){
+          ul.removeChild(ul.children[i]);
         }
       }
       // var userIndex = userSessions.indexOf(id);
