@@ -31,6 +31,7 @@
 
   <script>
     var userSessions = [];
+    var currUsers = [];
     var sessionID;
     $(function () {
     var socket = io();
@@ -51,7 +52,7 @@
     // });
 
     socket.on('refresh user list', function(id,email){
-      userSessions.push(id);
+      userSessions.push({id,email});
       console.log(email);
     })
 
