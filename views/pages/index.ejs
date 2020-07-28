@@ -73,6 +73,8 @@
       console.log(id);
       console.log("disconnected");
       for (var i = 0; i < userSessions.length; i++) {
+        console.log("in loop");
+        console.log(user);
         if (userSessions[i] == user){
           console.log("this one");
           console.log(userSessions[i].name);
