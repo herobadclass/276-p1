@@ -57,8 +57,9 @@
       console.log(user.name);
       console.log("connected");
       var newuser = $('<li>');
-      $("#currUsers").append(newuser).text(user.name);
       newuser.attr('id',id);
+      $("#currUsers").append(newuser).text(user.name);
+      
     })
 
     socket.on('user disconnected', function(id) {
@@ -141,8 +142,7 @@
           <p id="USERS"></p>
         </div>
 
-        <ul id="messages" class="CHATBOX">
-        </ul>
+        <ul id="messages" class="CHATBOX"></ul>
         <form id="socketChat" action="">
           <input id="m" autocomplete="off" /><button>Send</button>
         </form>
