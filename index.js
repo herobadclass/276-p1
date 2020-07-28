@@ -53,10 +53,10 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('hi');
   const sessionID = socket.id;
   console.log(sessionID);
-  io.emit('session id', sessionID);
+  io.broadcast.emit('session id', sessionID);
   console.log('a user connected');
   socket.on('chat message', (msg) => {
-    io.broadcast.emit('chat message', msg);
+    io.emit('chat message', msg);
   });
 
 });
