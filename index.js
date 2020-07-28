@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     io.emit('chat message', msg);
   });
 
-  socket.on('print current users', (id,list) =>{
+  socket.on('get user list', (id,list) =>{
     io.to(id).emit('refresh user list', id,list);
   })
 
@@ -81,6 +81,17 @@ io.on('connection', (socket) => {
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
 
 });
+
+// socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// io.on('disconnect'() => {
+//     console.log('user disconnected');
+//   });
+// http.listen(3000, () => {
+//   console.log('listening on *:3000');
+// });
+
 
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));

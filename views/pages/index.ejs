@@ -34,7 +34,6 @@
     var sessionID;
     const socket = io();
     
-    
     $(function () {
       $('#socketChat').submit(function(e){
         e.preventDefault(); // prevents page reloading
@@ -43,67 +42,57 @@
         $('#m').val('');
         return false;
         });
-
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
-        });
-
-      socket.on('new user', function(id,user){
-        
-        console.log(user);
-        console.log("connected");
-        userSessions.push({id:id, name:user.name, mail:user.email});
-        socket.emit('get user list', id, userSessions);
-        $('#currUsers').append($('<li>').text(user.name).attr("id", id));
-
-        var chatUsers = document.getElementById("chatUsers");
-        var option = document.createElement("option");
-        option.text = user.name;
-        chatUsers.add(option);
-      })
-
-      socket.on('print current users', (id,list)=>{
-        if(JSON.stringify(userSessions) != JSON.stringify(list)){
-                  userSessions = list;
-              }
-          var chatUsers = document.getElementById("chatUsers");
-          var option = document.createElement("option");
-
-         for (var i = 0; i < userSessions.length; i++) {
-          if (userSessions[i].id != id){
-            // option.text = userSessions[i].name;
-            // chatUsers.add(option);
-            $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
-            }
-          }
-      })
-
-      socket.on('user disconnected', function(id,user) {
-
-        for (var i = 0; i < userSessions.length; i++) {
-          console.log(userSessions[i]);
-          if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
-            console.log("this one");
-            userSessions.splice(i,1);
-          } 
-        }
-
-        var ul = document.getElementById("currUsers");
-        for (var i = 0; i < ul.children.length; i++){
-          if(ul.children[i].id == id){
-            ul.removeChild(ul.children[i]);
-            }
-          }
-        var chatUsers = document.getElementById("chatUsers");
-        for (var i = 1; i < chatUsers.length; i++) {
-          if(chatUsers.options[i].text == user.name)
-            chatUsers.options[i].remove();
-          }
-      });
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
 
     // socket.on('a special someone', (msg) => {
     //   console.log(msg);
     // });
+
+    socket.on('new user', function(id,user){
+      console.log(user);
+      console.log("connected");
+      userSessions.push({id:id, name:user.name, mail:user.email});
+      socket.emit('get user list', id, userSessions);
+      $('#currUsers').append($('<li>').text(user.name).attr("id", id));
+
+      var option = document.createElement("option");
+      option.text = user.name;
+      chatUsers.add(option);
+    })
+
+    socket.on('refresh user list', (id,list)=>{
+      if(JSON.stringify(userSessions) != JSON.stringify(list))
+        userSessions = list;
+
+       for (var i = 0; i < userSessions.length; i++) {
+        if (userSessions[i].id != id)
+          $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+      }
+    })
+
+    socket.on('user disconnected', function(id,user) {
+      for (var i = 0; i < userSessions.length; i++) {
+        console.log(userSessions[i]);
+        if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
+          console.log("this one");
+          userSessions.splice(i,1);
+        } 
+      }
+      var ul = document.getElementById("currUsers");
+      for (var i = 0; i < ul.children.length; i++)
+        if(ul.children[i].id == id)
+          ul.removeChild(ul.children[i]);
+
+      var chatUsers = document.getElementById("chatUsers");
+      console.log(chatUsers.length);
+      for (var i = 1; i < chatUsers.length; i++) {
+        if(chatUsers.options[i].text == user.name)
+          chatUsers.options[i].remove();
+      }
+    });
+
     ///////BOTTOM////////
   });
   </script>
