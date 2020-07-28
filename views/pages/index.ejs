@@ -48,6 +48,11 @@
       console.log(id);
       userSessions.push(id);
     });
+
+    socket.on('connect', (newsocket) => {
+      console.log(newsocket.id);
+    })
+
     socket.on('bleh', (msg) => {
       console.log(msg);
     })
@@ -202,9 +207,7 @@
       <div class="texteditor" >
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
-        <textarea id="textBox" contenteditable="true" ></textarea>
-        <p id="editMode"><input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);"> 
-        
+        <textarea id="textBox" contenteditable="true" ></textarea>  
         <p>
           <button type="button" id="savebutton">Save as file</button>
           <button type="button" id="clearbutton">Clear</button>
