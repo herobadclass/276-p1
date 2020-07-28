@@ -60,9 +60,14 @@ io.on('connection', (socket) => {
   console.log(sessionID);
   io.emit('get current users', sessionID, thisUser);
 
+  // waiting for client to send signal
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
+
+  socket.on('refresh user list', (list) =>{
+    io.emit('print user list', list);
+  })
 
   socket.on('specified user', (id, msg) => {
     io.to(id).emit('a special someone', msg);

@@ -33,7 +33,7 @@
     var userSessions = [];
     var currUsers = [];
     var sessionID;
-    var socket = io();
+    const socket = io();
 
     $(function () {
     $('#socketChat').submit(function(e){
@@ -73,8 +73,8 @@
         userSessions.splice(userIndex,1);
       }
     })
-    socket.on('refresh user list', (user)=>{
-      userSessions = user;
+    socket.on('print user list', (list)=>{
+      userSessions = list;
        for (var i = 0; i < userSessions.length; i++) {
         $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
       }
