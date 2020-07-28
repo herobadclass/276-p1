@@ -56,9 +56,9 @@
       console.log(id);
       console.log(user.name);
       console.log("connected");
-      var newuser = $('<li>');
-      newuser.attr('id',id);
-      $("#currUsers").append(newuser).text(user.name);
+      // var newuser = $('<li>');
+      // newuser.attr('id',id);
+      $("#currUsers").append($("<li>")).text(user.name).attr("id", id);
       
     })
 
