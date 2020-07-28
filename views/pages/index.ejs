@@ -32,17 +32,20 @@
   <script>
     $(function () {
     var socket = io();
-    socket.broadcast.emit('hi');
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
       console.log($('#m').val());
       $('#m').val('');
+      console.log($('#m').val());
       return false;
     });
-    socket.on('chat message', function(msg){
-      console.log("ZZZ");
-      $('#messages').append($('<li>').text(msg));
+    // socket.on('chat message', function(msg){
+    //   console.log("ZZZ");
+    //   $('#messages').append($('<li>').text(msg));
+    // });
+    socket.on('chat message', data => {
+      console.log(data);
     });
   });
   </script>
