@@ -33,6 +33,7 @@
     var userSessions = [];
     var sessionID;
     const socket = io();
+    var chat_options = document.getElementById("currUsers-option");
 
     $(function () {
       $('#socketChat').submit(function(e){
@@ -56,6 +57,10 @@
       userSessions.push({id:id, name:user.name, mail:user.email});
       socket.emit('get user list', id, userSessions);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
+
+      var option = document.createElement("option");
+      option.text = user.name;
+      chat_options.add(option)
     })
 
     socket.on('refresh user list', (id,list)=>{
@@ -69,11 +74,7 @@
     })
 
     socket.on('user disconnected', function(id,user) {
-      console.log(id);
-      console.log("disconnected");
       for (var i = 0; i < userSessions.length; i++) {
-        console.log("in loop");
-        console.log(user);
         console.log(userSessions[i]);
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
           console.log("this one");
@@ -81,12 +82,15 @@
         } 
       }
       var ul = document.getElementById("currUsers");
-      for (var i = 0; i < ul.children.length; i++) {
-        if(ul.children[i].id == id){
+      for (var i = 0; i < ul.children.length; i++)
+        if(ul.children[i].id == id)
           ul.removeChild(ul.children[i]);
-        }
+
+      for (var i = 1; i < chat_options.length; i++) {
+        if(chat_options.options[i].text == user.name)
+          chat_options.options[i].remove();
       }
-    })
+    });
 
     ///////BOTTOM////////
   });
@@ -155,7 +159,9 @@
 
         <ul id="messages" class="CHATBOX"></ul>
         <form id="socketChat" action="">
-          <select id="currUsers-option"></select>
+          <select id="currUsers-option">
+            <option></option>
+          </select>
           <input id="m" autocomplete="off" /><button>Send</button>
         </form>
 

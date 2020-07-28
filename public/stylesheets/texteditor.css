@@ -3,8 +3,8 @@
 .texteditor{
 	position: absolute;
 	padding-top: 1%;
-	left:3%;
-	top: 50%;
+	right:10%;
+	/*top: 50%;*/
 }
 
 .intLink { cursor: pointer; }
