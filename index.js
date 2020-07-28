@@ -87,7 +87,7 @@ app.get('/', checkAuthenticated, (req, res) => {
     if (error) 
       console.log(error); 
     // res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
-    res.sendFile(__dirname + 'pages/index.html');
+    res.render('pages/index.html');
     console.log(USERS);
   })
 })
