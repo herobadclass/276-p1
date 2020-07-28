@@ -31,8 +31,6 @@
 
   <script>
     var userSessions = [];
-    let USERS = <%- USERS %>;
-    console.log(USERS);
     var sessionID;
     $(function () {
     var socket = io();
@@ -237,7 +235,7 @@
   </body>
 
   <script type="text/javascript">
-    
+    let USERS = <%- USERS %>;
     function displayUsers()
     {
         document.getElementById("textBox").innerHTML = "Text";   
