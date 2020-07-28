@@ -32,7 +32,7 @@
   <script>
     $(function () {
     var socket = io();
-    console.log(socket.sessionid);
+    console.log(socket.id);
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
