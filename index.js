@@ -74,7 +74,8 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () =>{
-    io.emit('user disconnected', sessionID, thisUser);
+    var userData = [id:sessionID, name: thisUser.name, mail: thisUser.email];
+    io.emit('user disconnected', sessionID, userData);
   })
 
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
