@@ -51,6 +51,9 @@
       console.log(id);
       userSessions.push(id);
     });
+    socket.on('connection', (newsocket) => {
+      console.log(newsocket.id)
+    })
   });
   </script>
 

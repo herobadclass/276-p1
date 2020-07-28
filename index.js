@@ -51,7 +51,7 @@ var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   const sessionID = socket.id;
-  console.log(sessionID);
+  console.log("session id: " + sessionID);
   socket.broadcast.emit('session id', sessionID);
   socket.to(sessionID).emit('id specific', 'Hello');
   console.log('a user connected');
