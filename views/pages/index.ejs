@@ -33,7 +33,7 @@
     var userSessions = [];
     var sessionID;
     const socket = io();
-    var chat_options = document.getElementById("currUsers-option");
+    var chat_options = document.getElementById("chatUsers");
 
     $(function () {
       $('#socketChat').submit(function(e){
@@ -60,7 +60,7 @@
 
       var option = document.createElement("option");
       option.text = user.name;
-      chat_options.add(option)
+      chat_options.add(option);
     })
 
     socket.on('refresh user list', (id,list)=>{
@@ -159,7 +159,7 @@
 
         <ul id="messages" class="CHATBOX"></ul>
         <form id="socketChat" action="">
-          <select id="currUsers-option">
+          <select id="chatUsers">
             <option></option>
           </select>
           <input id="m" autocomplete="off" /><button>Send</button>
