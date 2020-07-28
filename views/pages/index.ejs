@@ -35,12 +35,6 @@
     $(function () {
     var socket = io();
 
-    socket.on('session id', function(id){
-      sessionID = id;
-      console.log(id);
-      console.log('connected');
-    });
-
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
@@ -51,15 +45,34 @@
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-    socket.on('a special someone', (msg) => {
-      console.log(msg);
-    });
+
+    socket.on('new user', function(id){
+      userSessions.push(id);
+      socket.emit('current users', userSessions);
+    })
+
+    // socket.on('a special someone', (msg) => {
+    //   console.log(msg);
+    // });
+
+    socket.on('refresh user list', function(list){
+      userSessions = list;
+    })
 
     socket.on('user disconnected', function(id) {
       console.log(id);
       console.log("disconnected");
+      var userIndex = userSessions.indexOf(id);
+      if (userIndex > -1) {
+        userSessions.splice(userIndex,1);
+      }
     })
     
+     // socket.on('session id', function(id){
+    //   sessionID = id;
+    //   console.log(id);
+    //   console.log('connected');
+    // });
 
     ///////BOTTOM////////
   });
