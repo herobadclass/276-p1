@@ -50,9 +50,10 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
-  
+  socket.broadcast.emit('hi');
   console.log('a user connected');
   socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
     console.log('message: ' + msg);
   });
 
