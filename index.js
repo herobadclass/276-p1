@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     io.emit('chat message', msg);
   });
 
-  socket.on('get user list', (id,list) =>{
+  socket.on('print current users', (id,list) =>{
     io.to(id).emit('refresh user list', id,list);
   })
 
