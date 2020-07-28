@@ -58,15 +58,15 @@ io.on('connection', (socket) => {
   console.log("its session id:");
   sessionID = socket.id;
   console.log(sessionID);
-  io.emit('get current users', sessionID, thisUser);
+  io.emit('new user', sessionID, thisUser);
 
   // waiting for client to send signal
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
 
-  socket.on('refresh user list', (list) =>{
-    io.emit('print user list', list);
+  socket.on('get user list', (id,list) =>{
+    io.to(id).emit('refresh user list', list);
   })
 
   socket.on('specified user', (id, msg) => {

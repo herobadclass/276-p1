@@ -31,18 +31,17 @@
 
   <script>
     var userSessions = [];
-    var currUsers = [];
     var sessionID;
     const socket = io();
 
     $(function () {
-    $('#socketChat').submit(function(e){
-      e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#m').val());
-      socket.emit('specified user', sessionID,'just for you');
-      $('#m').val('');
-      return false;
-    });
+      $('#socketChat').submit(function(e){
+        e.preventDefault(); // prevents page reloading
+        socket.emit('chat message', $('#m').val());
+        socket.emit('specified user', sessionID,'just for you');
+        $('#m').val('');
+        return false;
+        });
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
@@ -51,18 +50,11 @@
     //   console.log(msg);
     // });
 
-    socket.on('get current users', function(id,user){
-      
-      userSessions.push({id:id,name:user.name,mail:user.email});
-      // socket.emit('get current users', userSessions); //for newly connected user
-      socket.emit('refresh user list', userSessions);
-      // console.log(id);
+    socket.on('new user', function(id,user){
       console.log(user);
-      // console.log(typeof user);
       console.log("connected");
-      // for (var i = 0; i < userSessions.length; i++) {
-      //   $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
-      // }
+      userSessions.push({id:id,name:user.name,mail:user.email});
+      socket.broadcast.emit('get user list', id, userSessions);
     })
 
     socket.on('user disconnected', function(id) {
@@ -73,8 +65,10 @@
         userSessions.splice(userIndex,1);
       }
     })
-    socket.on('print user list', (list)=>{
-      userSessions = list;
+    socket.on('refresh user list', (list)=>{
+      if(JSON.stringify(userSessions) != JSON.stringify(list))
+        userSessions = list;
+
        for (var i = 0; i < userSessions.length; i++) {
         $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
       }
