@@ -48,6 +48,10 @@
       console.log(id);
       userSessions.push(id);
     });
+    socket.on('bleh', (msg) => {
+      console.log(msg);
+    })
+
   });
   </script>
 
