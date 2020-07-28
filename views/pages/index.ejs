@@ -58,7 +58,6 @@
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
     })
 
-    
     socket.on('refresh user list', (id,list)=>{
       if(JSON.stringify(userSessions) != JSON.stringify(list))
         userSessions = list;
@@ -87,16 +86,7 @@
           ul.removeChild(ul.children[i]);
         }
       }
-      // var userIndex = userSessions.indexOf(id);
-      // if (userIndex > -1) {
-      //   userSessions.splice(userIndex,1);
-      // }
     })
-     // socket.on('session id', function(id){
-    //   sessionID = id;
-    //   console.log(id);
-    //   console.log('connected');
-    // });
 
     ///////BOTTOM////////
   });
@@ -165,10 +155,11 @@
 
         <ul id="messages" class="CHATBOX"></ul>
         <form id="socketChat" action="">
+          <select id="currUsers-option"></select>
           <input id="m" autocomplete="off" /><button>Send</button>
         </form>
 
-        <ul id="currUsers"></ul>
+        <ul id="currUsers">Current Users</ul>
         
 
         <div class="template-field">
