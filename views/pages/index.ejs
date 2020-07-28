@@ -35,9 +35,6 @@
     const socket = io();
     
     $(function () {
-      var chatUsers = document.getElementById("chatUsers");
-      var option = document.createElement("option");
-      
       $('#socketChat').submit(function(e){
         e.preventDefault(); // prevents page reloading
         socket.emit('chat message', $('#m').val());
@@ -59,8 +56,8 @@
       userSessions.push({id:id, name:user.name, mail:user.email});
       socket.emit('get user list', id, userSessions);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
-      // var chatUsers = document.getElementById("chatUsers");
-      // var option = document.createElement("option");
+      var chatUsers = document.getElementById("chatUsers");
+      var option = document.createElement("option");
       option.text = user.name;
       chatUsers.add(option);
     })
@@ -69,8 +66,8 @@
       if(JSON.stringify(userSessions) != JSON.stringify(list)){
         userSessions = list;
       }
-      // var chatUsers = document.getElementById("chatUsers");
-      
+      var chatUsers = document.getElementById("chatUsers");
+      var option = document.createElement("option");
 
        for (var i = 0; i < userSessions.length; i++) {
         if (userSessions[i].id != id){
@@ -94,7 +91,7 @@
         if(ul.children[i].id == id)
           ul.removeChild(ul.children[i]);
 
-      // var chatUsers = document.getElementById("chatUsers");
+      var chatUsers = document.getElementById("chatUsers");
       console.log(chatUsers.length);
       for (var i = 1; i < chatUsers.length; i++) {
         if(chatUsers.options[i].text == user.name)
