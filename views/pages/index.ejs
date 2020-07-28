@@ -55,9 +55,9 @@
       // userSessions.push();
 
       console.log(user.name);
-      console.log(id);
+      console.log("connected");
       var newuser = $('<li>');
-      $("#currUsers").append(newuser + user.name + "</li>");
+      $("#currUsers").append(newuser).text(user.name);
       newuser.attr('id',id);
     })
 
