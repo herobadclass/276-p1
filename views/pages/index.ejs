@@ -63,8 +63,9 @@
       })
 
       socket.on('print current users', (id,list)=>{
-        if(JSON.stringify(userSessions) != JSON.stringify(list))
-          userSessions = list;
+        if(JSON.stringify(userSessions) != JSON.stringify(list)){
+                  userSessions = list;
+              }
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
 
