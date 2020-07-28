@@ -50,9 +50,8 @@
     //   console.log(msg);
     // });
 
-    socket.on('refresh user list', function(id,email){
+    socket.on('refresh user list', function(id){
       userSessions.push(id);
-      console.log(email);
     })
 
     socket.on('user disconnected', function(id) {
@@ -72,6 +71,23 @@
 
     ///////BOTTOM////////
   });
+  </script>
+
+  <script type="text/javascript">
+    let USERS = <%- USERS %>;
+    function displayUsers()
+    {
+        document.getElementById("textBox").innerHTML = "Text";   
+        // for (var i = 0; i < USERS.users.length; i++) {
+        //   console.log(USERS.users[i].name);}
+    }
+    var user_arr = [];
+    var user_list = "";
+    for (var i = 0; i < USERS.users.length; i++) {
+      user_list += USERS.users[i].name;
+      user_arr.push(USERS.users[i].name, " ");
+    }
+    document.getElementById("USERS").innerHTML = user_list;
   </script>
 
   <script>
@@ -235,22 +251,7 @@
     </div>
   </body>
 
-  <script type="text/javascript">
-    let USERS = <%- USERS %>;
-    function displayUsers()
-    {
-        document.getElementById("textBox").innerHTML = "Text";   
-        // for (var i = 0; i < USERS.users.length; i++) {
-        //   console.log(USERS.users[i].name);}
-    }
-    var user_arr = [];
-    var user_list = "";
-    for (var i = 0; i < USERS.users.length; i++) {
-      user_list += USERS.users[i].name;
-      user_arr.push(USERS.users[i].name, " ");
-    }
-    document.getElementById("USERS").innerHTML = user_list;
-  </script>
+  
   <script>
 
     const logoutForm = document.querySelector('[logout-form]')

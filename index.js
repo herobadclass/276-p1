@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
   console.log("its session id:");
   sessionID = socket.id;
   console.log(sessionID);
-  io.emit('refresh user list', sessionID, ${email});
+  io.emit('refresh user list', sessionID);
 
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
