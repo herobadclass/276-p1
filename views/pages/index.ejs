@@ -43,8 +43,8 @@
 
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message',sessionID, $('#m').val());
-      // socket.emit('specified user', sessionID, 'just for you');
+      socket.emit('chat message', $('#m').val());
+      socket.emit('specified user', sessionID,'just for you');
       $('#m').val('');
       return false;
     });
@@ -53,6 +53,11 @@
     });
     socket.on('a special someone', (msg) => {
       console.log(msg);
+    });
+
+    socket.on('disconnect', function(){
+      console.log(socket.id);
+      console.log("disconnected");
     })
     
 

@@ -58,8 +58,8 @@ io.on('connection', (socket) => {
 
   console.log('a user connected');
 
-  socket.on('chat message', (id,msg) => {
-    io.to(id).emit('chat message', msg);
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
   });
 
   socket.on('specified user', (id, msg) => {
