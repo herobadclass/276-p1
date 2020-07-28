@@ -33,7 +33,6 @@
     var userSessions = [];
     var sessionID;
     const socket = io();
-    console.log(chatUsers.length);
     $(function () {
       $('#socketChat').submit(function(e){
         e.preventDefault(); // prevents page reloading
@@ -45,10 +44,6 @@
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-
-    // socket.on('a special someone', (msg) => {
-    //   console.log(msg);
-    // });
 
     socket.on('new user', function(id,user){
       console.log(user);
