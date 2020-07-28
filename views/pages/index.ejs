@@ -45,7 +45,7 @@
     });
     socket.on('session id', (id) =>{
       console.log(id);
-      socket.to(id).emit("Hi there");
+      io.to(id).emit("Hi there");
     })
   });
   </script>
