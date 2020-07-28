@@ -36,6 +36,7 @@
     var socket = io();
 
     $('#socketChat').submit(function(e){
+      console.log(socket.id);
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
       socket.emit('specified user', sessionID,'just for you');
