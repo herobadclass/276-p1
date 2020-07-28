@@ -76,7 +76,7 @@
         console.log("in loop");
         console.log(user);
         console.log(userSessions[i]);
-        if (userSessions[i] == user){
+        if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
           console.log("this one");
           console.log(userSessions[i]);
         }
