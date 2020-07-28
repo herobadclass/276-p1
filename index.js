@@ -62,28 +62,13 @@ io.on('connection', (socket) => {
     io.emit('chat message', msg);
   });
 
+  socket.on('specified user', (id, msg) => {
+    io.to(id).emit('a special someone', msg);
+  })
+
   io.to(sessionID).emit('bleh', 'HI!!!!!');
-});
 
-var parseCookie = require('connect').utils.parseCookie;
- 
-io.set('authorization', function (data, accept) {
-    // check if there's a cookie header
-    if (data.headers.cookie) {
-        // if there is, parse the cookie
-        data.cookie = parseCookie(data.headers.cookie);
-        // note that you will need to use the same key to grad the
-        // session id, as you specified in the Express setup.
-        data.sessionID = data.cookie['express.sid'];
-    } else {
-       // if there isn't, turn down the connection with a message
-       // and leave the function.
-       return accept('No cookie transmitted.', false);
-    }
-    // accept the incoming connection
-    accept(null, true);
 });
-
 
 // socket.on('disconnect', () => {
 //     console.log('user disconnected');
@@ -118,18 +103,6 @@ app.get('/', checkAuthenticated, (req, res) => {
     console.log(USERS);
   })
 })
-
-// app.post('/',checkAuthenticated, (req, res) =>{
-//   const getUsersQuery = `SELECT * FROM users`
-//   var USERS;
-//   pool.query(getUsersQuery, (error, result) =>{
-//     if (error) {
-//       console.log(error);
-//     }
-//     console.log("1");
-//   })
-// })
-
 
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';

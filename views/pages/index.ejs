@@ -36,23 +36,22 @@
     $('#socketChat').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
-      console.log($('#m').val());
+      socket.emit('specified user', 'just for you');
       $('#m').val('');
-      console.log($('#m').val());
       return false;
     });
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
+    socket.on('a special someone', (msg) => {
+      console.log(msg);
+    })
     socket.on('session id', function(id){
       console.log(id);
       console.log('connected');
     });
 
-    socket.on('bleh', (msg) => {
-      console.log(msg);
-    })
-
+    ///////BOTTOM////////
   });
   </script>
 
