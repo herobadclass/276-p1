@@ -69,7 +69,9 @@
       console.log(user);
       console.log("connected");
       userSessions.push({id:id, name:user.name, mail:user.email});
-      socket.emit('get user list', id, userSessions);
+      var userList = userSessions;
+      console.log(userList);
+      socket.emit('get user list', id, userList);
       $('#currUsers').append($('<li>').text(user.name).attr("id", id));
       var chatUsers = document.getElementById("chatUsers");
       var option = document.createElement("option");
@@ -81,6 +83,7 @@
       // if(JSON.stringify(userSessions) != JSON.stringify(list)){
         
       if (userSessions != list) {
+        console.log("in seciton");
         userSessions = [];
         for (var i = 0; i < list.length; i++) {
           userSessions.push(list[i]);
