@@ -25,7 +25,8 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
-      .chatting{position: fixed; bottom: 5%;  z-index: 1;}
+      .chatting{position: fixed; bottom: 5%; right:5%; z-index: 100; height: 20%; overflow: scroll;}
+
     </style>
 
   </head>
@@ -152,12 +153,13 @@
   <body onload="checkReset()">
     <div class="bg">
         <button id="clickme">Click me</button>
+        <div id="test">Testing</div>
         <!-- <div class="greet">
           <h1> Greetings! &nbsp; <span class="username"><%= username %></span> </h1>
         </div> -->
         <div class="template">Template</div>
 
-        <div id="test">Testing sdasadasx</div>
+        
 
         <div><p id="USERS"></p></div>
 
