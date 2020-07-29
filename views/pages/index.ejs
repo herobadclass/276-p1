@@ -57,7 +57,7 @@
     socket.on('get chat message', function(name,msg){
       $('#messages').append($('<li>').text(name + ": " + msg));
       var bottom = document.getElementById("messages").scrollHeight;
-      $('#messages').scrollTop(100);
+      $('#messages').scrollTop(bottom);
     });
 
     socket.on('whisper', function(id,name,msg){
