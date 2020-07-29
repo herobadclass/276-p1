@@ -41,12 +41,12 @@
 
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
-
-        if (specialPerson.options[specialPerson.selectedIndex].text == "") {
+        var selected = specialPerson.options[specialPerson.selectedIndex];
+        if (selected.text == "") {
           socket.emit('type chat message', $('#m').val());
         }
         else{
-          socket.emit('specified user', specialPerson.options[specialPerson.selectedIndex].id, specialPerson.options[specialPerson.selectedIndex].name, $('#m').val());
+          socket.emit('specified user', selected.id, selected.text, $('#m').val());
         }
         $('#m').val('');
         return false;
@@ -59,7 +59,7 @@
 
     socket.on('whisper', function(id,name,msg){
       console.log(msg);
-      $('#messages').append($('<li>').text(name +":" + msg));
+      $('#messages').append($('<li>').text(name +": " + msg));
     })
 
     socket.on('new user', function(id,list){
