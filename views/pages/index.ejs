@@ -38,13 +38,15 @@
     
     $(function () {
       $('#socketChat').submit(function(e){
+
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
-        if (specialPerson.options[specialPerson.selectedIndex].text == "") {
+        var selected = specialPerson.options[specialPerson.selectedIndex];
+        if (selected.text == "") {
           socket.emit('type chat message', $('#m').val());
         }
         else{
-          socket.emit('specified user', specialPerson.options[specialPerson.selectedIndex].id,$('#m').val());
+          socket.emit('specified user', selected.id,$('#m').val());
         }
         $('#m').val('');
         return false;
