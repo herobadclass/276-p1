@@ -44,7 +44,7 @@
         var specialPerson =document.getElementById("chatUsers");
         var selected = specialPerson.options[specialPerson.selectedIndex];
         if (selected.text == "") {
-          socket.emit('type chat message', selected.text, $('#m').val());
+          socket.emit('type chat message', your_name, $('#m').val());
         }
         else{
           socket.emit('specified user', selected.id, your_name, $('#m').val());
