@@ -89,7 +89,7 @@
       for (var i = 0; i < userSessions.length; i++) {
         console.log(userSessions[i]);
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
-          console.log("this one");
+          console.log(userSessions[i]);
           userSessions.splice(i,1);
         } 
       }
