@@ -63,24 +63,25 @@
     socket.on('new user', function(id,list){
       for (var i = 0; i < list.length; i++) {
         if(list[i].id == id ){
-          console.log(list[i].name);
           $('#currUsers').append($('<li>').text(list[i].name).attr("id", id));
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
           option.text = list[i].name;
           chatUsers.add(option);
-          
+          if (logged == false) {
+            logged = true;
+            sessionID = id;
+          }
           break;
         }
       }
       for (var i = 0; i < list.length; i++) {
-        if(list[i].id != id && logged == false){
+        if(list[i].id != id &&list[i].id != sessionID){
           $('#currUsers').append($('<li>').text(list[i].name).attr("id", list[i].id));
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
           option.text = list[i].name;
           chatUsers.add(option);
-          logged = true;
           break;
         }
       }
