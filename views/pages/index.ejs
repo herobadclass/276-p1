@@ -43,14 +43,8 @@
           socket.emit('type chat message', $('#m').val());
         }
         else{
-          var selected = specialPerson.options[specialPerson.selectedIndex].text;
-          for (var i = 0; i < userSessions.length; i++) {
-            if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
-              socket.emit('specified user', userSessions[i].id, $('#m').val());
-            }
-          }
+          socket.emit('specified user', specialPerson.options[specialPerson.selectedIndex].id,$('#m').val());
         }
-        
         $('#m').val('');
         return false;
         });
@@ -65,56 +59,62 @@
       $('#messages').append($('<li>').text("me says" + msg));
     })
 
-    socket.on('new user', function(id,user){
-      console.log(user);
-      console.log("connected");
-      userSessions.push({id:id, name:user.name, mail:user.email});
-      socket.emit('get user list', id, userSessions);
-      $('#currUsers').append($('<li>').text(user.name).attr("id", id));
-      var chatUsers = document.getElementById("chatUsers");
-      var option = document.createElement("option");
-      option.text = user.name;
-      chatUsers.add(option);
-    })
-
-    socket.on('get current users', (id,list)=>{
-      // if(JSON.stringify(userSessions) != JSON.stringify(list)){
-        
-      if (userSessions != list) {
-        for (var i = 0; i < list.length; i++) {
-          console.log("list[i].name: " + list[i].name);
-        }
-        console.log("check" + userSessions);
-        userSessions = list;
-      }
-      var chatUsers = document.getElementById("chatUsers");
-      var option = document.createElement("option");
-       for (var i = 0; i < userSessions.length; i++) {
-        if (userSessions[i].id != id){
-          option.text = userSessions[i].name;
+    socket.on('new user', function(id,list){
+      for (var i = 0; i < list.length; i++) {
+        if(list[i].id == id){
+          $('#currUsers').append($('<li>').text(list[i].name).attr("id", id));
+          var chatUsers = document.getElementById("chatUsers");
+          var option = document.createElement("option");
+          option.text = list[i].name;
           chatUsers.add(option);
-          $('#currUsers').append($('<li>').text(userSessions[i].name).attr("id", userSessions[i].id));
+          socket.emit()
+          break;
         }
       }
+      for (var i = 0; i < list.length; i++) {
+        if(list[i].id != id){
+          var chatUsers = document.getElementById("chatUsers");
+          var option = document.createElement("option");
+          option.text = list[i].name;
+          chatUsers.add(option);
+          $('#currUsers').append($('<li>').text(list[i].name).attr("id", list[i].id));
+          break;
+        }
+      }
+      // console.log(user);
+      // console.log("connected");
+      // userSessions.push({id:id, name:user.name, mail:user.email});
+      // socket.emit('get user list', id, userSessions);
+      
     })
 
-    socket.on('user disconnected', function(id,user) {
-      for (var i = 0; i < userSessions.length; i++) {
-        console.log(userSessions[i]);
-        if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
-          console.log("this one");
-          userSessions.splice(i,1);
-        } 
-      }
+    // socket.on('get current users', (id,list)=>{
+    //   // if(JSON.stringify(userSessions) != JSON.stringify(list)){
+        
+    //   if (userSessions != list) {
+    //     for (var i = 0; i < list.length; i++) {
+    //       console.log("list[i].name:"list[i].name);
+    //     }
+    //     console.log("check" + userSessions);
+    //     userSessions = list;
+    //   }
+      
+    //    for (var i = 0; i < userSessions.length; i++) {
+    //     if (userSessions[i].id != id){
+          
+    //     }
+    //   }
+    // })
+
+    socket.on('user disconnected', function(id,list) {
       var ul = document.getElementById("currUsers");
       for (var i = 0; i < ul.children.length; i++)
         if(ul.children[i].id == id)
           ul.removeChild(ul.children[i]);
 
       var chatUsers = document.getElementById("chatUsers");
-      console.log(chatUsers.length);
       for (var i = 1; i < chatUsers.length; i++) {
-        if(chatUsers.options[i].text == user.name)
+        if(chatUsers.options[i].id == id)
           chatUsers.options[i].remove();
       }
     });
