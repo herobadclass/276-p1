@@ -17,7 +17,7 @@
     </style>
 
     <style>
-      .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0; height: 25%; width: 100%; z-index: -1; border: 1px black; overflow-y: auto; }
+      .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0.5%; height: 25%; width: 100%; z-index: -1; border: 1px black; overflow-y: auto; }
       .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px;}
@@ -57,7 +57,7 @@
     socket.on('get chat message', function(name,msg){
       console.log('all chat:');
       $('#messages').append($('<li>').text(name + ": " + msg));
-      $('#messages').slideDown('fast');
+      $('#messages').scrollTop = $('#messages').scrollHeight ;
     });
 
     socket.on('whisper', function(id,name,msg){
