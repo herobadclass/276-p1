@@ -20,11 +20,12 @@
       .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0; height: 25%; width: 100%; z-index: -1; border: 1px black; }
       .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; overflow-y: auto;}
+      #messages li { padding: 5px 10px;}
       #messages li:nth-child(odd) { background: #eee;}/* alternate the bg color */
       .selectUser{ border-width: 1px; border-color: black; position: fixed; bottom: 10%; right: 10%; width: 5% }
       .inputBox{position: fixed; bottom: 5%; right: 10%; width: 10%; height: 3%;}
       .sendButton { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; position: fixed; right: 0.5%; bottom: 4%;}
+      .chatting{overflow-y: auto;}
     </style>
 
   </head>
@@ -164,8 +165,8 @@
 
         <div><p id="USERS"></p></div>
 
-        <div class="chatting">
-          <ul id="messages" class="CHATBOX"></ul>
+        <div class="chatting" >
+          <ul id="messages" class="CHATBOX" ></ul>
           <select id="chatUsers" class="selectUser"><option></option></select>
           <form id="socketChat" action="">
             <input id="m" autocomplete="off" class="inputBox" /><button class="sendButton">Send</button>
