@@ -18,12 +18,12 @@
 
     <style>
       .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0; overflow-y: scroll; height: 25%; width: 100%; z-index: -1;}
-      .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; right: 5%;}
+      .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
       .CHATBOX button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
-      .chatting{position: fixed; bottom: 5%; }
+      .inputBox{position: fixed; bottom: 5%; right:10%;}
     </style>
 
   </head>
@@ -162,13 +162,12 @@
 
         <div><p id="USERS"></p></div>
 
-        <div class="chatting">
           <ul id="messages" class="CHATBOX"></ul>
-          <select id="chatUsers"><option></option></select>
+          <select id="chatUsers" class="inputBox"><option></option></select>
           <form id="socketChat" action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
+            <input id="m" autocomplete="off" class="inputBox" /><button>Send</button>
           </form>
-        </div>
+
 
         <ul id="currUsers">Current Users</ul>
         
