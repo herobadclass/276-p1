@@ -55,8 +55,6 @@ var userSessions = [];
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-
-  console.log("its session id:");
   sessionID = socket.id;
 
   userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
