@@ -112,14 +112,17 @@
 
     socket.on('user disconnected', function(id,list) {
       var ul = document.getElementById("currUsers");
-      for (var i = 0; i < ul.children.length; i++)
-        if(ul.children[i].id == id)
+      for (var i = 0; i < ul.children.length; i++){
+        if(ul.children[i].id == id){
           ul.removeChild(ul.children[i]);
+        }
+      }
 
       var chatUsers = document.getElementById("chatUsers");
       for (var i = 1; i < chatUsers.length; i++) {
-        if(chatUsers.options[i].id == id)
+        if(chatUsers.options[i].id == id){
           chatUsers.options[i].remove();
+        }
       }
     });
 
@@ -184,7 +187,6 @@
 
         <ul id="messages" class="CHATBOX"></ul>
         <select id="chatUsers">
-            <option></option>
           </select>
         <form id="socketChat" action="">
           <input id="m" autocomplete="off" /><button>Send</button>
