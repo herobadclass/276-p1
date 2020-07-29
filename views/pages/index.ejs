@@ -44,7 +44,8 @@
         }
         else{
           for (var i = 0; i < userSessions.length; i++) {
-
+            console.log(userSessions[i].name);
+            console.log(specialPerson.options[specialPerson.selectedIndex].text);
             if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
               console.log("in loop");
               socket.emit('specified user', sessionID, $('#m').val());
@@ -64,10 +65,6 @@
     socket.on('whisper', function(id,msg){
       $('#messages').append($('<li>').text("me says" + msg));
     })
-
-    // socket.on('a special someone', (msg) => {
-    //   console.log(msg);
-    // });
 
     socket.on('new user', function(id,user){
       console.log(user);
