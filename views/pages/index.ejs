@@ -44,6 +44,7 @@
         }
         else{
           for (var i = 0; i < userSessions.length; i++) {
+            console.log("in loop");
             if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
               socket.emit('specified user', sessionID, $('#m').val());
             }
