@@ -50,15 +50,14 @@ app.set('view engine', 'ejs')
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var sessionID;
+
 var userSessions = [];
 
 io.on('connection', function(socket){
   console.log('a user connected');
-  sessionID = socket.id;
 
-  userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
-  io.emit('new user', sessionID, userSessions);
+  userSessions.push({id:socket.id, name:thisUser.name, mail:thisUser.email});
+  io.emit('new user', socket.id, userSessions);
 
   // waiting for client to send signal
   socket.on('type chat message', (msg) => {
@@ -79,12 +78,12 @@ io.on('connection', function(socket){
         userSessions.splice(i,1);
       }
     }
-    // var userData = {id:sessionID, name: thisUser.name, mail: thisUser.email};
+    // var userData = {id:socket.id, name: thisUser.name, mail: thisUser.email};
 
     io.emit('user disconnected', socket.io, userSessions);
   })
 
-  // io.to(sessionID).emit('bleh', 'HI!!!!!');
+  // io.to(socket.id).emit('bleh', 'HI!!!!!');
 
 });
 

@@ -96,7 +96,6 @@
 
     socket.on('user disconnected', function(id,list) {
       var ul = document.getElementById("currUsers");
-      console.log(id);
       for (var i = 0; i < ul.children.length; i++){
         if(ul.children[i].id == id){
           console.log("i and node " + i+ ul.children[i]);
@@ -114,7 +113,7 @@
       }
     });
 
-    //
+
 
     ///////BOTTOM////////
   });
