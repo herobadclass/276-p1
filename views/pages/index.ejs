@@ -67,6 +67,7 @@
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
           option.text = list[i].name;
+          option.id = list[i].id;
           chatUsers.add(option);
           if (logged == false) {
             logged = true;
