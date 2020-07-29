@@ -80,13 +80,13 @@
     socket.on('get current users', (id,list)=>{
       // if(JSON.stringify(userSessions) != JSON.stringify(list)){
         
-      // if (userSessions != list) {
-      //   for (var i = 0; i < list.length; i++) {
-      //     console.log("list[i].name: " + list[i].name);
-      //   }
-      //   console.log("check" + userSessions);
-      //   userSessions = list;
-      // }
+      if (userSessions != list) {
+        for (var i = 0; i < list.length; i++) {
+          console.log("list[i].name: " + list[i].name);
+        }
+        console.log("check" + userSessions);
+        userSessions = list;
+      }
       var chatUsers = document.getElementById("chatUsers");
       var option = document.createElement("option");
        for (var i = 0; i < userSessions.length; i++) {
