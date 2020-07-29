@@ -81,12 +81,15 @@
       // if(JSON.stringify(userSessions) != JSON.stringify(list)){
         
       if (userSessions != list) {
+        userSessions = [];
+        for (var i = 0; i < list.length; i++) {
+          userSessions.push(list[i]);
+        }
         console.log("check" + userSessions);
         userSessions = list;
       }
       var chatUsers = document.getElementById("chatUsers");
       var option = document.createElement("option");
-
        for (var i = 0; i < userSessions.length; i++) {
         if (userSessions[i].id != id){
           option.text = userSessions[i].name;
