@@ -97,7 +97,7 @@
     socket.on('user disconnected', function(id,list) {
       var ul = document.getElementById("currUsers");
       
-      for (var i = 0; i < ul.children.length; i++){
+      for (var i = 0; i < ul.children.length + 1; i++){
         if(ul.children[i].id == id){
           console.log("i and node " + i + ul.children[i]);
           ul.removeChild(ul.children[i]);
@@ -106,7 +106,7 @@
       }
 
       var chatUsers = document.getElementById("chatUsers");
-      for (var i = 1; i < chatUsers.length; i++) {
+      for (var i = 1; i < chatUsers.length + 1; i++) {
         if(chatUsers.options[i].id == id){
           chatUsers.options[i].remove();
         }
