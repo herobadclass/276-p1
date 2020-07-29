@@ -42,7 +42,7 @@
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
 
-        if (selected.text == "") {
+        if (specialPerson.options[specialPerson.selectedIndex].text == "") {
           socket.emit('type chat message', $('#m').val());
         }
         else{
