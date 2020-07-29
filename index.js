@@ -61,8 +61,8 @@ io.on('connection', (socket) => {
   io.emit('new user', sessionID, thisUser);
 
   // waiting for client to send signal
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on('type chat message', (msg) => {
+    io.emit('get chat message', msg);
   });
 
   socket.on('get user list', (id,list) =>{

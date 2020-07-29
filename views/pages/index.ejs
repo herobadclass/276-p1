@@ -40,12 +40,13 @@
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
         if (specialPerson.options[specialPerson.selectedIndex].text == "") {
-          socket.emit('chat message', $('#m').val());
+          socket.emit('type chat message', $('#m').val());
         }
         else{
+          var selected = specialPerson.options[specialPerson.selectedIndex].text;
           for (var i = 0; i < userSessions.length; i++) {
             console.log(userSessions[i].name);
-            console.log(specialPerson.options[specialPerson.selectedIndex].text);
+            console.log(selected)
             if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
               console.log("in loop");
               socket.emit('specified user', sessionID, $('#m').val());
@@ -57,7 +58,7 @@
         return false;
         });
 
-    socket.on('chat message', function(msg){
+    socket.on('get chat message', function(msg){
       console.log('all chat:');
       $('#messages').append($('<li>').text(msg));
     });
