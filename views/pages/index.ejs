@@ -46,7 +46,7 @@
           socket.emit('type chat message', $('#m').val());
         }
         else{
-          socket.emit('specified user', selected.id, selected.text, $('#m').val());
+          socket.emit('specified user', selected.id, your_name, $('#m').val());
         }
         $('#m').val('');
         return false;
@@ -114,7 +114,6 @@
         }
       }
     });
-
 
 
     ///////BOTTOM////////
