@@ -40,18 +40,28 @@
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
         if (specialPerson.options[specialPerson.selectedIndex].text == "") {
-          console.log(your_name);
-          console.log("all chat:");
           socket.emit('chat message', $('#m').val());
         }
+        else{
+          for (var i = 0; i < userSessions.length; i++) {
+            if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
+              socket.emit('specified user', sessionID, $('#m').val());
+            }
+          }
+        }
         
-        socket.emit('specified user', sessionID,'just for you');
         $('#m').val('');
         return false;
         });
+
     socket.on('chat message', function(msg){
+      console.log('all chat:');
       $('#messages').append($('<li>').text(msg));
     });
+
+    socket.on('whisper', function(id,msg){
+      $('#messages').append($('<li>').text("me says" + msg));
+    })
 
     // socket.on('a special someone', (msg) => {
     //   console.log(msg);
@@ -105,6 +115,8 @@
           chatUsers.options[i].remove();
       }
     });
+
+
 
     ///////BOTTOM////////
   });

@@ -78,6 +78,9 @@ io.on('connection', (socket) => {
     io.emit('user disconnected', sessionID, userData);
   })
 
+  socket.on('specified user', (id, msg) =>{
+    socket.to(id).emit('whisper', id,msg);
+  })
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
 
 });
