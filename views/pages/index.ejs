@@ -49,7 +49,7 @@
             console.log(selected)
             if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
               console.log("in loop");
-              socket.emit('specified user', sessionID, $('#m').val());
+              socket.emit('specified user', userSessions[i].id, $('#m').val());
             }
           }
         }
