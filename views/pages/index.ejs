@@ -37,7 +37,7 @@
     }
   </script>
 
-  <body onload="Time()">
+  <body onload="checkReset()">
     <div class="bg">
 
         <div class="template">
@@ -59,8 +59,6 @@
       <form class="del-user-form" action="/del_user" method="post" del-user-form>
         <button type="submit">Delete Account</button>
       </form>
-
-      Current time is:<div id="txt"></div>
 
       <div class="all-lists">
         <h2 class="task-list-title">My lists</h2>
@@ -94,10 +92,11 @@
               <input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday">wednesday</label><br>
               <input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday">thursday</label><br>
               <input type="checkbox" name="friday" value="5" id="friday"><label for="friday">friday</label><br>
-              <input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">saturday</label>
+              <input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">saturday</label><br>
+              <input type="time" name="time" value="">
             </div>
 
-            <input type="time" name="time" value="">
+
             <button class="btn create">+</button>
           </form>
 
@@ -230,26 +229,48 @@
       } else {
         let selectedList = list.find(list => list.id == selectedListId)
         selectedTasks = selectedList.tasks
-        renderTaskCount(selectedTasks)
         renderTasks(selectedTasks)
-        listDisplayContainer.style.display = ''
+        renderTaskCount(selectedTasks)
         listTitleElement.innerText = list.find(list => list.id == selectedListId).name
+        listDisplayContainer.style.display = ''
       }
     }
 
-    function Time() {
-      const today = new Date()
-      const day = today.getDay()
-      const hour = today.getHours()
-      const minute = today.getMinutes()
-      const second = today.getSeconds()
+    function checkReset() {
+      var today = new Date()
+      var day = today.getDay()
+      var hour = today.getHours()
+      hour = ("0" + hour).slice(-2);
+      var minute = today.getMinutes()
+      minute = ("0" + minute).slice(-2);
+      var second = today.getSeconds()
+      second = ("0" + second).slice(-2);
 
-      setTimeout('Time()',1000)
-      document.getElementById('txt').innerHTML =hour + ":" + minute + ":" + second
+      setTimeout('checkReset()',1000)
 
       list.forEach(list => {
-        task = list.tasks
-        task.forEach(task => {
+        list.tasks.forEach(task => {
+          if (task.date != '' && task.time != '') {
+            var dayArr = task.date.split(',')
+            var timeArr = task.time.split(':')
+            var countDownDates = []
+            dayArr.forEach(date => {
+              var nextReset = new Date()
+              nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
+              nextReset.setDate(today.getDate() + (parseInt(date) + 7 - today.getDay()) % 7)
+              if (nextReset.getTime() < today.getTime()) {
+                nextReset.setDate(today.getDate() + (parseInt(date) + 7 - today.getDay()))
+              }
+              countDownDates.push(nextReset)
+            })
+            var distance = Math.min.apply(Math, countDownDates) - today
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
+          }
+
           if (task.complete) {
             if (task.date.includes(day)) {
               if (task.time.includes(hour + ':' + minute + ':' + second)) {
@@ -275,8 +296,7 @@
         label.htmlFor = task.id
         label.innerText = task.name
         const paragraph = taskElement.querySelector('p')
-
-        paragraph.innerText = task.date + ' ' +task.time
+        paragraph.id = task.id + '_paragraph'
         taskContainer.appendChild(taskElement)
       })
     }
