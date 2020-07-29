@@ -25,7 +25,7 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
-      ()
+      .chatting{position: fixed; bottom: 5%;  z-index: 1;}
     </style>
 
   </head>
@@ -60,7 +60,7 @@
 
     socket.on('whisper', function(id,name,msg){
       console.log(msg);
-      $('#messages').append($('<li>').text(name +": " + msg));
+      $('#messages').append($('<li>').text(name +"(whisper): " + msg));
     })
 
     socket.on('new user', function(id,list){
@@ -90,10 +90,6 @@
           break;
         }
       }
-      // console.log(user);
-      // console.log("connected");
-      // userSessions.push({id:id, name:user.name, mail:user.email});
-      // socket.emit('get user list', id, userSessions);
       
     })
 
@@ -165,11 +161,13 @@
 
         <div><p id="USERS"></p></div>
 
-        <ul id="messages" class="CHATBOX"></ul>
-        <select id="chatUsers"><option></option></select>
-        <form id="socketChat" action="">
-          <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
+        <div class="chatting">
+          <ul id="messages" class="CHATBOX"></ul>
+          <select id="chatUsers"><option></option></select>
+          <form id="socketChat" action="">
+            <input id="m" autocomplete="off" /><button>Send</button>
+          </form>
+        </div>
 
         <ul id="currUsers">Current Users</ul>
         
