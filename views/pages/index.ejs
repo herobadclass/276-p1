@@ -71,6 +71,7 @@
 
     socket.on('get current users', (id,list)=>{
       if(JSON.stringify(userSessions) != JSON.stringify(list)){
+        console.log("success");
         userSessions = list;
       }
       var chatUsers = document.getElementById("chatUsers");
@@ -89,7 +90,7 @@
       for (var i = 0; i < userSessions.length; i++) {
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
           console.log(userSessions[i]);
-          userSessions.splice(i+1,1);
+          userSessions.splice(i,1);
         } 
       }
       var ul = document.getElementById("currUsers");
