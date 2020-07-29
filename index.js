@@ -69,10 +69,6 @@ io.on('connection', (socket) => {
     io.to(id).emit('get current users', id,list);
   })
 
-  socket.on('specified user', (id, msg) => {
-    io.to(id).emit('a special someone', msg);
-  })
-
   socket.on('disconnect', () =>{
     var userData = {id:sessionID, name: thisUser.name, mail: thisUser.email};
     io.emit('user disconnected', sessionID, userData);
