@@ -71,7 +71,6 @@
 
     socket.on('get current users', (id,list)=>{
       if(JSON.stringify(userSessions) != JSON.stringify(list)){
-        console.log("success");
         userSessions = list;
       }
       var chatUsers = document.getElementById("chatUsers");
@@ -89,20 +88,22 @@
     socket.on('user disconnected', function(id,user) {
       for (var i = 0; i < userSessions.length; i++) {
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
-          console.log(userSessions[i]);
           userSessions.splice(i,1);
         } 
       }
       var ul = document.getElementById("currUsers");
-      for (var i = 0; i < ul.children.length; i++)
-        if(ul.children[i].id == id)
+      for (var i = 0; i < ul.children.length; i++){
+        if(ul.children[i].id == id){
+          console.log(i);
           ul.removeChild(ul.children[i]);
+        }
+      }
 
       var chatUsers = document.getElementById("chatUsers");
       console.log(chatUsers.length);
       for (var i = 1; i < chatUsers.length; i++) {
         if(chatUsers.options[i].text == user.name)
-          chatUsers.options[i].remove();
+          chatUsers.options[].remove();
       }
     });
 
