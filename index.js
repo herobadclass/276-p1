@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
       }
     }
     // var userData = {id:sessionID, name: thisUser.name, mail: thisUser.email};
-    
+
     io.emit('user disconnected', sessionID, userSessions);
   })
 
