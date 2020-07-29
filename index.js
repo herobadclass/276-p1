@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+var thisUser;
+
 const express = require('express')
 const path = require('path')
 const bcrypt = require('bcrypt')
@@ -10,6 +12,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cors = require('cors')
+
 
 const { Pool } = require('pg')
 var pool;
@@ -24,8 +27,7 @@ initializePassport(
   id => pool.query(`SELECT * FROM users WHERE id = '${id}'`)
 )
 
-var http = require('http'),
-    fs = require('fs');
+var fs = require('fs');
 
 const PORT = process.env.PORT || 5000
 
@@ -46,25 +48,86 @@ app.use('/', cors())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+var sessionID;
+var userSessions = [];
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  sessionID = socket.id;
+
+  userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
+  io.emit('new user', sessionID, userSessions);
+
+  // waiting for client to send signal
+  socket.on('type chat message', (name,msg) => {
+    io.emit('get chat message', name, msg);
+  });
+
+  socket.on('specified user', (id, name,msg) =>{
+    socket.to(id).emit('whisper', id, name, msg);
+  })
+
+  socket.on('get user list', (id,list) =>{
+    io.to(id).emit('get current users', id,list);
+  })
+
+  socket.on('disconnect', () =>{
+    sessionID = socket.id;
+    for (var i = 0; i < userSessions.length; i++) {
+      if(sessionID == userSessions[i].id){
+        userSessions.splice(i,1);
+      }
+    }
+    io.emit('user disconnected', sessionID, userSessions);
+  })
+
+  // io.to(sessionID).emit('bleh', 'HI!!!!!');
+
+});
+
+
+
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
 app.get('/', checkAuthenticated, (req, res) => {
   const getListQuery = `SELECT * FROM list_${req.user.id}`
-  pool.query(getListQuery , (error,result) => {
+  const getUsersQuery = `SELECT * FROM users`
+  var USERS;
+  pool.query(getUsersQuery, (error, result) =>{
     if (error) {
       console.log(error);
     }
-    res.render('pages/index', {'list':JSON.stringify(result.rows)})
+    USERS = {'users':result.rows};
+    
+  })
+  pool.query(getListQuery , (error,result) => {
+    if (error) 
+      console.log(error);
+    thisUser = req.user;
+    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
+    console.log(USERS);
   })
 })
+
+app.get('/database', (req,res) => {
+  var getUsersQuery = 'SELECT * FROM users';
+  pool.query(getUsersQuery, (error, result) => {
+    if(error)
+      res.end(error);
+    var results = {'rows':result.rows}
+    res.render('pages/db',results);
+  })
+});
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
 })
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/', 
   failureRedirect: '/login',
   failureFlash: true
 }))
@@ -234,6 +297,7 @@ app.get('/user_count', (req, res) => {
   })
 })
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+// app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
+http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 module.exports = app

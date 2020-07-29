@@ -2,8 +2,11 @@
 <html lang="en" dir="ltr">
   <head>
     <link rel="stylesheet" type="text/css" href="/stylesheets/template1.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/texteditor.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <meta charset="utf-8">
-    <title></title>
+    <title>Dashboard</title>
     <style>
       .selected-list {
         font-weight: bold;
@@ -12,7 +15,117 @@
         text-decoration: line-through;
       }
     </style>
+
+    <style>
+      .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0.5%; height: 25%; width: 100%; z-index: -1; border: 1px black; overflow-y: auto; }
+      .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px;}
+      #messages li:nth-child(odd) { background: #eee;}/* alternate the bg color */
+      .selectUser{ border-width: 1px; border-color: black; position: fixed; bottom: 10%; right: 10%; width: 5% }
+      .inputBox{position: fixed; bottom: 5%; right: 10%; width: 10%; height: 3%;}
+      .sendButton { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; position: fixed; right: 0.5%; bottom: 4%;}
+
+    </style>
+
   </head>
+
+  <script>
+    var userSessions = [];
+    var your_name = "<%= username %>";
+    var sessionID;
+    var logged = false;
+    const socket = io();
+    
+    $(function () {
+      $('#socketChat').submit(function(e){
+
+        e.preventDefault(); // prevents page reloading
+        var specialPerson =document.getElementById("chatUsers");
+        var selected = specialPerson.options[specialPerson.selectedIndex];
+        if (selected.text == "" && $('#m').val() != "" ) {
+          socket.emit('type chat message', your_name, $('#m').val());
+        }
+        else{
+          if($('#m').val() != "")
+            socket.emit('specified user', selected.id, your_name, $('#m').val());
+        }
+        $('#m').val('');
+        return false;
+        });
+
+    socket.on('get chat message', function(name,msg){
+      $('#messages').append($('<li>').text(name + ": " + msg));
+      var bottom = document.getElementById("messages").scrollHeight;
+      $('#messages').scrollTop(bottom);
+    });
+
+    socket.on('whisper', function(id,name,msg){
+      console.log(msg);
+      $('#messages').append($('<li>').text(name +"(whisper): " + msg));
+    })
+
+    socket.on('new user', function(id,list){
+      for (var i = 0; i < list.length; i++) {
+        if(list[i].id == id ){
+          $('#currUsers').append($('<li>').text(list[i].name).attr("id", id));
+          var chatUsers = document.getElementById("chatUsers");
+          var option = document.createElement("option");
+          option.text = list[i].name;
+          option.id = list[i].id;
+          chatUsers.add(option);
+          if (logged == false) {
+            logged = true;
+            sessionID = id;
+          }
+          break;
+        }
+      }
+      for (var i = 0; i < list.length; i++) {
+        if(list[i].id != id &&list[i].id != sessionID){
+          $('#currUsers').append($('<li>').text(list[i].name).attr("id", list[i].id));
+          var chatUsers = document.getElementById("chatUsers");
+          var option = document.createElement("option");
+          option.text = list[i].name;
+          option.id = list[i].id;
+          chatUsers.add(option);
+          break;
+        }
+      }
+      
+    })
+
+    socket.on('user disconnected', function(id,list) {
+      var ul = document.getElementById("currUsers");
+      for (var i = 0; i < ul.children.length; i++){
+        if(ul.children[i].id == id){
+          console.log("i and node " + i+ ul.children[i]);
+          ul.removeChild(ul.children[i]);
+          break;
+        }
+      }
+
+      var chatUsers = document.getElementById("chatUsers");
+      for (var i = 1; i < chatUsers.length; i++) {
+        if(chatUsers.options[i].id == id){
+          chatUsers.options[i].remove();
+          break;
+        }
+      }
+    });
+
+
+    ///////BOTTOM////////
+  });
+  </script>
+
+  <script>
+  $(document).ready(function(){
+    $("#clickme").click(function(){
+      $("#test").hide();
+    });
+  });
+  </script>
 
   <script type="text/javascript">
 
@@ -37,12 +150,33 @@
     }
   </script>
 
+  <!--------------------------------------          ------------------------------------>
+  <!--------------------------------------   BODY   ------------------------------------>
+  <!--------------------------------------          ------------------------------------>
+
   <body onload="checkReset()">
     <div class="bg">
+        <button id="clickme">Click me</button>
+        <!-- <div class="greet">
+          <h1> Greetings! &nbsp; <span class="username"><%= username %></span> </h1>
+        </div> -->
+        <div class="template">Template</div>
 
-        <div class="template">
-        Template
+        <div id="test">Testing </div>
+
+        <div><p id="USERS"></p></div>
+
+        <div class="chatting" >
+          <ul id="messages" class="CHATBOX" ></ul>
+          <select id="chatUsers" class="selectUser"><option></option></select>
+          <form id="socketChat" action="">
+            <input id="m" autocomplete="off" class="inputBox" /><button class="sendButton">Send</button>
+          </form>
         </div>
+
+        <ul id="currUsers">Current Users</ul>
+        
+
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
           <button id="template2" class="template-button" onclick="ChangeTemplate(2)"></button>
@@ -57,19 +191,20 @@
       </form>
 
       <form class="del-user-form" action="/del_user" method="post" del-user-form>
-        <button type="submit">Delete Account</button>
+        <button type="submit" hidden="true">Delete Account</button>
       </form>
+
 
       <div class="all-lists">
         <h2 class="task-list-title">My lists</h2>
 
-        <ul class="lists" data-lists></ul>
+          <ul class="lists" data-lists></ul>
 
-        <form class="new-list-form" action="/add_list" method="post" new-list-form>
-          <input type="text" name="list" class="new list" placeholder="new list name">
-          <button type="" class="btn create">+</button>
-        </form>
-      </div>
+          <form class="new-list-form" action="/add_list" method="post" new-list-form>
+            <input type="text" name="list" class="new list" placeholder="new list name">
+            <button type="" class="btn create">+</button>
+          </form>
+        </div>
 
       <div class="display-list" list-display-container>
         <div class="header">
@@ -106,7 +241,7 @@
           </form>
         </div>
       </div>
-
+<!--  -->
       <form class="" action="" method="post" update-list-from hidden>
         <input type="text" name="list_id">
         <input type="text" name="task_id">
@@ -125,9 +260,42 @@
           <button type="button" name="button">X</button>
         </div>
       </template>
+
+      <div class="texteditor" >
+        <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
+        <input type="hidden" name="myDoc">
+        <textarea id="textBox" contenteditable="true" ></textarea>  
+        <p>
+          <button type="button" id="savebutton">Save as file</button>
+          <button type="button" id="clearbutton">Clear</button>
+        </p>
+
+        </form>
+      </div> 
+
+
+      <!--              Bottom            -->
     </div>
   </body>
+
+  <script type="text/javascript">
+    let USERS = <%- USERS %>;
+    function displayUsers()
+    {
+        document.getElementById("textBox").innerHTML = "Text";   
+        // for (var i = 0; i < USERS.users.length; i++) {
+        //   console.log(USERS.users[i].name);}
+    }
+    var user_arr = [];
+    var user_list = "";
+    for (var i = 0; i < USERS.users.length; i++) {
+      user_list += USERS.users[i].name;
+      user_arr.push(USERS.users[i].name, " ");
+    }
+    // document.getElementById("USERS").innerHTML = user_list;
+  </script>
   <script>
+
     const logoutForm = document.querySelector('[logout-form]')
 
     const listContainer = document.querySelector('[data-lists]')
@@ -332,4 +500,7 @@
 
     render()
   </script>
+  
+  
+  <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
