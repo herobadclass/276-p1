@@ -1,3 +1,3 @@
 git add .;
-git commit -m "1placeholder";
+git commit -m "placeholder";
 git push heroku master
