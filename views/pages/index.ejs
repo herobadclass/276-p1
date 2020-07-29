@@ -45,10 +45,7 @@
         else{
           var selected = specialPerson.options[specialPerson.selectedIndex].text;
           for (var i = 0; i < userSessions.length; i++) {
-            console.log(userSessions[i].name);
-            console.log(selected)
             if(userSessions[i].name == specialPerson.options[specialPerson.selectedIndex].text){
-              console.log("in loop");
               socket.emit('specified user', userSessions[i].id, $('#m').val());
             }
           }
@@ -81,6 +78,7 @@
     })
 
     socket.on('get current users', (id,list)=>{
+      console.log("cheese");
       if(JSON.stringify(userSessions) != JSON.stringify(list)){
         userSessions = list;
       }
