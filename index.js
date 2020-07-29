@@ -65,8 +65,8 @@ io.on('connection', function(socket){
     io.emit('get chat message', msg);
   });
 
-  socket.on('specified user', (id, msg) =>{
-    socket.to(id).emit('whisper', id,msg);
+  socket.on('specified user', (id, name,msg) =>{
+    socket.to(id).emit('whisper', id, name, msg);
   })
 
   socket.on('get user list', (id,list) =>{

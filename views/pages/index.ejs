@@ -46,7 +46,7 @@
           socket.emit('type chat message', $('#m').val());
         }
         else{
-          socket.emit('specified user', selected.id,$('#m').val());
+          socket.emit('specified user', selected.id, selected.name, $('#m').val());
         }
         $('#m').val('');
         return false;
@@ -57,9 +57,9 @@
       $('#messages').append($('<li>').text(msg));
     });
 
-    socket.on('whisper', function(id,msg){
+    socket.on('whisper', function(id,name,msg){
       console.log(msg);
-      $('#messages').append($('<li>').text("me says" + msg));
+      $('#messages').append($('<li>').text(name +": " + msg));
     })
 
     socket.on('new user', function(id,list){
