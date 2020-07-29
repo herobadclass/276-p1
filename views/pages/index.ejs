@@ -25,7 +25,7 @@
       .selectUser{ border-width: 1px; border-color: black; position: fixed; bottom: 10%; right: 10%; width: 5% }
       .inputBox{position: fixed; bottom: 5%; right: 10%; width: 10%; height: 3%;}
       .sendButton { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; position: fixed; right: 0.5%; bottom: 4%;}
-      .chatting{overflow-y: auto;}
+
     </style>
 
   </head>
@@ -57,6 +57,7 @@
     socket.on('get chat message', function(name,msg){
       console.log('all chat:');
       $('#messages').append($('<li>').text(name + ": " + msg));
+      $('#messages').slideDown('fast');
     });
 
     socket.on('whisper', function(id,name,msg){
