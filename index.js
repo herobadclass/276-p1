@@ -66,6 +66,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('specified user', (id, name,msg) =>{
+    console.log(name);
     socket.to(id).emit('whisper', id, name, msg);
   })
 

@@ -15,6 +15,8 @@ Save as text file:
 Redirect to a new CSS files:
 	https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page
 
+Chat(real-time):
+	https://socket.io/get-started/chat/
 
 
 Images used:
