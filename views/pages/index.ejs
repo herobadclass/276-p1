@@ -79,7 +79,8 @@
 
     socket.on('get current users', (id,list)=>{
       // if(JSON.stringify(userSessions) != JSON.stringify(list)){
-
+        console.log(list);
+        console.log(userSessions);
       userSessions = list;
       var chatUsers = document.getElementById("chatUsers");
       var option = document.createElement("option");
