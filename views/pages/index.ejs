@@ -19,14 +19,13 @@
     <style>
       /** { margin: 0; padding: 0; box-sizing: border-box; }*/
       /*body { font: 13px Helvetica, Arial; }*/
-      .CHATBOX { background: white; padding: 3px; position: fixed; z-index: 0; bottom: 0; height:20; width: 100%; }
+      .CHATBOX { background: white; padding: 3px; position: fixed; bottom: 0; height: 15%; width: 100%; z-index: -1}
       .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
       .CHATBOX button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
-      .chatting{position: fixed; bottom: 5%; right:5%; z-index: 100; }
-
+      .chatting{position: fixed; bottom: 5%; }
     </style>
 
   </head>
@@ -153,13 +152,12 @@
   <body onload="checkReset()">
     <div class="bg">
         <button id="clickme">Click me</button>
-        <div id="test">Testing</div>
         <!-- <div class="greet">
           <h1> Greetings! &nbsp; <span class="username"><%= username %></span> </h1>
         </div> -->
         <div class="template">Template</div>
 
-        
+        <div id="test">Testing </div>
 
         <div><p id="USERS"></p></div>
 
