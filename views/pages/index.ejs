@@ -31,6 +31,7 @@
 
   <script>
     var userSessions = [];
+    var your_name = <%= username %>;
     var sessionID;
     const socket = io();
     
@@ -39,7 +40,7 @@
         e.preventDefault(); // prevents page reloading
         var specialPerson =document.getElementById("chatUsers");
         if (specialPerson.options[specialPerson.selectedIndex].text == "") {
-          console.log(<%= username %>);
+          console.log(your_name);
           console.log("all chat:");
           socket.emit('chat message', $('#m').val());
         }
