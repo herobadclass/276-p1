@@ -23,7 +23,8 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
-      .inputBox{position: fixed; bottom: 5%; right:10%;}
+      .inputBox{position: fixed; bottom: 5%; right: 5%; width: 10%}
+      .sendButton{ position: fixed; bottom: 10%; right: 5%; width: 5% }
     </style>
 
   </head>
@@ -162,12 +163,13 @@
 
         <div><p id="USERS"></p></div>
 
+        <div class="chatting">
           <ul id="messages" class="CHATBOX"></ul>
-          <select id="chatUsers" class="inputBox"><option></option></select>
+          <select id="chatUsers" class="sendButton"><option></option></select>
           <form id="socketChat" action="">
             <input id="m" autocomplete="off" class="inputBox" /><button>Send</button>
           </form>
-
+        </div>
 
         <ul id="currUsers">Current Users</ul>
         
