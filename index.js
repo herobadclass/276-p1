@@ -75,13 +75,13 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', () =>{
     for (var i = 0; i < userSessions.length; i++) {
-      if(sessionID == userSessions[i].id){
+      if(socket.id == userSessions[i].id){
         userSessions.splice(i,1);
       }
     }
     // var userData = {id:sessionID, name: thisUser.name, mail: thisUser.email};
 
-    io.emit('user disconnected', sessionID, userSessions);
+    io.emit('user disconnected', socket.io, userSessions);
   })
 
   // io.to(sessionID).emit('bleh', 'HI!!!!!');
