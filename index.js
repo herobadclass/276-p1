@@ -53,7 +53,7 @@ var io = require('socket.io')(http);
 var sessionID;
 var userSessions = [];
 
-io.on('connection', (socket) => {
+io.on('connection', function(socket){
   console.log('a user connected');
   sessionID = socket.id;
 
