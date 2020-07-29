@@ -87,8 +87,9 @@
 
     socket.on('user disconnected', function(id,user) {
       for (var i = 0; i < userSessions.length; i++) {
+        console.log(userSessions[i]);
         if (JSON.stringify(userSessions[i]) == JSON.stringify(user) ){
-          console.log(userSessions[i]);
+          console.log("this one");
           userSessions.splice(i,1);
         } 
       }
