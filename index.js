@@ -76,6 +76,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () =>{
+    for (var i = 0; i < userSessions.length; i++) {
+      if(sessionID == userSessions[i].id){
+        userSessions.splice(i,1);
+      }
+    }
     // var userData = {id:sessionID, name: thisUser.name, mail: thisUser.email};
     io.emit('user disconnected', sessionID, userSessions);
   })
