@@ -63,6 +63,7 @@
     socket.on('new user', function(id,list){
       for (var i = 0; i < list.length; i++) {
         if(list[i].id == id ){
+          console.log(list[i].name);
           $('#currUsers').append($('<li>').text(list[i].name).attr("id", id));
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
