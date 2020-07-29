@@ -37,7 +37,13 @@
     $(function () {
       $('#socketChat').submit(function(e){
         e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#m').val());
+        var specialPerson =document.getElementById("chatUsers");
+        if (specialPerson.options[specialPerson.selectedIndex].text == "") {
+          console.log(<%= username %>);
+          console.log("all chat:");
+          socket.emit('chat message', $('#m').val());
+        }
+        
         socket.emit('specified user', sessionID,'just for you');
         $('#m').val('');
         return false;
