@@ -61,8 +61,8 @@ io.on('connection', function(socket){
   io.emit('new user', sessionID, userSessions);
 
   // waiting for client to send signal
-  socket.on('type chat message', (msg) => {
-    io.emit('get chat message', msg);
+  socket.on('type chat message', (name,msg) => {
+    io.emit('get chat message', name, msg);
   });
 
   socket.on('specified user', (id, name,msg) =>{
