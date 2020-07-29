@@ -67,17 +67,17 @@
           var option = document.createElement("option");
           option.text = list[i].name;
           chatUsers.add(option);
-          socket.emit()
           break;
         }
       }
       for (var i = 0; i < list.length; i++) {
         if(list[i].id != id){
+          $('#currUsers').append($('<li>').text(list[i].name).attr("id", list[i].id));
           var chatUsers = document.getElementById("chatUsers");
           var option = document.createElement("option");
           option.text = list[i].name;
           chatUsers.add(option);
-          $('#currUsers').append($('<li>').text(list[i].name).attr("id", list[i].id));
+          
           break;
         }
       }

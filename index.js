@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
   sessionID = socket.id;
 
   userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
-  io.emit('new user', sessionID, userSessions);
+  io.to(sessionID).emit('new user', sessionID, userSessions);
 
   // waiting for client to send signal
   socket.on('type chat message', (msg) => {
