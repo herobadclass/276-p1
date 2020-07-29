@@ -31,6 +31,7 @@
   </head>
 
   <script>
+    var userSessions = [];
     var your_name = "<%= username %>";
     var sessionID;
     var logged = false;
@@ -53,6 +54,7 @@
         });
 
     socket.on('get chat message', function(name,msg){
+      console.log('all chat:');
       $('#messages').append($('<li>').text(name + ": " + msg));
     });
 
@@ -88,6 +90,10 @@
           break;
         }
       }
+      // console.log(user);
+      // console.log("connected");
+      // userSessions.push({id:id, name:user.name, mail:user.email});
+      // socket.emit('get user list', id, userSessions);
       
     })
 
