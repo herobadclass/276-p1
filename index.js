@@ -102,10 +102,10 @@ app.get('/', checkAuthenticated, (req, res) => {
       console.log(error);
     }
     USERS = {'users':result.rows};
-    
+
   })
   pool.query(getListQuery , (error,result) => {
-    if (error) 
+    if (error)
       console.log(error);
     thisUser = req.user;
     res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
@@ -127,7 +127,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
 })
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/', 
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }))
@@ -189,7 +189,7 @@ app.post('/del_user', (req,res) => {
 app.post('/add_list', (req, res) => {
   const addListQuery = {
     text:`INSERT INTO list_${req.user.id} (id,name,tasks) VALUES ($1,$2,$3)`,
-    values: [Date.now().toString(), req.body.list, '[]']
+    values: [req.body.id, req.body.name, JSON.stringify(req.body.tasks)]
   }
   pool.query(addListQuery, (error,result) => {
     if (error) {
@@ -197,7 +197,6 @@ app.post('/add_list', (req, res) => {
     }
     console.log('added list')
   })
-  res.redirect('/')
 })
 app.post('/del_list', (req, res) => {
   const delListQuery = {
@@ -210,7 +209,6 @@ app.post('/del_list', (req, res) => {
     }
     console.log('deleted list')
   })
-  res.redirect('/')
 })
 
 app.post('/save_complete', (req, res) => {

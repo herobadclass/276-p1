@@ -36,7 +36,7 @@
     var sessionID;
     var logged = false;
     const socket = io();
-    
+
     $(function () {
       $('#socketChat').submit(function(e){
 
@@ -92,7 +92,7 @@
           break;
         }
       }
-      
+
     })
 
     socket.on('user disconnected', function(id,list) {
@@ -120,11 +120,11 @@
   </script>
 
   <script>
-  $(document).ready(function(){
-    $("#clickme").click(function(){
-      $("#test").hide();
+    $(document).ready(function(){
+      $("#clickme").click(function(){
+        $("#test").hide();
+      });
     });
-  });
   </script>
 
   <script type="text/javascript">
@@ -175,7 +175,7 @@
         </div>
 
         <ul id="currUsers">Current Users</ul>
-        
+
 
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
@@ -201,7 +201,7 @@
           <ul class="lists" data-lists></ul>
 
           <form class="new-list-form" action="/add_list" method="post" new-list-form>
-            <input type="text" name="list" class="new list" placeholder="new list name">
+            <input type="text" name="name" class="new list" placeholder="new list name">
             <button type="" class="btn create">+</button>
           </form>
         </div>
@@ -264,14 +264,14 @@
       <div class="texteditor" >
         <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
-        <textarea id="textBox" contenteditable="true" ></textarea>  
+        <textarea id="textBox" contenteditable="true" ></textarea>
         <p>
           <button type="button" id="savebutton">Save as file</button>
           <button type="button" id="clearbutton">Clear</button>
         </p>
 
         </form>
-      </div> 
+      </div>
 
 
       <!--              Bottom            -->
@@ -282,7 +282,7 @@
     let USERS = <%- USERS %>;
     function displayUsers()
     {
-        document.getElementById("textBox").innerHTML = "Text";   
+        document.getElementById("textBox").innerHTML = "Text";
         // for (var i = 0; i < USERS.users.length; i++) {
         //   console.log(USERS.users[i].name);}
     }
@@ -353,19 +353,37 @@
 
     newListForm.addEventListener('submit', evt => {
       evt.preventDefault()
-      const newList = newListForm.list.value
+      const newList = newListForm.name.value
       if (newList == '') return
-      newListForm.submit()
+      const postObject = {id: Date.now().toString(), name: newList, tasks: []}
+      newListForm.name.value = ''
+      list.push(postObject)
+      const options = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postObject)
+      }
+      fetch('/add_list', options)
+      render()
     })
 
     delListForm.addEventListener('submit', evt => {
       evt.preventDefault()
-      const delList = selectedListId
-      if (delList == null || delList == 'null') return
-      delListForm.id.value = delList
+      list = list.filter(list => list.id != selectedListId)
+      const postObject = {id: selectedListId}
       selectedListId = null
       saveSelectedListId()
-      delListForm.submit()
+      const options = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postObject)
+      }
+      fetch('/del_list', options)
+      render()
     })
 
     newTaskForm.addEventListener('submit', evt => {
@@ -499,8 +517,9 @@
     }
 
     render()
+    console.log(list);
   </script>
-  
-  
+
+
   <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
