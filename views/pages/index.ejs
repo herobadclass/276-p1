@@ -216,8 +216,7 @@
           <div class="tasks" data-tasks></div>
 
           <form class="new-task-form" action="/add_task" method="post" new-task-form>
-            <input type="text" name="id" hidden>
-            <input type="text" name="task" class="new task" placeholder="new task name">
+            <input type="text" name="name" class="new task" placeholder="new task name">
 
             <div class="">
               <input type="text" name="day" value="" hidden>
@@ -231,12 +230,10 @@
               <input type="time" name="time" value="">
             </div>
 
-
             <button class="btn create">+</button>
           </form>
 
           <form class="del-list-form" action="/del_list" method="post" del-list-form>
-            <input type="text" name="id" hidden>
             <button class="btn delete">Delete list</button>
           </form>
         </div>
@@ -320,27 +317,39 @@
       if (evt.target.tagName == 'LI') {
         selectedListId = evt.target.id
         saveSelectedListId()
-        clearElement(taskContainer)
         render()
       }
     })
 
     taskContainer.addEventListener('click', evt => {
       if (evt.target.tagName == 'INPUT') {
-        let selectedList = list.find(list => list.id == selectedListId)
-        selectedTask = selectedList.tasks.find(task => task.id == evt.target.id)
-        updateListForm.complete.value = evt.target.checked
-        updateListForm.task_id.value = selectedTask.id
-        updateListForm.list_id.value = selectedListId
-        updateListForm.action = '/save_complete'
-        updateListForm.submit()
+        const selectedList = list.find(list => list.id == selectedListId)
+        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.id)
+        selectedTask.complete = evt.target.checked
+        const postObject = {complete:evt.target.checked, task_id: selectedTask.id, list_id: selectedListId}
+        const options = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(postObject)
+        }
+        fetch('/update_complete', options)
+        render()
       } else if (evt.target.tagName == 'BUTTON') {
-        let selectedList = list.find(list => list.id == selectedListId)
-        selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.id)
-        updateListForm.task_id.value = selectedTask.id
-        updateListForm.list_id.value = selectedListId
-        updateListForm.action = '/del_task'
-        updateListForm.submit()
+        const selectedList = list.find(list => list.id == selectedListId)
+        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.id)
+        selectedList.tasks = selectedList.tasks.filter(tasks => tasks.id != selectedTask.id)
+        const postObject = {task_id: selectedTask.id, list_id: selectedListId}
+        const options = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(postObject)
+        }
+        fetch('/del_task', options)
+        render()
       }
     })
 
@@ -388,19 +397,37 @@
 
     newTaskForm.addEventListener('submit', evt => {
       evt.preventDefault()
-      const newTask = newTaskForm.task.value
+      const newTask = newTaskForm.name.value
       if (newTask == '') return
-      newTaskForm.id.value = selectedListId
-      var day = []
-      var selected = [newTaskForm.sunday.checked,newTaskForm.monday.checked,newTaskForm.tuesday.checked,newTaskForm.wednesday.checked,newTaskForm.thursday.checked,newTaskForm.friday.checked,newTaskForm.saturday.checked]
-      for (var i = 0; i < selected.length; i++) {
-        if (selected[i]) {
-          day.push(i)
+      let selectedDay = []
+      const day = [newTaskForm.sunday.checked,newTaskForm.monday.checked,newTaskForm.tuesday.checked,newTaskForm.wednesday.checked,newTaskForm.thursday.checked,newTaskForm.friday.checked,newTaskForm.saturday.checked]
+      for (var i = 0; i < day.length; i++) {
+        if (day[i]) {
+          selectedDay.push(i)
         }
       }
-      newTaskForm.day.value = day
-      newTaskForm.time.value = newTaskForm.time.value + ':' + '00'
-      newTaskForm.submit()
+      let postObject = {id: Date.now().toString(), name: newTask, complete: false, day: selectedDay, time: newTaskForm.time.value + ':' + '00'}
+      newTaskForm.name.value = ''
+      newTaskForm.time.value = ''
+      newTaskForm.sunday.checked = false
+      newTaskForm.monday.checked = false
+      newTaskForm.tuesday.checked = false
+      newTaskForm.wednesday.checked = false
+      newTaskForm.thursday.checked = false
+      newTaskForm.friday.checked = false
+      newTaskForm.saturday.checked = false
+      const selectedList = list.find(list => list.id == selectedListId)
+      selectedList.tasks.push(postObject)
+      postObject.listId = selectedListId
+      const options = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postObject)
+      }
+      fetch('/add_task', options)
+      render()
     })
 
     function saveSelectedListId() {
@@ -413,11 +440,12 @@
       if (selectedListId == null || selectedListId == 'null') {
         listDisplayContainer.style.display = 'none'
       } else {
-        let selectedList = list.find(list => list.id == selectedListId)
-        selectedTasks = selectedList.tasks
-        renderTasks(selectedTasks)
+        clearElement(taskContainer)
+        const selectedList = list.find(list => list.id == selectedListId)
+        const selectedTasks = selectedList.tasks
+        listTitleElement.innerText = selectedList.name
         renderTaskCount(selectedTasks)
-        listTitleElement.innerText = list.find(list => list.id == selectedListId).name
+        renderTasks(selectedTasks)
         listDisplayContainer.style.display = ''
       }
     }
@@ -436,16 +464,16 @@
 
       list.forEach(list => {
         list.tasks.forEach(task => {
-          if (task.date != '' && task.time != '') {
-            var dayArr = task.date.split(',')
+          if (task.day != '' && task.time != '') {
+            var dayArr = task.day
             var timeArr = task.time.split(':')
             var countDownDates = []
-            dayArr.forEach(date => {
+            dayArr.forEach(day => {
               var nextReset = new Date()
               nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
-              nextReset.setDate(today.getDate() + (parseInt(date) + 7 - today.getDay()) % 7)
+              nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
               if (nextReset.getTime() < today.getTime()) {
-                nextReset.setDate(today.getDate() + (parseInt(date) + 7 - today.getDay()))
+                nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
               }
               countDownDates.push(nextReset)
             })
@@ -458,7 +486,7 @@
           }
 
           if (task.complete) {
-            if (task.date.includes(day)) {
+            if (task.day.includes(day)) {
               if (task.time.includes(hour + ':' + minute + ':' + second)) {
                 updateListForm.complete.value = false
                 updateListForm.task_id.value = task.id
@@ -489,10 +517,11 @@
 
     function renderTaskCount(selectedTasks) {
       const incompleteTaskCount = selectedTasks.filter(task => !task.complete).length
+      let incompleteTaskString
       if (incompleteTaskCount == 1) {
-        var incompleteTaskString = `${incompleteTaskCount} task remaining`
+        incompleteTaskString = `${incompleteTaskCount} task remaining`
       } else {
-        var incompleteTaskString = `${incompleteTaskCount} tasks remaining`
+        incompleteTaskString = `${incompleteTaskCount} tasks remaining`
       }
       listCountElement.innerText = incompleteTaskString
     }
@@ -517,7 +546,6 @@
     }
 
     render()
-    console.log(list);
   </script>
 
 

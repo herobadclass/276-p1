@@ -211,7 +211,7 @@ app.post('/del_list', (req, res) => {
   })
 })
 
-app.post('/save_complete', (req, res) => {
+app.post('/update_complete', (req, res) => {
   var saveCompleteQuery =
     `WITH task_complete AS (
       SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
@@ -235,15 +235,15 @@ app.post('/save_complete', (req, res) => {
 app.post('/add_task', (req, res) => {
   var addTaskQuery = {
     text: `UPDATE list_${req.user.id} SET tasks = tasks || $1::JSONB WHERE id = $2`,
-    values: [{id: Date.now().toString(), name: req.body.task, complete: false, date: req.body.day, time: req.body.time}, req.body.id]
+    values: [{id: req.body.id, name: req.body.name, complete: req.body.complete, day: req.body.day, time: req.body.time}, req.body.listId]
   }
+  console.log(addTaskQuery);
   pool.query(addTaskQuery, (error,result) => {
     if (error) {
       res.end(error)
     }
     console.log('added task')
   })
-  res.redirect('/')
 })
 app.post('/del_task', (req, res) => {
   var delTaskQuery =
