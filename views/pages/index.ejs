@@ -292,7 +292,6 @@
     // document.getElementById("USERS").innerHTML = user_list;
   </script>
   <script>
-
     const logoutForm = document.querySelector('[logout-form]')
 
     const listContainer = document.querySelector('[data-lists]')
@@ -313,51 +312,69 @@
     let list = <%- list %>
     let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY)
 
-    listContainer.addEventListener('click', evt => {
-      if (evt.target.tagName == 'LI') {
-        selectedListId = evt.target.id
-        saveSelectedListId()
-        render()
-      }
-    })
+    function checkReset() {
+      var today = new Date()
+      var day = today.getDay()
+      var hour = today.getHours()
+      hour = ("0" + hour).slice(-2);
+      var minute = today.getMinutes()
+      minute = ("0" + minute).slice(-2);
+      var second = today.getSeconds()
+      second = ("0" + second).slice(-2);
 
-    taskContainer.addEventListener('click', evt => {
-      if (evt.target.tagName == 'INPUT') {
-        const selectedList = list.find(list => list.id == selectedListId)
-        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.id)
-        selectedTask.complete = evt.target.checked
-        const postObject = {complete:evt.target.checked, task_id: selectedTask.id, list_id: selectedListId}
-        const options = {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(postObject)
-        }
-        fetch('/update_complete', options)
-        render()
-      } else if (evt.target.tagName == 'BUTTON') {
-        const selectedList = list.find(list => list.id == selectedListId)
-        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.id)
-        selectedList.tasks = selectedList.tasks.filter(tasks => tasks.id != selectedTask.id)
-        const postObject = {task_id: selectedTask.id, list_id: selectedListId}
-        const options = {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(postObject)
-        }
-        fetch('/del_task', options)
-        render()
-      }
-    })
+      setTimeout('checkReset()',1000)
+
+      list.forEach(list => {
+        list.tasks.forEach(task => {
+          if (task.day != '' && task.time != '') {
+            var dayArr = task.day
+            var timeArr = task.time.split(':')
+            var countDownDates = []
+            dayArr.forEach(day => {
+              var nextReset = new Date()
+              nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
+              nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
+              if (nextReset.getTime() < today.getTime()) {
+                nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
+              }
+              countDownDates.push(nextReset)
+            })
+            var distance = Math.min.apply(Math, countDownDates) - today
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
+          }
+
+          if (task.complete) {
+            if (task.day.includes(day)) {
+              if (task.time.includes(hour + ':' + minute + ':' + second)) {
+                updateListForm.complete.value = false
+                updateListForm.task_id.value = task.id
+                updateListForm.list_id.value = list.id
+                updateListForm.action = '/save_complete'
+                updateListForm.submit()
+              }
+            }
+          }
+        })
+      })
+    }
 
     logoutForm.addEventListener('submit', evt => {
       evt.preventDefault()
       selectedListId = null
       saveSelectedListId()
       logoutForm.submit()
+    })
+
+    listContainer.addEventListener('click', evt => {
+      if (evt.target.tagName == 'LI') {
+        selectedListId = evt.target.id
+        saveSelectedListId()
+        render()
+      }
     })
 
     newListForm.addEventListener('submit', evt => {
@@ -393,6 +410,38 @@
       }
       fetch('/del_list', options)
       render()
+    })
+
+    taskContainer.addEventListener('click', evt => {
+      if (evt.target.tagName == 'INPUT') {
+        const selectedList = list.find(list => list.id == selectedListId)
+        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.id)
+        selectedTask.complete = evt.target.checked
+        const postObject = {complete:evt.target.checked, task_id: selectedTask.id, list_id: selectedListId}
+        const options = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(postObject)
+        }
+        fetch('/update_complete', options)
+        render()
+      } else if (evt.target.tagName == 'BUTTON') {
+        const selectedList = list.find(list => list.id == selectedListId)
+        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.id)
+        selectedList.tasks = selectedList.tasks.filter(tasks => tasks.id != selectedTask.id)
+        const postObject = {task_id: selectedTask.id, list_id: selectedListId}
+        const options = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(postObject)
+        }
+        fetch('/del_task', options)
+        render()
+      }
     })
 
     newTaskForm.addEventListener('submit', evt => {
@@ -450,53 +499,16 @@
       }
     }
 
-    function checkReset() {
-      var today = new Date()
-      var day = today.getDay()
-      var hour = today.getHours()
-      hour = ("0" + hour).slice(-2);
-      var minute = today.getMinutes()
-      minute = ("0" + minute).slice(-2);
-      var second = today.getSeconds()
-      second = ("0" + second).slice(-2);
-
-      setTimeout('checkReset()',1000)
-
+    function renderLists() {
       list.forEach(list => {
-        list.tasks.forEach(task => {
-          if (task.day != '' && task.time != '') {
-            var dayArr = task.day
-            var timeArr = task.time.split(':')
-            var countDownDates = []
-            dayArr.forEach(day => {
-              var nextReset = new Date()
-              nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
-              nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
-              if (nextReset.getTime() < today.getTime()) {
-                nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
-              }
-              countDownDates.push(nextReset)
-            })
-            var distance = Math.min.apply(Math, countDownDates) - today
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-          }
-
-          if (task.complete) {
-            if (task.day.includes(day)) {
-              if (task.time.includes(hour + ':' + minute + ':' + second)) {
-                updateListForm.complete.value = false
-                updateListForm.task_id.value = task.id
-                updateListForm.list_id.value = list.id
-                updateListForm.action = '/save_complete'
-                updateListForm.submit()
-              }
-            }
-          }
-        })
+        const listElement = document.importNode(listTemplate.content, true)
+        const li = listElement.querySelector('li')
+        li.id = list.id
+        li.innerText = list.name
+        if (list.id == selectedListId) {
+          li.classList.add('selected-list')
+        }
+        listContainer.appendChild(listElement)
       })
     }
 
@@ -524,19 +536,6 @@
         incompleteTaskString = `${incompleteTaskCount} tasks remaining`
       }
       listCountElement.innerText = incompleteTaskString
-    }
-
-    function renderLists() {
-      list.forEach(list => {
-        const listElement = document.importNode(listTemplate.content, true)
-        const li = listElement.querySelector('li')
-        li.id = list.id
-        li.innerText = list.name
-        if (list.id == selectedListId) {
-          li.classList.add('selected-list')
-        }
-        listContainer.appendChild(listElement)
-      })
     }
 
     function clearElement(element) {

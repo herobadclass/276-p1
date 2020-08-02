@@ -87,29 +87,18 @@ io.on('connection', function(socket){
 
 });
 
-
-
 app.get('/about', (req,res) => {
   res.sendFile(path.resolve('./public/homepage.html'));
 })
 
-app.get('/', checkAuthenticated, (req, res) => {
-  const getListQuery = `SELECT * FROM list_${req.user.id}`
-  const getUsersQuery = `SELECT * FROM users`
-  var USERS;
-  pool.query(getUsersQuery, (error, result) =>{
+app.get('/user_count', (req, res) => {
+  const getUserCountQuery = 'SELECT * FROM users'
+  pool.query(getUserCountQuery, (error,result) => {
     if (error) {
       console.log(error);
     }
-    USERS = {'users':result.rows};
-
-  })
-  pool.query(getListQuery , (error,result) => {
-    if (error)
-      console.log(error);
-    thisUser = req.user;
-    res.render('pages/index', { 'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
-    console.log(USERS);
+    var results = result.rows.length
+    res.send(`${results}`)
   })
 })
 
@@ -122,6 +111,25 @@ app.get('/database', (req,res) => {
     res.render('pages/db',results);
   })
 });
+
+app.get('/', checkAuthenticated, (req, res) => {
+  const getListQuery = `SELECT * FROM list_${req.user.id}`
+  const getUsersQuery = `SELECT * FROM users`
+  var USERS;
+  pool.query(getUsersQuery, (error, result) =>{
+    if (error) {
+      console.log(error);
+    }
+    USERS = {'users':result.rows};
+  })
+  pool.query(getListQuery , (error,result) => {
+    if (error)
+      console.log(error);
+    thisUser = req.user;
+    res.render('pages/index', {'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
+    console.log(USERS);
+  })
+})
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('pages/login')
@@ -164,28 +172,6 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
   }
 })
 
-app.post('/del_user', (req,res) => {
-  const id = req.user.id
-  req.logout()
-  const delUserQuery = `DELETE FROM users WHERE id='${id}'`
-  pool.query(delUserQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
-    console.log(delUserQuery)
-  })
-
-  const dropUserTableQuery = `DROP TABLE list_${id}`
-  pool.query(dropUserTableQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
-    console.log(dropUserTableQuery)
-  })
-
-  res.redirect('/login')
-})
-
 app.post('/add_list', (req, res) => {
   const addListQuery = {
     text:`INSERT INTO list_${req.user.id} (id,name,tasks) VALUES ($1,$2,$3)`,
@@ -209,27 +195,6 @@ app.post('/del_list', (req, res) => {
     }
     console.log('deleted list')
   })
-})
-
-app.post('/update_complete', (req, res) => {
-  var saveCompleteQuery =
-    `WITH task_complete AS (
-      SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
-      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
-      WHERE task ->> 'id' = '${req.body.task_id}'
-      AND id = '${req.body.list_id}'
-    )
-    UPDATE list_${req.user.id}
-    SET tasks = JSONB_SET(tasks, task_complete.PATH, '${req.body.complete}', false)
-    FROM task_complete
-    WHERE id = '${req.body.list_id}';`
-  pool.query(saveCompleteQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
-    console.log('saved complete')
-  })
-  res.redirect('/')
 })
 
 app.post('/add_task', (req, res) => {
@@ -265,9 +230,50 @@ app.post('/del_task', (req, res) => {
   })
   res.redirect('/')
 })
+app.post('/update_complete', (req, res) => {
+  var saveCompleteQuery =
+    `WITH task_complete AS (
+      SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
+      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+      WHERE task ->> 'id' = '${req.body.task_id}'
+      AND id = '${req.body.list_id}'
+    )
+    UPDATE list_${req.user.id}
+    SET tasks = JSONB_SET(tasks, task_complete.PATH, '${req.body.complete}', false)
+    FROM task_complete
+    WHERE id = '${req.body.list_id}';`
+  pool.query(saveCompleteQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log('saved complete')
+  })
+  res.redirect('/')
+})
 
 app.delete('/logout', (req, res) => {
   req.logout()
+  res.redirect('/login')
+})
+app.post('/del_user', (req,res) => {
+  const id = req.user.id
+  req.logout()
+  const delUserQuery = `DELETE FROM users WHERE id='${id}'`
+  pool.query(delUserQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log(delUserQuery)
+  })
+
+  const dropUserTableQuery = `DROP TABLE list_${id}`
+  pool.query(dropUserTableQuery, (error,result) => {
+    if (error) {
+      res.end(error)
+    }
+    console.log(dropUserTableQuery)
+  })
+
   res.redirect('/login')
 })
 
@@ -284,18 +290,57 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.get('/user_count', (req, res) => {
-  const getUserCountQuery = 'SELECT * FROM users'
-  pool.query(getUserCountQuery, (error,result) => {
-    if (error) {
-      console.log(error);
-    }
-    var results = result.rows.length
-    res.send(`${results}`)
-  })
-})
-
-// app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+function checkReset() {
+  var today = new Date()
+  console.log(today);
+  // var day = today.getDay()
+  // var hour = today.getHours()
+  // hour = ("0" + hour).slice(-2);
+  // var minute = today.getMinutes()
+  // minute = ("0" + minute).slice(-2);
+  // var second = today.getSeconds()
+  // second = ("0" + second).slice(-2);
+  //
+  setTimeout(checkReset,1000)
+  //
+  // list.forEach(list => {
+  //   list.tasks.forEach(task => {
+  //     if (task.day != '' && task.time != '') {
+  //       var dayArr = task.day
+  //       var timeArr = task.time.split(':')
+  //       var countDownDates = []
+  //       dayArr.forEach(day => {
+  //         var nextReset = new Date()
+  //         nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
+  //         nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
+  //         if (nextReset.getTime() < today.getTime()) {
+  //           nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
+  //         }
+  //         countDownDates.push(nextReset)
+  //       })
+  //       var distance = Math.min.apply(Math, countDownDates) - today
+  //       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  //       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  //       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  //       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  //       document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
+  //     }
+  //
+  //     if (task.complete) {
+  //       if (task.day.includes(day)) {
+  //         if (task.time.includes(hour + ':' + minute + ':' + second)) {
+  //           updateListForm.complete.value = false
+  //           updateListForm.task_id.value = task.id
+  //           updateListForm.list_id.value = list.id
+  //           updateListForm.action = '/save_complete'
+  //           updateListForm.submit()
+  //         }
+  //       }
+  //     }
+  //   })
+  // })
+}
+checkReset()
 
 http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 module.exports = app
