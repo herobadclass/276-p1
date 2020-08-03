@@ -14,6 +14,9 @@
       .task-name input:checked + label {
         text-decoration: line-through;
       }
+      .completed-list {
+        text-decoration: line-through;
+      }
     </style>
 
     <style>
@@ -324,9 +327,8 @@
           if (task.complete) {
             if (task.day.includes(day)) {
               if (task.time + ':00' == hour + ':' + minute + ':' + second) {
-                document.getElementById(task.id).checked = false
                 task.complete = false
-                renderTaskCount(list.tasks)
+                render()
               }
             }
           }
@@ -483,6 +485,9 @@
         if (list.id == selectedListId) {
           li.classList.add('selected-list')
         }
+        if (list.tasks != '' && list.tasks.filter(task => !task.complete).length == 0) {
+          li.classList.add('completed-list')
+        }
         listContainer.appendChild(listElement)
       })
     }
@@ -519,7 +524,6 @@
       var hour = ("0" + today.getHours()).slice(-2)
       var minute = ("0" + today.getMinutes()).slice(-2)
       var second = ("0" + today.getSeconds()).slice(-2)
-      console.log(selectedTasks);
       if (selectedTasks != '') {
         selectedTasks.forEach(task => {
           if (task.day != '' && task.time != '') {

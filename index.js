@@ -280,29 +280,27 @@ function checkReset() {
         if (error) res.end(error)
         result.rows.forEach(list => {
           list.tasks.forEach(task => {
-            // if (task.day != '' && task.time != '') {
-              if (task.complete) {
-                if (task.day.includes(day)) {
-                  if (task.time == hour + ':' + minute) {
-                    var saveCompleteQuery =
-                      `WITH task_complete AS (
-                        SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
-                        FROM list_${user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
-                        WHERE task ->> 'id' = '${task.id}'
-                        AND id = '${list.id}'
-                      )
-                      UPDATE list_${user.id}
-                      SET tasks = JSONB_SET(tasks, task_complete.PATH, 'false', false)
-                      FROM task_complete
-                      WHERE id = '${list.id}';`
-                    pool.query(saveCompleteQuery, (error,result) => {
-                      if (error) res.end(error)
-                      console.log('saved complete')
-                    })
-                  }
+            if (task.complete) {
+              if (task.day.includes(day)) {
+                if (task.time == hour + ':' + minute) {
+                  var saveCompleteQuery =
+                    `WITH task_complete AS (
+                      SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
+                      FROM list_${user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+                      WHERE task ->> 'id' = '${task.id}'
+                      AND id = '${list.id}'
+                    )
+                    UPDATE list_${user.id}
+                    SET tasks = JSONB_SET(tasks, task_complete.PATH, 'false', false)
+                    FROM task_complete
+                    WHERE id = '${list.id}';`
+                  pool.query(saveCompleteQuery, (error,result) => {
+                    if (error) res.end(error)
+                    console.log('saved complete')
+                  })
                 }
               }
-            // }
+            }
           })
         })
       })
