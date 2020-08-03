@@ -311,6 +311,7 @@
 
     let list = <%- list %>
     let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY)
+    var timeoutCallback
 
     function checkReset() {
       var today = new Date()
@@ -318,32 +319,8 @@
       var hour = ("0" + today.getHours()).slice(-2)
       var minute = ("0" + today.getMinutes()).slice(-2)
       var second = ("0" + today.getSeconds()).slice(-2)
-
-      setTimeout('checkReset()',1000)
-
       list.forEach(list => {
         list.tasks.forEach(task => {
-          if (task.day != '' && task.time != '') {
-            var dayArr = task.day
-            var timeArr = task.time.split(':')
-            var countDownDates = []
-            dayArr.forEach(day => {
-              var nextReset = new Date()
-              nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
-              nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
-              if (nextReset.getTime() < today.getTime()) {
-                nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
-              }
-              countDownDates.push(nextReset)
-            })
-            var distance = Math.min.apply(Math, countDownDates) - today
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-          }
-
           if (task.complete) {
             if (task.day.includes(day)) {
               if (task.time + ':00' == hour + ':' + minute + ':' + second) {
@@ -355,6 +332,7 @@
           }
         })
       })
+      setTimeout(checkReset, 1000)
     }
 
     logoutForm.addEventListener('submit', evt => {
@@ -480,6 +458,7 @@
 
     function render() {
       clearElement(listContainer)
+      clearTimeout(timeoutCallback)
       renderLists()
       if (selectedListId == null || selectedListId == 'null') {
         listDisplayContainer.style.display = 'none'
@@ -490,6 +469,7 @@
         listTitleElement.innerText = selectedList.name
         renderTaskCount(selectedTasks)
         renderTasks(selectedTasks)
+        renderTaskCountdown(selectedTasks)
         listDisplayContainer.style.display = ''
       }
     }
@@ -531,6 +511,40 @@
         incompleteTaskString = `${incompleteTaskCount} tasks remaining`
       }
       listCountElement.innerText = incompleteTaskString
+    }
+
+    function renderTaskCountdown(selectedTasks) {
+      var today = new Date()
+      var day = today.getDay()
+      var hour = ("0" + today.getHours()).slice(-2)
+      var minute = ("0" + today.getMinutes()).slice(-2)
+      var second = ("0" + today.getSeconds()).slice(-2)
+      console.log(selectedTasks);
+      if (selectedTasks != '') {
+        selectedTasks.forEach(task => {
+          if (task.day != '' && task.time != '') {
+            var dayArr = task.day
+            var timeArr = task.time.split(':')
+            var countDownDates = []
+            dayArr.forEach(day => {
+              var nextReset = new Date()
+              nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
+              nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
+              if (nextReset.getTime() < today.getTime()) {
+                nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
+              }
+              countDownDates.push(nextReset)
+            })
+            var distance = Math.min.apply(Math, countDownDates) - today
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
+          }
+        })
+      }
+      timeoutCallback = setTimeout(renderTaskCountdown, 1000, selectedTasks)
     }
 
     function clearElement(element) {

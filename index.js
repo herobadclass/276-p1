@@ -280,7 +280,7 @@ function checkReset() {
         if (error) res.end(error)
         result.rows.forEach(list => {
           list.tasks.forEach(task => {
-            if (task.day != '' && task.time != '') {
+            // if (task.day != '' && task.time != '') {
               if (task.complete) {
                 if (task.day.includes(day)) {
                   if (task.time == hour + ':' + minute) {
@@ -302,7 +302,7 @@ function checkReset() {
                   }
                 }
               }
-            }
+            // }
           })
         })
       })
