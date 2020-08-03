@@ -94,9 +94,7 @@ app.get('/about', (req,res) => {
 app.get('/user_count', (req, res) => {
   const getUserCountQuery = 'SELECT * FROM users'
   pool.query(getUserCountQuery, (error,result) => {
-    if (error) {
-      console.log(error);
-    }
+    if (error) res.end(error)
     var results = result.rows.length
     res.send(`${results}`)
   })
@@ -105,8 +103,7 @@ app.get('/user_count', (req, res) => {
 app.get('/database', (req,res) => {
   var getUsersQuery = 'SELECT * FROM users';
   pool.query(getUsersQuery, (error, result) => {
-    if(error)
-      res.end(error);
+    if(error) res.end(error);
     var results = {'rows':result.rows}
     res.render('pages/db',results);
   })
@@ -117,14 +114,11 @@ app.get('/', checkAuthenticated, (req, res) => {
   const getUsersQuery = `SELECT * FROM users`
   var USERS;
   pool.query(getUsersQuery, (error, result) =>{
-    if (error) {
-      console.log(error);
-    }
+    if (error) res.end(error)
     USERS = {'users':result.rows};
   })
   pool.query(getListQuery , (error,result) => {
-    if (error)
-      console.log(error);
+    if (error) res.end(error)
     thisUser = req.user;
     res.render('pages/index', {'list':JSON.stringify(result.rows), username: req.user.name, USERS:JSON.stringify(USERS)})
     console.log(USERS);
@@ -152,17 +146,13 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
       values: [id , req.body.name, req.body.email, hashedPassword]
     }
     pool.query(addUserQuery, (error,result) => {
-      if (error) {
-        res.end(error)
-      }
+      if (error) res.end(error)
       console.log('added user')
     })
 
     const createUserListTable = `CREATE TABLE list_${id} (id text, name text, tasks JSONB)`
     pool.query(createUserListTable, (error,result) => {
-      if (error) {
-        res.end(error)
-      }
+      if (error) res.end(error)
       console.log('created user list table')
     })
 
@@ -178,9 +168,7 @@ app.post('/add_list', (req, res) => {
     values: [req.body.id, req.body.name, JSON.stringify(req.body.tasks)]
   }
   pool.query(addListQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log('added list')
   })
 })
@@ -190,28 +178,23 @@ app.post('/del_list', (req, res) => {
     values: [req.body.id]
   }
   pool.query(delListQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log('deleted list')
   })
 })
 
 app.post('/add_task', (req, res) => {
-  var addTaskQuery = {
+  const addTaskQuery = {
     text: `UPDATE list_${req.user.id} SET tasks = tasks || $1::JSONB WHERE id = $2`,
     values: [{id: req.body.id, name: req.body.name, complete: req.body.complete, day: req.body.day, time: req.body.time}, req.body.listId]
   }
-  console.log(addTaskQuery);
   pool.query(addTaskQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log('added task')
   })
 })
 app.post('/del_task', (req, res) => {
-  var delTaskQuery =
+  const delTaskQuery =
     `WITH task_index AS (
       SELECT INDEX-1 AS INDEX
       FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
@@ -223,15 +206,13 @@ app.post('/del_task', (req, res) => {
     FROM task_index
     WHERE id = '${req.body.list_id}'`
   pool.query(delTaskQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log('deleted task')
   })
   res.redirect('/')
 })
 app.post('/update_complete', (req, res) => {
-  var saveCompleteQuery =
+  const saveCompleteQuery =
     `WITH task_complete AS (
       SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
       FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
@@ -243,9 +224,7 @@ app.post('/update_complete', (req, res) => {
     FROM task_complete
     WHERE id = '${req.body.list_id}';`
   pool.query(saveCompleteQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log('saved complete')
   })
   res.redirect('/')
@@ -260,17 +239,13 @@ app.post('/del_user', (req,res) => {
   req.logout()
   const delUserQuery = `DELETE FROM users WHERE id='${id}'`
   pool.query(delUserQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log(delUserQuery)
   })
 
   const dropUserTableQuery = `DROP TABLE list_${id}`
   pool.query(dropUserTableQuery, (error,result) => {
-    if (error) {
-      res.end(error)
-    }
+    if (error) res.end(error)
     console.log(dropUserTableQuery)
   })
 
@@ -292,53 +267,48 @@ function checkNotAuthenticated(req, res, next) {
 
 function checkReset() {
   var today = new Date()
-  console.log(today);
-  // var day = today.getDay()
-  // var hour = today.getHours()
-  // hour = ("0" + hour).slice(-2);
-  // var minute = today.getMinutes()
-  // minute = ("0" + minute).slice(-2);
-  // var second = today.getSeconds()
-  // second = ("0" + second).slice(-2);
-  //
-  setTimeout(checkReset,1000)
-  //
-  // list.forEach(list => {
-  //   list.tasks.forEach(task => {
-  //     if (task.day != '' && task.time != '') {
-  //       var dayArr = task.day
-  //       var timeArr = task.time.split(':')
-  //       var countDownDates = []
-  //       dayArr.forEach(day => {
-  //         var nextReset = new Date()
-  //         nextReset.setHours(timeArr[0], timeArr[1], 00, 00)
-  //         nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()) % 7)
-  //         if (nextReset.getTime() < today.getTime()) {
-  //           nextReset.setDate(today.getDate() + (parseInt(day) + 7 - today.getDay()))
-  //         }
-  //         countDownDates.push(nextReset)
-  //       })
-  //       var distance = Math.min.apply(Math, countDownDates) - today
-  //       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  //       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  //       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  //       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  //       document.getElementById(`${task.id}_paragraph`).innerHTML = "resets in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-  //     }
-  //
-  //     if (task.complete) {
-  //       if (task.day.includes(day)) {
-  //         if (task.time.includes(hour + ':' + minute + ':' + second)) {
-  //           updateListForm.complete.value = false
-  //           updateListForm.task_id.value = task.id
-  //           updateListForm.list_id.value = list.id
-  //           updateListForm.action = '/save_complete'
-  //           updateListForm.submit()
-  //         }
-  //       }
-  //     }
-  //   })
-  // })
+  var day = today.getDay()
+  var hour = ("0" + today.getHours()).slice(-2)
+  var minute = ("0" + today.getMinutes()).slice(-2)
+
+  const getUsersQuery = `SELECT * FROM users`
+  pool.query(getUsersQuery, (error, result) =>{
+    if (error) res.end(error)
+    result.rows.forEach(user => {
+      const getListQuery = `SELECT * FROM list_${user.id}`
+      pool.query(getListQuery , (error,result) => {
+        if (error) res.end(error)
+        result.rows.forEach(list => {
+          list.tasks.forEach(task => {
+            if (task.day != '' && task.time != '') {
+              if (task.complete) {
+                if (task.day.includes(day)) {
+                  if (task.time == hour + ':' + minute) {
+                    var saveCompleteQuery =
+                      `WITH task_complete AS (
+                        SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
+                        FROM list_${user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+                        WHERE task ->> 'id' = '${task.id}'
+                        AND id = '${list.id}'
+                      )
+                      UPDATE list_${user.id}
+                      SET tasks = JSONB_SET(tasks, task_complete.PATH, 'false', false)
+                      FROM task_complete
+                      WHERE id = '${list.id}';`
+                    pool.query(saveCompleteQuery, (error,result) => {
+                      if (error) res.end(error)
+                      console.log('saved complete')
+                    })
+                  }
+                }
+              }
+            }
+          })
+        })
+      })
+    })
+  })
+  setTimeout(checkReset,10000)
 }
 checkReset()
 

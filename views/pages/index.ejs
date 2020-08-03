@@ -315,12 +315,9 @@
     function checkReset() {
       var today = new Date()
       var day = today.getDay()
-      var hour = today.getHours()
-      hour = ("0" + hour).slice(-2);
-      var minute = today.getMinutes()
-      minute = ("0" + minute).slice(-2);
-      var second = today.getSeconds()
-      second = ("0" + second).slice(-2);
+      var hour = ("0" + today.getHours()).slice(-2)
+      var minute = ("0" + today.getMinutes()).slice(-2)
+      var second = ("0" + today.getSeconds()).slice(-2)
 
       setTimeout('checkReset()',1000)
 
@@ -349,12 +346,10 @@
 
           if (task.complete) {
             if (task.day.includes(day)) {
-              if (task.time.includes(hour + ':' + minute + ':' + second)) {
-                updateListForm.complete.value = false
-                updateListForm.task_id.value = task.id
-                updateListForm.list_id.value = list.id
-                updateListForm.action = '/save_complete'
-                updateListForm.submit()
+              if (task.time + ':00' == hour + ':' + minute + ':' + second) {
+                document.getElementById(task.id).checked = false
+                task.complete = false
+                renderTaskCount(list.tasks)
               }
             }
           }
@@ -455,7 +450,7 @@
           selectedDay.push(i)
         }
       }
-      let postObject = {id: Date.now().toString(), name: newTask, complete: false, day: selectedDay, time: newTaskForm.time.value + ':' + '00'}
+      let postObject = {id: Date.now().toString(), name: newTask, complete: false, day: selectedDay, time: newTaskForm.time.value}
       newTaskForm.name.value = ''
       newTaskForm.time.value = ''
       newTaskForm.sunday.checked = false
@@ -546,7 +541,6 @@
 
     render()
   </script>
-
 
   <script type="text/javascript" src="/stylesheets/script.js"></script>
 </html>
