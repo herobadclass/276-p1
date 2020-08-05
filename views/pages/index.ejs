@@ -1,21 +1,274 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/template1.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/template1.css"> -->
     <link rel="stylesheet" type="text/css" href="/stylesheets/texteditor.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <meta charset="utf-8">
     <title>Dashboard</title>
     <style>
+      :root {
+        --clr-grey: #333333;
+        --clr-blue: #64aaff;
+        --clr-red: #ff6464;
+        --clr-white: #ffffff;
+      }
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background-color: var(--clr-grey);
+        color: var(--clr-white);
+      }
+      ::placeholder {
+        color: var(--clr-white);
+        opacity: .8;
+      }
+      .grid-container {
+        display: grid;
+        grid:
+          'header header header header' auto
+          '.      left   right  .'      auto
+          'footer footer footer footer' auto /
+          1fr minmax(300px, 300px) minmax(500px, 500px) 1fr;
+      }
+      @media (max-width: 900px) {
+        .grid-container  {
+          grid:
+            'header header header header' auto
+            '.      left   left   .'      auto
+            '.      right  right  .'      auto
+            'footer footer footer footer' auto /
+            1fr minmax(250px, 250px) minmax(250px, 250px) 1fr;
+        }
+      }
+      .header {
+        grid-area: header;
+        font-size: 1.5rem;
+        margin-top: 0;
+        display: flex;
+        justify-content: space-between;
+      }
+      .header h1 {
+        margin-top: 0;
+      }
+      .header-form {
+        display: flex;
+      }
+      .header-form button {
+        cursor: pointer;
+        background: transparent;
+        font-size: .9rem;
+        font-weight: bold;
+        color: var(--clr-white);
+        border: 0;
+        transition: color 300ms;
+      }
+      .header-form button:focus,
+      .header-form button:hover {
+        outline: none;
+        color: var(--clr-red);
+      }
+      .lists {
+        grid-area: left;
+      }
+      .list-container {
+        font-size: .9rem;
+        line-height: 1.8;
+        padding-left: 1.1rem;
+        width: 160px;
+        word-wrap: break-word;
+      }
+      .list-name {
+        cursor: pointer;
+        transition: color 300ms;
+      }
+      .list-name:hover {
+        color: var(--clr-blue);
+      }
+      .list-form input {
+        background: transparent;
+        font-size: .9rem;
+        color: var(--clr-white);
+        border: 0;
+  			border-bottom: 1px solid var(--clr-white);
+        transition: border-bottom 300ms;
+  		}
+      .list-form input:focus,
+      .list-form input:hover {
+        outline: none;
+        border-bottom: 1px solid var(--clr-blue);
+      }
       .selected-list {
         font-weight: bold;
+      }
+      .completed-list {
+        text-decoration: line-through;
+      }
+  		.list-form button {
+        cursor: pointer;
+        background: transparent;
+        font-size: .9rem;
+        font-weight: bold;
+        color: var(--clr-white);
+        border: 0;
+        transition: color 300ms;
+  		}
+      .list-form button:focus,
+      .list-form button:hover {
+        outline: none;
+        color: var(--clr-blue);
+      }
+      .display-list {
+        grid-area: right;
+        /* background-color: ; */
+      }
+      .display-list-header {
+        padding: 1.25rem 2rem 1.25rem 2rem;
+        /* background-color: ; */
+        display: flex;
+      }
+      .display-list-title {
+        width: 67%;
+        word-wrap: break-word;
+        margin: 0 1.25rem 0 0;
+      }
+      .display-list-count {
+        width: 33%;
+        font-size: .9rem;
+      }
+      .task-container {
+        padding: 1rem 2rem 1rem 2rem;
+      }
+      .task-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 4rem;
+        border-bottom: 1px solid;
+        transition: border-bottom 300ms;
+        pointer-events: none;
+      }
+      .task-row:hover, .task-row:focus-within  {
+        border-bottom: 1px solid var(--clr-blue);
+      }
+      .task-name {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .task-name input {
+        cursor: pointer;
+        margin: 0;
+        height: 1rem;
+        width: 1rem;
+        outline: none;
+      }
+      .task-name label {
+        cursor: pointer;
+        padding-left: .4rem;
+        padding-right: .4rem;
+        width: 49%;
+        word-wrap: break-word;
+      }
+      .task-row > .task-name input, .task-name label {
+        pointer-events: auto;
+      }
+      .task-name input:focus {
+        outline: 1px solid var(--clr-blue);
       }
       .task-name input:checked + label {
         text-decoration: line-through;
       }
-      .completed-list {
-        text-decoration: line-through;
+      .task-row button {
+        pointer-events: initial;
+        cursor: pointer;
+        background: transparent;
+        font-size: .9rem;
+        font-weight: bold;
+        color: var(--clr-white);
+        border: 0;
+        transition: color 300ms;
+      }
+      .task-row button:focus,
+      .task-row button:hover {
+        outline: none;
+        color: var(--clr-red);
+      }
+      .task-form {
+        padding: 1rem 2rem 1rem 2rem;
+      }
+      .task-form input {
+        background: transparent;
+        font-size: 1rem;
+        color: var(--clr-white);
+        border: 0;
+  			border-bottom: 1px solid var(--clr-white);
+        transition: border-bottom 300ms;
+  		}
+      .task-form input:focus,
+      .task-form input:hover {
+        outline: none;
+        border-bottom: 1px solid var(--clr-blue);
+      }
+      .task-form button {
+        cursor: pointer;
+        background: transparent;
+        font-size: .9rem;
+        font-weight: bold;
+        color: var(--clr-white);
+        border: 0;
+        transition: color 300ms;
+  		}
+      .task-form button:focus,
+      .task-form button:hover {
+        outline: none;
+        color: var(--clr-blue);
+      }
+      .reset-form p {
+        margin-bottom: 0;
+      }
+      .reset-form td {
+        display: flex;
+        position: relative;
+        padding: 0;
+      }
+      .reset-form input[type="checkbox"]{
+        cursor: pointer;
+        outline: none;
+      }
+      .reset-form label {
+        cursor: pointer;
+        padding-left: .1rem;
+        transition: color 300ms;
+      }
+      .reset-form input[type="checkbox"]:focus {
+        outline: 1px solid var(--clr-blue);
+      }
+      .reset-form input[type="checkbox"]:checked + label {
+        font-weight: bold;
+      }
+      .reset-form label:hover,
+      .reset-form input[type="checkbox"]:hover + label {
+        color: var(--clr-blue)
+      }
+      .del-list-form {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .del-list-form button {
+        cursor: pointer;
+        background: transparent;
+        font-size: .9rem;
+        font-weight: bold;
+        color: var(--clr-white);
+        border: 0;
+        transition: color 300ms;
+      }
+      .del-list-form button:focus,
+      .del-list-form button:hover {
+        outline: none;
+        color: var(--clr-red);
       }
     </style>
 
@@ -179,7 +432,6 @@
 
         <ul id="currUsers">Current Users</ul>
 
-
         <div class="template-field">
           <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
           <button id="template2" class="template-button" onclick="ChangeTemplate(2)"></button>
@@ -188,76 +440,80 @@
           <button id="template5" class="template-button" onclick="ChangeTemplate(5)"></button>
           <button id="template6" class="template-button" onclick="ChangeTemplate(6)"></button>
         </div>
-
-      <form class="logout-form" action="/logout?_method=DELETE" method="post" logout-form>
-        <button type="submit">Log Out</button>
-      </form>
-
-      <form class="del-user-form" action="/del_user" method="post" del-user-form>
-        <button type="submit" hidden="true">Delete Account</button>
-      </form>
-
-
-      <div class="all-lists">
-        <h2 class="task-list-title">My lists</h2>
-
-          <ul class="lists" data-lists></ul>
-
-          <form class="new-list-form" action="/add_list" method="post" new-list-form>
-            <input type="text" name="name" class="new list" placeholder="new list name">
-            <button type="" class="btn create">+</button>
-          </form>
-        </div>
-
-      <div class="display-list" list-display-container>
+      <div class="grid-container">
         <div class="header">
-          <h2 class="list-title" list-title></h2>
-          <p class="task-count" list-count></p>
+          <h1>BANANA's Dailies Lists</h1>
+          <div class="header-form">
+            <form class="del-user-form" action="/del_user" method="post" del-user-form>
+              <button type="submit">Delete Account</button>
+            </form>
+
+            <form class="logout-form" action="/logout?_method=DELETE" method="post" logout-form>
+              <button type="submit">Log Out</button>
+            </form>
+          </div>
         </div>
 
-        <div class="body">
-          <div class="tasks" data-tasks></div>
+        <div class="lists">
+          <h1 class="list-title">My lists</h1>
 
-          <form class="new-task-form" action="/add_task" method="post" new-task-form>
-            <input type="text" name="name" class="new task" placeholder="new task name">
+          <ul class="list-container" data-lists></ul>
 
-            <div class="">
-              <input type="text" name="day" value="" hidden>
-              <input type="checkbox" name="sunday" value="0" id="sunday"><label for="sunday">sunday</label><br>
-              <input type="checkbox" name="monday" value="1" id="monday"><label for="monday">monday</label><br>
-              <input type="checkbox" name="tuesday" value="2" id="tuesday"><label for="tuesday">tuesday</label><br>
-              <input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday">wednesday</label><br>
-              <input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday">thursday</label><br>
-              <input type="checkbox" name="friday" value="5" id="friday"><label for="friday">friday</label><br>
-              <input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">saturday</label><br>
-              <input type="time" name="time" value="">
-            </div>
-
-            <button class="btn create">+</button>
+          <form class="list-form" new-list-form>
+            <input type="text" name="name" placeholder="new list name">
+            <button>+</button>
           </form>
+        </div>
 
-          <form class="del-list-form" action="/del_list" method="post" del-list-form>
-            <button class="btn delete">Delete list</button>
-          </form>
+        <div class="display-list" list-display-container>
+          <div class="display-list-header">
+            <h1 class="display-list-title" list-title></h1>
+            <p class="display-list-count" list-count></p>
+          </div>
+
+          <div class="display-list-body">
+            <div class="task-container" data-tasks></div>
+
+            <form class="task-form" action="/add_task" method="post" new-task-form>
+              <input type="text" name="name" class="new task" placeholder="new task name">
+              <button>+</button>
+
+              <div class="reset-form">
+                <table>
+                  <p>automaticaly reset</p>
+                  <tr>
+                    <td><input type="checkbox" name="sunday" value="0" id="sunday"><label for="sunday">sun</label></td>
+                    <td><input type="checkbox" name="monday" value="1" id="monday"><label for="monday">mon</label></td>
+                    <td><input type="checkbox" name="tuesday" value="2" id="tuesday"><label for="tuesday">tue</label></td>
+                    <td><input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday">wed</label></td>
+                    <td><input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday">thr</label></td>
+                    <td><input type="checkbox" name="friday" value="5" id="friday"><label for="friday">fri</label></td>
+                    <td><input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">sat</label></td>
+                    <td><input type="time" name="time" value=""></td>
+                  </tr>
+                </table>
+              </div>
+            </form>
+
+            <form class="del-list-form" action="/del_list" method="post" del-list-form>
+              <button class="btn delete">Delete list</button>
+            </form>
+          </div>
         </div>
       </div>
 <!--  -->
-      <form class="" action="" method="post" update-list-from hidden>
-        <input type="text" name="list_id">
-        <input type="text" name="task_id">
-        <input type="text" name="complete">
-      </form>
-
       <template id="list-template">
         <li class="list-name"></li>
       </template>
 
       <template id="task-template">
-        <div class="task-name">
-          <input type="checkbox">
-          <label></label>
-          <p></p>
-          <button type="button" name="button">X</button>
+        <div class="task-row">
+          <div class="task-name">
+            <input type="checkbox">
+            <label></label>
+            <p></p>
+          </div>
+          <button type="button" name="button">x</button>
         </div>
       </template>
 
@@ -307,7 +563,6 @@
     const listCountElement = document.querySelector('[list-count]')
     const taskContainer = document.querySelector('[data-tasks]')
     const newTaskForm = document.querySelector('[new-task-form]')
-    const updateListForm = document.querySelector('[update-list-from]')
     const taskTemplate = document.getElementById('task-template')
 
     const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId'
@@ -404,7 +659,7 @@
         render()
       } else if (evt.target.tagName == 'BUTTON') {
         const selectedList = list.find(list => list.id == selectedListId)
-        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.id)
+        const selectedTask = selectedList.tasks.find(task => task.id == evt.target.parentElement.firstElementChild.firstElementChild.id)
         selectedList.tasks = selectedList.tasks.filter(tasks => tasks.id != selectedTask.id)
         const postObject = {task_id: selectedTask.id, list_id: selectedListId}
         const options = {

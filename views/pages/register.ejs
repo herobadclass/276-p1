@@ -31,8 +31,10 @@
   			margin-bottom: 15px;
   			box-sizing:border-box;
         font-size: 13px;
+        transition: border 300ms;
   		}
-      .register-form input:focus {
+      .register-form input:focus,
+      .register-form input:hover {
         outline: none;
         border: 2px solid var(--clr-highlight);
       }
@@ -48,19 +50,24 @@
         font-size: 13px;
   			color: var(--clr-text);
   		}
+      .register-form button:focus,
+      .register-form button:hover {
+        text-decoration: underline;
+      }
       .register-form p {
         font-size: 12px;
       }
       .register-form a:link,
       .register-form a:visited,
-      .register-form a:link,
       .register-form a:active {
         color: var(--clr-highlight);
         text-decoration: none;
       }
-      .register-form a:hover {
+      .register-form a:hover,
+      .register-form a:focus {
         color: var(--clr-highlight);
         text-decoration: underline;
+        outline: none;
       }
     </style>
   </head>
