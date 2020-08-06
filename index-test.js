@@ -170,14 +170,14 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
     const id = Date.now().toString()
     const addUserQuery = {
       text:`INSERT INTO users (id,name,email,password) VALUES ($1,$2,$3,$4)`,
-      values: [id , req.body.name, req.body.email, hashedPassword]
+      values: [req.body.id , req.body.name, req.body.email, hashedPassword]
     }
     pool.query(addUserQuery, (error,result) => {
       if (error) res.end(error)
       console.log('added user')
     })
 
-    const createUserListTable = `CREATE TABLE list_${id} (id text, name text, tasks JSONB)`
+    const createUserListTable = `CREATE TABLE list_${req.body.id} (id text, name text, tasks JSONB)`
     pool.query(createUserListTable, (error,result) => {
       if (error) res.end(error)
       console.log('created user list table')
@@ -191,7 +191,7 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
 
 app.post('/add_list', (req, res) => {
   const addListQuery = {
-    text:`INSERT INTO list_${req.user.id} (id,name,tasks) VALUES ($1,$2,$3)`,
+    text:`INSERT INTO list_${req.body.userid} (id,name,tasks) VALUES ($1,$2,$3)`,
     values: [req.body.id, req.body.name, JSON.stringify(req.body.tasks)]
   }
   pool.query(addListQuery, (error,result) => {
@@ -202,7 +202,7 @@ app.post('/add_list', (req, res) => {
 })
 app.post('/del_list', (req, res) => {
   const delListQuery = {
-    text:`DELETE FROM list_${req.user.id} WHERE id = $1`,
+    text:`DELETE FROM list_${req.body.userid} WHERE id = $1`,
     values: [req.body.id]
   }
   pool.query(delListQuery, (error,result) => {
@@ -214,7 +214,7 @@ app.post('/del_list', (req, res) => {
 
 app.post('/add_task', (req, res) => {
   const addTaskQuery = {
-    text: `UPDATE list_${req.user.id} SET tasks = tasks || $1::JSONB WHERE id = $2`,
+    text: `UPDATE list_${req.body.userid} SET tasks = tasks || $1::JSONB WHERE id = $2`,
     values: [{id: req.body.id, name: req.body.name, complete: req.body.complete, day: req.body.day, time: req.body.time}, req.body.listId]
   }
   pool.query(addTaskQuery, (error,result) => {
@@ -227,11 +227,11 @@ app.post('/del_task', (req, res) => {
   const delTaskQuery =
     `WITH task_index AS (
       SELECT INDEX-1 AS INDEX
-      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+      FROM list_${req.body.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
       WHERE task ->> 'id' = '${req.body.task_id}'
       AND id = '${req.body.list_id}'
     )
-    UPDATE list_${req.user.id}
+    UPDATE list_${req.body.id}
     SET tasks = tasks - CAST(task_index.index AS INTEGER)
     FROM task_index
     WHERE id = '${req.body.list_id}'`
@@ -245,11 +245,11 @@ app.post('/update_complete', (req, res) => {
   const saveCompleteQuery =
     `WITH task_complete AS (
       SELECT ('{'||INDEX-1||',complete}')::TEXT[] AS PATH
-      FROM list_${req.user.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
+      FROM list_${req.body.id}, JSONB_ARRAY_ELEMENTS(tasks) WITH ORDINALITY arr(task, index)
       WHERE task ->> 'id' = '${req.body.task_id}'
       AND id = '${req.body.list_id}'
     )
-    UPDATE list_${req.user.id}
+    UPDATE list_${req.body.id}
     SET tasks = JSONB_SET(tasks, task_complete.PATH, '${req.body.complete}', false)
     FROM task_complete
     WHERE id = '${req.body.list_id}';`
@@ -265,7 +265,7 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 app.post('/del_user', (req,res) => {
-  const id = req.user.id
+  const id = req.body.id
   req.logout()
   const delUserQuery = `DELETE FROM users WHERE id='${id}'`
   pool.query(delUserQuery, (error,result) => {
@@ -335,7 +335,7 @@ function checkReset() {
   })
   setTimeout(checkReset,10000)
 }
-checkReset()
+// checkReset()
 
 http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 module.exports = app
