@@ -57,7 +57,10 @@ io.on('connection', function(socket){
   console.log('a user connected');
   sessionID = socket.id;
 
-  userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
+  if (thisUser != undefined) {
+    userSessions.push({id:sessionID, name:thisUser.name, mail:thisUser.email});
+  }
+
   io.emit('new user', sessionID, userSessions);
 
   // waiting for client to send signal
