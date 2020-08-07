@@ -270,10 +270,33 @@
         outline: none;
         color: var(--clr-red);
       }
+      #template1{
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        background-color: yellow;
+      }
+      #template2{
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        background-color: purple;
+      }
+      #template3{
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+      }
     </style>
 
     <style>
-      .CHATBOX { background: var(--clr-grey); padding: 3px; position: fixed; bottom: 0.5%; height: 25%; width: 100%; z-index: -1; border: 1px black; overflow-y: auto; }
+      .CHATBOX {padding: 3px; position: fixed; bottom: 0.5%; height: 25%; width: 100%; z-index: -1; border: 1px black; overflow-y: auto; }
       .CHATBOX input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px;}
@@ -381,6 +404,9 @@
         $("#test").hide();
       });
     });
+    function hide(){
+      $("#clickme").hide();
+    }
   </script>
 
   <script type="text/javascript">
@@ -412,14 +438,13 @@
 
   <body onload="checkReset()">
     <div class="bg">
-        <button id="clickme">Click me</button>
+        <button id="clickme" onclick="hide()">Click me to hide</button>
         <!-- <div class="greet">
           <h1> Greetings! &nbsp; <span class="username"><%= username %></span> </h1>
         </div> -->
-        <div class="template">Template</div>
+        <!-- <div class="template" style="font-size: 30px; font-family:"Lucida Console", Courier, monospace;">Template</div> -->
 
         <div id="test">Testing </div>
-
         <div><p id="USERS"></p></div>
 
         <div class="chatting" >
@@ -430,15 +455,13 @@
           </form>
         </div>
 
-        <ul id="currUsers">Current Users</ul>
+        <ul id="currUsers" style="font-size: 30px; font-family:"Lucida Console", Courier, monospace;">Current Users</ul>
 
         <div class="template-field">
-          <button id="template1" class="template-button" onclick="ChangeTemplate(1)"></button>
-          <button id="template2" class="template-button" onclick="ChangeTemplate(2)"></button>
-          <button id="template3" class="template-button" onclick="ChangeTemplate(3)"></button><br>
-          <button id="template4" class="template-button" onclick="ChangeTemplate(4)"></button>
-          <button id="template5" class="template-button" onclick="ChangeTemplate(5)"></button>
-          <button id="template6" class="template-button" onclick="ChangeTemplate(6)"></button>
+          <label style="font-size: 20px;">Web Background Template:</label><br>
+          <button id="template1" class="template-button" onclick="ChangeTemplate(1)">Yellow</button>
+          <button id="template2" class="template-button" onclick="ChangeTemplate(2)">Purple</button>
+          <button id="template3" class="template-button" onclick="ChangeTemplate(3)">Picture</button><br>
         </div>
       <div class="grid-container">
         <div class="header">
@@ -482,21 +505,22 @@
                 <table>
                   <p>automaticaly reset</p>
                   <tr>
-                    <td><input type="checkbox" name="sunday" value="0" id="sunday"><label for="sunday">sun</label></td>
-                    <td><input type="checkbox" name="monday" value="1" id="monday"><label for="monday">mon</label></td>
-                    <td><input type="checkbox" name="tuesday" value="2" id="tuesday"><label for="tuesday">tue</label></td>
-                    <td><input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday">wed</label></td>
-                    <td><input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday">thr</label></td>
-                    <td><input type="checkbox" name="friday" value="5" id="friday"><label for="friday">fri</label></td>
-                    <td><input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday">sat</label></td>
-                    <td><input type="time" name="time" value=""></td>
+                    <td><input type="checkbox" name="sunday" value="0" id="sunday"><label for="sunday" style="font-size: 20px;">Sun</label></td>
+                    <td><input type="checkbox" name="monday" value="1" id="monday"><label for="monday" style="font-size: 20px;">Mon</label></td>
+                    <td><input type="checkbox" name="tuesday" value="2" id="tuesday"><label for="tuesday" style="font-size: 20px;">Tue</label></td>
+                    <td><input type="checkbox" name="wednesday" value="3" id="wednesday"><label for="wednesday" style="font-size: 20px;">Wed</label></td>
+                    <td><input type="checkbox" name="thursday" value="4" id="thursday"><label for="thursday" style="font-size: 20px;">Thr</label></td>
+                    <td><input type="checkbox" name="friday" value="5" id="friday"><label for="friday" style="font-size: 20px;">Fri</label></td>
+                    <td><input type="checkbox" name="saturday" value="6" id="saturday"><label for="saturday" style="font-size: 20px;">Sat</label></td>
+                    <td><label for="time" style="font-size: 20px;">Select time to due:</label><br>
+                      <input type="time" name="time" style="padding-left: 10px;"></td>
                   </tr>
                 </table>
               </div>
             </form>
 
             <form class="del-list-form" action="/del_list" method="post" del-list-form>
-              <button class="btn delete">Delete list</button>
+              <button class="btn delete" style="font-size: 20px">Delete list</button>
             </form>
           </div>
         </div>
