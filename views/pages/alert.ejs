@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+  </head>
+  <script type="text/javascript">
+  function Time()
+  {
+  var today=new Date()
+  var h=today.getHours()
+  var m=today.getMinutes()
+  var s=today.getSeconds()
+  //check m and s if they are 0-9 ,add a zero infront of m and s
+  m=checkTime(m)
+  s=checkTime(s)
+
+  if((document.getElementById("time").value==document.getElementById('txt').innerHTML)){
+    if(s==1)
+      window.alert("Timeing!!!");
+  }
+  document.getElementById("time").innerHTML=document.getElementsByName("time").value;
+  document.getElementById('txt').innerHTML=h+":"+m
+  // +":"+s
+  t=setTimeout('Time()',500)
+
+  }
+  function checkTime(i)
+{
+if (i<10)
+  {i="0" + i}
+  return i
+}
+  </script>
+  <body onload="Time()">
+
+    Current time is:<div id="txt"></div>
+    Alram clock at:
+    <input id = "time" type="time" name="time" value="">
+
+</html>
