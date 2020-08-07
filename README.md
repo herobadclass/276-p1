@@ -70,3 +70,6 @@ USER STORIES
       page will be reloaded without the deleted task in the task container
 #DATABASES
 login/register: create table users(id text, name text, email text, password text)
+#TESTS
+ALL TESTS ARE INITIALLY COMMENTED OUT
+INSTRUCTIONS FOR TESTING ARE IN /test/server-test.js

@@ -6,7 +6,7 @@ const should = chai.should()
 chai.use(chaiHttp)
 
  // steps required to do inorder to tests the following functions OR use index-test.js instead of index.js
- // test in 3 parts as labled below, functions get executed out of order
+ // test in the 3 parts as labled below, or else functions get executed out of order
  // 1. comment out line 338 in index.js
  // 2. replace line 173 with "values: [req.body.id , req.body.name, req.body.email, hashedPassword]"
  // 3. replace line 180 with "const createUserListTable = `CREATE TABLE list_${req.body.id} (id text, name text, tasks JSONB)`"
